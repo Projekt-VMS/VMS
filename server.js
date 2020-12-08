@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/', {useNewUrlParser: true, useUnifie
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-const Teilnehmer = require('./Models/Teilenehmer.js');
+const Teilnehmer = require('./Models/Teilnehmer.js');
 
 app.get('api/Teilnehmer', function(req, res){ Teilnehmer.find()
   .catch(err=>{
