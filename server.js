@@ -17,32 +17,3 @@ app.use(bodyParser.json());
 
 const Teilnehmer = require('./Models/Teilnehmer.js');
 
-app.get('api/Teilnehmer', function(req, res){ Teilnehmer.find()
-  .catch(err=>{
-    console.log(err.toString()); res.status(500).send(err.toString());
-  })
-  .then(dbres=>{
-    // Ergebnis zurückgeben.
-    console.log(dbres);
-    res.json(dbres);
-  });
-});
-
-app.post('api/Teilnehmer', function(req, res){
-// Überprüfen, ob die notwendigen Daten übermittelt wurden.
-  if(!req.body || !req.body.id || !req.body.name){
-    return res.status(400).send('Der Datensatz ist unvollständig!');
-  }
-// Neuen Teilnehmer anlegen.
-  let teilnehmerInstance = new Teilnehmer(req.body);
-// Teilnehmer in Datenbank ablegen.
-  teilnehmerInstance.save()
-    .catch(err=>{
-      console.log(err.toString());
-      res.status(500).send(err.toString()); })
-    .then(dbres=>{
-// Gibt die eingetragenen Werte zurück.
-      console.log(dbres);
-      res.json(dbres);
-    });
-});
