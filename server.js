@@ -8,14 +8,16 @@ app.get('/', function (req, res) {
 app.listen(PORT, function(){
   console.log('Server running at port:'+PORT);
 })
-var mongoURL = 'mongodb://132.231.36.103/VMS'
+
 var mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-mongoose.connect(mongoURL, {useNewUrlParser: true, useUnifiedTopology: true}); mongoose.connection.once('open', ()=>console.log('Mit Datenbank verbunden'));
+mongoose.connect('mongodb+srv://admin:0Sr3xN6OfhVQzMK3@vms.eucj6.mongodb.net/VMS?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connection.once('open', ()=>console.log('Mit Datenbank verbunden'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 const Teilnehmer = require('./Models/Teilnehmer.js');
+const mongodb = require("mongodb");
 
 app.get('api/Teilnehmer', function(req, res){ Teilnehmer.find()
     .catch(err=>{
@@ -33,9 +35,9 @@ app.post('api/teilnehmer', function(req, res){
   if(!req.body || !req.body.name){
     return res.status(400).send('Der Datensatz ist unvollständig!');
   }
-// Neuen Kunden anlegen.
+// Neuen Teilnehmer anlegen.
   let teilnehmerInstance = new Teilnehmer(req.body);
-// Kunden in Datenbank ablegen.
+// Teilnehmer in Datenbank ablegen.
   teilnehmerInstance.save()
       .catch(err=>{
         console.log(err.toString());
