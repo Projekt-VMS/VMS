@@ -48,3 +48,36 @@ app.post('/teilnehmer', function(req, res){
         res.json(dbres);
       });
 });
+
+
+var Management = require('./Models/Management.js');
+
+app.get('/Management', function(req, res){ Management.find()
+    .catch(err=>{
+        console.log(err.toString()); res.status(500).send(err.toString());
+    })
+    .then(dbres=>{
+
+        console.log(dbres);
+        res.send(dbres);
+    });
+});
+
+app.post('/Management', function(req, res){
+
+    if(!req.body || !req.body.name){
+        return res.status(400).send('Der Datensatz ist unvollständig!');
+    }
+
+    let managementInstance = new Management(req.body);
+
+    managementInstance.save()
+        .catch(err=>{
+            console.log(err.toString());
+            res.status(500).send(err.toString()); })
+        .then(dbres=>{
+
+            console.log(dbres);
+            res.json(dbres);
+        });
+});
