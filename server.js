@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 var PORT = 3000;
+
+app.set('view engine', 'ejs');
+
 // Route für den Fall das ein GET-Request an '/' gesendet wird.
 app.get('/', function (req, res) {
   res.send('Hello World!');
