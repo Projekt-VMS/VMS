@@ -2,18 +2,21 @@ var express = require('express');
 var app = express();
 var PORT = 3000;
 
-app.set('view engine', 'ejs');
+//app.set('view engine', 'ejs');
+app.set('view engine', 'html');
+//app.engine('html', require('ejs').renderFile)
 
-// Route für den Fall das ein GET-Request an '/' gesendet wird.
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
+var routes = require('./app/routes/routes.js');
+app.use('/', routes);
+
 app.listen(PORT, function(){
-  console.log('Server running at port:'+PORT);
+    console.log('Server running at port:'+PORT);
 })
+
 
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+
 mongoose.connect('mongodb+srv://admin:0Sr3xN6OfhVQzMK3@vms.eucj6.mongodb.net/VMS?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connection.once('open', ()=>console.log('Mit Datenbank verbunden'));
 app.use(bodyParser.urlencoded({extended: true}));

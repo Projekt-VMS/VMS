@@ -1,16 +1,30 @@
-app.use('/api', apiRouter);
-app.use('/', router);
+var express = require('express');
+var router = express.Router();
+var path = require('path');
+
+
+//app.use('/api', apiRouter);
+//app.use('/', router);
 
 // home route
-router.get('/', function(req, res) {
-    res.render('index');
+router.get ('/', function(req, res) {
+    res.send('homepage');
 });
 
 // admin route
-router.get('/admin', function(req, res) {
-    res.render('admin/login');
+router.get ('/admin', function(req, res) {
+    res.send('login');
 });
 
-router.get('/admin/register', function(req, res) {
-    res.render('admin/register');
+//admin register
+router.get ('/admin/register', function(req, res) {
+    res.send('Admin register')
+    //  res.render('admin/register');
 });
+
+//admin profilzugriff
+router.get ('/admin/profile', function (req, res){
+
+});
+
+module.exports = router;
