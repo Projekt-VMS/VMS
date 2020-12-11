@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 var PORT = 3000;
+
+app.set('view engine', 'ejs');
+
 // Route für den Fall das ein GET-Request an '/' gesendet wird.
 app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -16,7 +19,7 @@ mongoose.connection.once('open', ()=>console.log('Mit Datenbank verbunden'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-var Teilnehmer = require('./Models/Teilnehmer.js');
+var Teilnehmer = require('./app/models/Teilnehmer.js');
 
 
 app.get('/teilnehmer', function(req, res){ Teilnehmer.find()
@@ -50,7 +53,7 @@ app.post('/teilnehmer', function(req, res){
 });
 
 
-var Management = require('./Models/Management.js');
+var Management = require('./app/models/Management.js');
 
 app.get('/Management', function(req, res){ Management.find()
     .catch(err=>{
@@ -72,6 +75,38 @@ app.post('/Management', function(req, res){
     let managementInstance = new Management(req.body);
 
     managementInstance.save()
+        .catch(err=>{
+            console.log(err.toString());
+            res.status(500).send(err.toString()); })
+        .then(dbres=>{
+
+            console.log(dbres);
+            res.json(dbres);
+        });
+});
+
+var Veranstalter = require('./app/models/Veranstalter.js');
+
+app.get('/Veranstalter', function(req, res){ Veranstalter.find()
+    .catch(err=>{
+        console.log(err.toString()); res.status(500).send(err.toString());
+    })
+    .then(dbres=>{
+
+        console.log(dbres);
+        res.send(dbres);
+    });
+});
+
+app.post('/Veranstalter', function(req, res){
+
+    if(!req.body || !req.body.name){
+        return res.status(400).send('Der Datensatz ist unvollständig!');
+    }
+
+    let veranstalterInstance = new Veranstalter(req.body);
+
+    veranstalterInstance.save()
         .catch(err=>{
             console.log(err.toString());
             res.status(500).send(err.toString()); })

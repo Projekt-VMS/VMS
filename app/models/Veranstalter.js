@@ -60,15 +60,16 @@ var passwordValidator = [
 ];
 
 
-var managementSchema = mongoose.Schema({
-    Name: { type: String, required: true, validate: nameValidator },
-    Vorname: {type: String, required: true, validate: firstNameValidator },
-    Email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
-    Passwort: { type: String, required: true, validate: passwordValidator, select: false },
-})
+var veranstalterSchema = mongoose.Schema({
+    name: { type: String, required: true, validate: nameValidator },
+    vorname: {type: String, required: true, validate: firstNameValidator },
+    unternehmen: { type: String, required: true },
+    email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
+    passwort: { type: String, required: true, validate: passwordValidator, select: false },
+}, {collection : "Veranstalter"});
 
 
-managementSchema.pre('save', function(next) {
+veranstalterSchema.pre('save', function(next) {
     var user = this;
 
     if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
@@ -81,4 +82,4 @@ managementSchema.pre('save', function(next) {
     });
 });
 
-module.exports = mongoose.model('Management', managementSchema); // Export User Model for us in API
+module.exports = mongoose.model('Veranstalter', veranstalterSchema); // Export User Model for us in API
