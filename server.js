@@ -81,3 +81,35 @@ app.post('/Management', function(req, res){
             res.json(dbres);
         });
 });
+
+var Veranstalter = require('./Models/Veranstalter.js');
+
+app.get('/Veranstalter', function(req, res){ Veranstalter.find()
+    .catch(err=>{
+        console.log(err.toString()); res.status(500).send(err.toString());
+    })
+    .then(dbres=>{
+
+        console.log(dbres);
+        res.send(dbres);
+    });
+});
+
+app.post('/Veranstalter', function(req, res){
+
+    if(!req.body || !req.body.name){
+        return res.status(400).send('Der Datensatz ist unvollständig!');
+    }
+
+    let veranstalterInstance = new Veranstalter(req.body);
+
+    veranstalterInstance.save()
+        .catch(err=>{
+            console.log(err.toString());
+            res.status(500).send(err.toString()); })
+        .then(dbres=>{
+
+            console.log(dbres);
+            res.json(dbres);
+        });
+});
