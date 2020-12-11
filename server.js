@@ -16,7 +16,7 @@ mongoose.connection.once('open', ()=>console.log('Mit Datenbank verbunden'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-var Teilnehmer = require('./Models/Teilnehmer.js');
+var Teilnehmer = require('./app/models/Teilnehmer.js');
 
 
 app.get('/teilnehmer', function(req, res){ Teilnehmer.find()
@@ -50,7 +50,7 @@ app.post('/teilnehmer', function(req, res){
 });
 
 
-var Management = require('./Models/Management.js');
+var Management = require('./app/models/Management.js');
 
 app.get('/Management', function(req, res){ Management.find()
     .catch(err=>{
@@ -82,7 +82,7 @@ app.post('/Management', function(req, res){
         });
 });
 
-var Veranstalter = require('./Models/Veranstalter.js');
+var Veranstalter = require('./app/models/Veranstalter.js');
 
 app.get('/Veranstalter', function(req, res){ Veranstalter.find()
     .catch(err=>{
