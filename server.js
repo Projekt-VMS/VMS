@@ -1,61 +1,40 @@
-var express = require('express');
-var app = express();
-var PORT = 3000;
+const express = require('express');
+const app = express();
+const PORT = 3000;
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 //app.set('view engine', 'ejs');
 app.set('view engine', 'html');
 //app.engine('html', require('ejs').renderFile)
-
 var routes = require('./app/routes/routes.js');
 app.use('/', routes);
-
 app.listen(PORT, function(){
     console.log('Server running at port:'+PORT);
-})
+});
 
 
-var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
+
 
 mongoose.connect('mongodb+srv://admin:0Sr3xN6OfhVQzMK3@vms.eucj6.mongodb.net/VMS?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connection.once('open', ()=>console.log('Mit Datenbank verbunden'));
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-
-var Teilnehmer = require('./app/models/Teilnehmer.js');
 
 
+//wollte diese Funktion auch in Model Teilnehmer hängen, Registration funktioniert dann aber nicht mehr
+var Teilnehmer = require('./app/models/Teilnehmer')
 app.get('/teilnehmer', function(req, res){ Teilnehmer.find()
     .catch(err=>{
-      console.log(err.toString()); res.status(500).send(err.toString());
+        console.log(err.toString()); res.status(500).send(err.toString());
     })
     .then(dbres=>{
-      // Ergebnis zurückgeben.
-      console.log(dbres);
-      res.send(dbres);
+        // Ergebnis zurückgeben.
+        console.log(dbres);
+        res.send(dbres);
     });
 });
-
-app.post('/teilnehmer', function(req, res){
-// Überprüfen, ob die notwendigen Daten übermittelt wurden.
-  if(!req.body || !req.body.name){
-    return res.status(400).send('Der Datensatz ist unvollständig!');
-  }
-// Neuen Teilnehmer anlegen.
-  let teilnehmerInstance = new Teilnehmer(req.body);
-// Teilnehmer in Datenbank ablegen.
-  teilnehmerInstance.save()
-      .catch(err=>{
-        console.log(err.toString());
-        res.status(500).send(err.toString()); })
-      .then(dbres=>{
-// Gibt die eingetragenen Werte zurück.
-        console.log(dbres);
-        res.json(dbres);
-      });
-});
-
-
 var Management = require('./app/models/Management.js');
 
 app.get('/Management', function(req, res){ Management.find()

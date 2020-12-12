@@ -6,24 +6,27 @@ var path = require('path');
 //app.use('/api', apiRouter);
 //app.use('/', router);
 
+
+
 // home route
-router.get ('/', function(req, res) {
-    res.send('homepage');
+router.get ('/registration', function(req, res) {
+    res.sendFile('registration.html',{root:'./app/views/teilnehmer'})
 });
 
-// admin route
-router.get ('/admin', function(req, res) {
+
+// teilnehmer route
+router.get ('/teilnehmer', function(req, res) {
     res.send('login');
 });
 
-//admin register
-router.get ('/admin/register', function(req, res) {
+//teilnehmer register
+router.get ('/teilnehmer/register', function(req, res) {
     res.send('Admin register')
-    //  res.render('admin/register');
+    //  res.render('teilnehmer/register');
 });
 
-//admin profilzugriff
-router.get ('/admin/profile', function (req, res){
+//teilnehmer profilzugriff
+router.get ('/teilnehmer/profile', function (req, res){
 
 });
 
