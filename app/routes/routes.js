@@ -10,7 +10,7 @@ var path = require('path');
 
 // home route
 router.get ('/registration', function(req, res) {
-    res.sendFile('registration.html',{root:'./app/views/teilnehmer'})
+    res.sendFile('registration.html',{root:'./vms/src/views/teilnehmer'})
 });
 
 
