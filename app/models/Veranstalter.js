@@ -69,6 +69,17 @@ var veranstalterSchema = mongoose.Schema({
 }, {collection : "Veranstalter"});
 
 
+
+veranstalterSchema.virtual('Veranstaltungen', {
+    ref: 'Veranstaltung',
+    localField: '_id', //Find in Model, where localField
+    foreignField: 'Veranstalter'
+});
+
+veranstalterSchema.set('toObject', { virtuals: true });
+veranstalterSchema.set('toJSON', { virtuals: true });
+
+
 veranstalterSchema.pre('save', function(next) {
     var user = this;
 
@@ -82,4 +93,4 @@ veranstalterSchema.pre('save', function(next) {
     });
 });
 
-module.exports = mongoose.model('Veranstalter', veranstalterSchema); // Export User Model for us in API
+module.exports = mongoose.model('Veranstalter', veranstalterSchema);

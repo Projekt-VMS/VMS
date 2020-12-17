@@ -1,13 +1,16 @@
 var mongoose = require('mongoose');
 var router = require('../routes/routes')
 
-// Bildet die Dokumentenstruktur der Collection Teilnehmertabelle ab.
-
 var teilnehmerSchema = mongoose.Schema({
     name: {type: String},
     vorname:{type:String},
     email:{type:String}
 }, {collection : "Teilnehmer"});
+
+
+
+
+
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
 var Teilnehmer = mongoose.model('teilnehmer', teilnehmerSchema);
 

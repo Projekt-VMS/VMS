@@ -36,7 +36,10 @@ mongoose.connection.once('open', ()=>console.log('Mit Datenbank verbunden'));
 
 
 
-
+// home
+app.get ('/', function(req, res) {
+    res.send('homepage')
+});
 
 
 
