@@ -3,20 +3,22 @@ const app = express();
 const PORT = 3000;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const raumController = require('./app/controllers/raum.controller');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//app.set('view engine', 'ejs');
 app.set('view engine', 'html');
-//app.engine('html', require('ejs').renderFile)
+
+
 var routes = require('./app/routes/routes.js');
+
 app.use('/', routes);
+app.use('/raum', raumController);
+
 app.listen(PORT, function(){
     console.log('Server running at port:'+PORT);
 });
-
-
 
 
 mongoose.connect('mongodb+srv://admin:0Sr3xN6OfhVQzMK3@vms.eucj6.mongodb.net/VMS?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
