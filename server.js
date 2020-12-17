@@ -3,7 +3,7 @@ const app = express();
 const PORT = 3000;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const raumController = require('./app/controllers/raum.controller');
+//const raumController = require('./app/controllers/raum.controller');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -14,7 +14,7 @@ app.set('view engine', 'html');
 var routes = require('./app/routes/routes.js');
 
 app.use('/', routes);
-app.use('/raum', raumController);
+//app.use('/raum', raumController);
 
 app.listen(PORT, function(){
     console.log('Server running at port:'+PORT);
@@ -100,3 +100,5 @@ app.post('/Veranstalter', function(req, res){
             res.json(dbres);
         });
 });
+
+
