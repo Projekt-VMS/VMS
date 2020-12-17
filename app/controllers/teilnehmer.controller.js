@@ -1,8 +1,7 @@
 const express = require('express'),
-    teilnehmerController = express.Router();
+    teilnehmerController = express();
 
 let Teilnehmer = require('../models/Teilnehmer');
-
 
 
 //show
@@ -26,12 +25,17 @@ teilnehmerController.get('/registration', function (req, res){
 
 //create
 
-teilnehmerController.route('/add').post(function (req, res) {
+teilnehmerController.post('/registration/add', function (req, res) {
+    console.log('erstelle teilnehmer');
     if(!req.body.name || !req.body.vorname || !req.body.email) {
         return res.status(400).send('Der Datensatz ist unvollständig!');
     };
+    console.log(req.body);
+
     let teilnehmerInstance = new Teilnehmer(req.body);
+
     console.log(teilnehmerInstance);
+
     teilnehmerInstance.save()
         .then(teilnehmerInstance => {
             res.status(200).json({ 'Success': true })

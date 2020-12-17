@@ -6,7 +6,7 @@ let Raum = require('../models/Raum');
 
 
 raumController.route('/raum').get(function (req , res){
-    console.log('es funkt');
+    console.log('fenster von raum erstellen');
     res.sendFile('raum.test.html',{root:'./app'})
 });
 
@@ -26,7 +26,7 @@ raumController.get('/alle_raum', function(req, res){ Raum.find()
 //create
 
 raumController.route('/raum/add').post(function (req, res) {
-    console.log('es funkt');
+
     let raumInstance = new Raum(req.body);
     console.log(raumInstance);
     raumInstance.save()
@@ -34,7 +34,7 @@ raumController.route('/raum/add').post(function (req, res) {
             res.status(200).json({ 'Success': true })
         })
         .catch(err => {
-            res.status(400).send({ 'Success': false, 'Message': 'Error occured while creating new user' });
+            res.status(400).send({ 'Success': false, 'Message': 'Error occured while creating new Raum' });
         });
 
 });

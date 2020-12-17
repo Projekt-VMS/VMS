@@ -22,6 +22,8 @@ var raumSchema = new Schema({
     raumpreis: {type: Number, required: true},
 }, {collection : "Raum"});
 
+
 raumSchema.plugin(autoIncrement.plugin, 'raum_ID');
 var Raum = connection.model('Raum', raumSchema);
+
 module.exports = mongoose.model('Raum', raumSchema);
