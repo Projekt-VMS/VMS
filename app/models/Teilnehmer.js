@@ -4,7 +4,8 @@ var router = require('../routes/routes')
 var teilnehmerSchema = mongoose.Schema({
     name: {type: String},
     vorname:{type:String},
-    email:{type:String}
+    email:{type:String},
+    passwort:{type:String}
 }, {collection : "Teilnehmer"});
 
 
@@ -15,9 +16,9 @@ var teilnehmerSchema = mongoose.Schema({
 var Teilnehmer = mongoose.model('teilnehmer', teilnehmerSchema);
 
 
-router.post('/registration', function(req, res){
+/*router.post('/registration', function(req, res){
 // Überprüfen, ob die notwendigen Daten übermittelt wurden.
-    if(!req.body.name || !req.body.vorname || !req.body.email){
+    if(!req.body.name || !req.body.vorname || !req.body.email || !reqbody.passwort){
         return res.status(400).send('Der Datensatz ist unvollständig!');
     }
 // Neuen Teilnehmer anlegen.
@@ -32,7 +33,7 @@ router.post('/registration', function(req, res){
             console.log(dbres);
             res.json(dbres);
         });
-});
+});*/
 
 // Export für externen Aufruf
 module.exports = Teilnehmer;
