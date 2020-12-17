@@ -6,8 +6,8 @@
         <div class='col-sm-4 col-sm-offset-4 text-center'>
             <h1>Raum erstellen</h1>
             <form method='post' action='/raum/add'>
-                <input type='number' placeholder='Kapazität' name='vorname' id="kapazitaet" >
-                <input type="number" placeholder="Raumpreis" name="name" id="raumpreis">
+                <input type="number" placeholder="Kapazität" name="kapazitaet" id="kapazitaet" min="5" max="100">
+                <input type="number" placeholder="Raumpreis" name="raumpreis" id="raumpreis" step="0.01">
                 <input type="submit" class="btn btn-primary" value="Raum erstellen">
             </form>
         </div>

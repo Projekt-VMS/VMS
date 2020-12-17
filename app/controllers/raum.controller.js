@@ -6,7 +6,6 @@ let Raum = require('../models/Raum');
 
 
 raumController.route('/raum').get(function (req , res){
-    console.log('fenster von raum erstellen');
     res.sendFile('raum.test.html',{root:'./app'})
 });
 
@@ -28,7 +27,9 @@ raumController.get('/alle_raum', function(req, res){ Raum.find()
 raumController.route('/raum/add').post(function (req, res) {
 
     let raumInstance = new Raum(req.body);
+
     console.log(raumInstance);
+
     raumInstance.save()
         .then(raumInstance => {
             res.status(200).json({ 'Success': true })

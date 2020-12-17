@@ -17,13 +17,12 @@ var sizeValidator = [
 ]
 
 var raumSchema = new Schema({
-    raum_ID: {type: Schema.Types.ObjectId},
-    kapazitaet: {type: Number, required: true, validate: sizeValidator},
-    raumpreis: {type: Number, required: true},
+    raum_ID: {type: Number},
+    kapazitaet: {type: Number, required: true},
+    raumpreis: {type: Number, required: true}
 }, {collection : "Raum"});
 
 
 raumSchema.plugin(autoIncrement.plugin, 'raum_ID');
-var Raum = connection.model('Raum', raumSchema);
 
 module.exports = mongoose.model('Raum', raumSchema);
