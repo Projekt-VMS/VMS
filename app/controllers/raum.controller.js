@@ -4,10 +4,30 @@ const express = require('express'),
 
 let Raum = require('../models/Raum');
 
+
+raumController.route('/raum').get(function (req , res){
+    console.log('es funkt');
+    res.sendFile('raum.test.html',{root:'./app'})
+});
+
+//show
+
+raumController.get('/alle_raum', function(req, res){ Raum.find()
+    .catch(err=>{
+        console.log(err.toString()); res.status(500).send(err.toString());
+    })
+    .then(dbres=>{
+        // Ergebnis zurückgeben.
+        console.log(dbres);
+        res.send(dbres);
+    });
+});
+
+
 //create
 
-raumController.route('/add').post(function (req, res) {
-
+raumController.route('/raum/add').post(function (req, res) {
+    console.log('es funkt');
     let raumInstance = new Raum(req.body);
     console.log(raumInstance);
     raumInstance.save()

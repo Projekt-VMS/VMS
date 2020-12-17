@@ -4,6 +4,21 @@ const express = require('express'),
 let Teilnehmer = require('../models/Teilnehmer');
 
 
+
+//show
+
+teilnehmerController.get('/teilnehmer', function(req, res){ Teilnehmer.find()
+    .catch(err=>{
+        console.log(err.toString()); res.status(500).send(err.toString());
+    })
+    .then(dbres=>{
+        // Ergebnis zurückgeben.
+        console.log(dbres);
+        res.send(dbres);
+    });
+});
+
+
 //create
 
 teilnehmerController.route('/add').post(function (req, res) {
