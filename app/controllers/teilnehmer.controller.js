@@ -12,17 +12,24 @@ teilnehmerController.get('/teilnehmer', function(req, res){ Teilnehmer.find()
         console.log(err.toString()); res.status(500).send(err.toString());
     })
     .then(dbres=>{
-        // Ergebnis zurückgeben.
         console.log(dbres);
         res.send(dbres);
     });
+});
+
+//registration
+
+teilnehmerController.get('/registration', function (req, res){
+    res.sendFile('registration.html',{root:'./vms/src/views/teilnehmer'});
 });
 
 
 //create
 
 teilnehmerController.route('/add').post(function (req, res) {
-
+    if(!req.body.name || !req.body.vorname || !req.body.email) {
+        return res.status(400).send('Der Datensatz ist unvollständig!');
+    };
     let teilnehmerInstance = new Teilnehmer(req.body);
     console.log(teilnehmerInstance);
     teilnehmerInstance.save()

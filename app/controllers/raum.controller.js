@@ -17,7 +17,6 @@ raumController.get('/alle_raum', function(req, res){ Raum.find()
         console.log(err.toString()); res.status(500).send(err.toString());
     })
     .then(dbres=>{
-        // Ergebnis zurückgeben.
         console.log(dbres);
         res.send(dbres);
     });
