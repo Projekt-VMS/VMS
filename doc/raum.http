@@ -4,13 +4,16 @@ POST http://localhost:3000/raum/add
 Content-Type: application/json
 
 {
+  "raumNr": 3,
   "kapazitaet": 2,
   "raumpreis": 10
 }
 
-### // Raum show
-GET http://localhost:3000/raum/show
+### // Raum list all
+GET http://localhost:3000/raum/list
 
+### // Raum show
+GET http://localhost:3000/raum/show/:id
 
 ### // Raum delete
-POST http://localhost:3000/raum/delete/:id
+DELETE http://localhost:3000/raum/delete/:id

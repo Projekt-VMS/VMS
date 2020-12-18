@@ -1,5 +1,5 @@
 const express = require('express'),
-    raumController = express.Router();
+    raumController = express();
 
 
 let Raum = require('../models/Raum');
@@ -9,9 +9,10 @@ raumController.get(('/raum'), function (req , res){
     res.sendFile('erstellen.raum.html',{root:'./app/view/'})
 });
 
-//show
+//list all
 
-raumController.get('/raum/show', function(req, res){ Raum.find()
+raumController.get('/raum/list', function(req, res){
+    Raum.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
@@ -21,10 +22,26 @@ raumController.get('/raum/show', function(req, res){ Raum.find()
     });
 });
 
+//show one
+
+raumController.get('/raum/show/:id', function (req, res) {
+        Raum.findOne()
+        //let raum = Raum["customer" + req.params.id];
+        //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
+
+        .catch(err => {
+            console.log(err.toString());
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            console.log(dbres);
+            res.send(dbres);
+        });
+});
 
 //create
 
-raumController.route('/raum/add').post(function (req, res) {
+raumController.post('/raum/add',function (req, res) {
 
     let raumInstance = new Raum(req.body);
 
@@ -41,22 +58,25 @@ raumController.route('/raum/add').post(function (req, res) {
 });
 
 //delete
-raumController.route('/raum/delete/:id').get(function (req, res) {
+raumController.delete('/raum/delete/:id', function (req, res) {
 
-    let raumId = req.params.raum_ID;
-
-    Raum.find({ 'rid': raumId }).remove(function (err, raum) {
-        if (err)
-            res.json({ 'Success': false, 'Message': 'Raum not found' });
-        else
-            res.json({ 'Success': true, 'Message' : raumId});
-
-    });
+    const { id } = req.params.id;
+    console.log(id);
+    Raum.findOneAndDelete({
+        _id: id,
+    })
+        .exec((err, raum) => {
+            if(err)
+                return res.status(500).json({code: 500, message: 'There was an error deleting the raum', error: err});
+            else {
+                res.status(200).json({code: 200, message: 'raum deleted', deletedRaum: raum});
+            }
+            });
 });
 
 
 // update
-raumController.route('/raum/edit/:id').post(function (req, res) {
+raumController.put('/raum/edit/:id',function (req, res) {
 
     let raumId = req.params.id;
 
