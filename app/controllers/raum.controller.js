@@ -58,8 +58,18 @@ raumController.post('/raum/add',function (req, res) {
 });
 
 //delete
-raumController.delete('/raum/delete/:id', function (req, res) {
+raumController.delete('/raum/delete/:id', function (req, res, next) {
 
+    Raum.findByIdAndRemove({_id: req.params.id}, req.body).then(function(err, raum){ // warum bleibt Raum undefined ??
+
+        if (err)
+            return next (new Error('raum not found'));
+        else {
+            res.send('Raum' + raum + ' wurde gelöscht' );
+        }
+    });
+
+/*
     const { id } = req.params.id;
     console.log(id);
     Raum.findOneAndDelete({
@@ -72,32 +82,33 @@ raumController.delete('/raum/delete/:id', function (req, res) {
                 res.status(200).json({code: 200, message: 'raum deleted', deletedRaum: raum});
             }
             });
+
+ */
 });
 
 
 // update
-raumController.put('/raum/edit/:id',function (req, res) {
+raumController.put('/raum/edit/:id',function (req, res, next) {
 
-    let raumId = req.params.id;
+    Raum.findByIdAndUpdate({_id: req.params.id}, req.body).then(
+        function (err, raum) {
+            if (!raum)
+                return next(new Error('raum not found'));
+            else {
+                raum.raumNr = req.body.raumNr;
+                raum.kapazitaet = req.body.kapazitaet;
+                raum.raumpreis = req.body.raumpreis;
 
-    Raum.findOne({ 'Raum.rid': raumId }, function (err, raum) {
-        if (!raum)
-            return next(new Error('user not found'));
-        else {
-            raum.kapazitaet = req.body.kapazitaet;
-            raum.raumpreis = req.body.raumpreis;
+                project.save().then(raum => {
+                    res.json({'Success': true});
+                })
+                    .catch(err => {
+                        res.status(400).json({'Success': false});
+                    });
+            }
+        });
 
-
-            raum.save().then(raum => {
-                res.json({ 'Success': true });
-            })
-                .catch(err => {
-                    res.status(400).json({ 'Success': false });
-                });
-        }
-    });
 });
-
 
 
 module.exports = raumController;
