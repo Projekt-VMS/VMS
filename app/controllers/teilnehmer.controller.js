@@ -1,7 +1,8 @@
 const express = require('express');
 const teilnehmerController = express();
-
+var ObjectId = require('mongoose').Types.ObjectId;
 let Teilnehmer = require('../models/Teilnehmer');
+const {delay} = require("rxjs/operators");
 
 
 //show
@@ -27,37 +28,28 @@ teilnehmerController.get('/registration', function (req, res){
 
 teilnehmerController.post('/registration/add', function (req, res) {
     console.log('erstelle teilnehmer');
-    if(!req.body.name || !req.body.vorname || !req.body.email || !req.body.passwort) {
-        return res.status(400).send('Der Datensatz ist unvollständig!');
-    };
-    console.log(req.body);
 
     let teilnehmerInstance = new Teilnehmer(req.body);
 
     console.log(teilnehmerInstance);
 
-    teilnehmerInstance.save()
-        .then(() => {
-            res.status(200).json({ 'Success': true })
-        })
-        .catch(err => {
-            res.status(400).send({ 'Success': false, 'Message': 'Error occured while creating new user' });
-        });
+    teilnehmerInstance.save((err, doc) =>{
+        if (!err)
+            res.send('Sie wurden  erfolgreich registriert!');
+        else  console.log(err.toString());
+        res.status(500).send(err.toString()); })
 
 });
 
 //delete
-teilnehmerController.route('/delete/:id').get(function (req, res) {
+teilnehmerController.get('/delete',(function (req, res) {
+    res.sendFile('userdelete.html', {root: 'vms/src/views/teilnehmer'})
+}));
 
-    let teilnehmerId = req.params.id;
 
-    Teilnehmer.find({ 'Teilnehmer.id': teilnehmerId }).remove(function (err, user) {
-        if (err)
-            res.json({ 'Success': false, 'Message': 'User not found' });
-        else
-            res.json({ 'Success': true });
-    });
-});
+
+
+
 
 
 // update
@@ -83,6 +75,8 @@ teilnehmerController.route('/edit/:id').post(function (req, res) {
         }
     });
 });
+
+
 
 
 
