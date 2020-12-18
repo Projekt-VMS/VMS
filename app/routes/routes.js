@@ -5,7 +5,7 @@ var path = require('path');
 
 //test raum
 router.get ('/raum', function (req , res){
-    res.sendFile('raum.test.html',{root:'./app'})
+    res.sendFile('erstellen.raum.html',{root:'./app'})
 });
 
 // home

@@ -5,13 +5,13 @@ const express = require('express'),
 let Raum = require('../models/Raum');
 
 
-raumController.route('/raum').get(function (req , res){
-    res.sendFile('raum.test.html',{root:'./app'})
+raumController.get(('/raum'), function (req , res){
+    res.sendFile('erstellen.raum.html',{root:'./app/view/'})
 });
 
 //show
 
-raumController.get('/alle_raum', function(req, res){ Raum.find()
+raumController.get('/raum/show', function(req, res){ Raum.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
@@ -41,21 +41,22 @@ raumController.route('/raum/add').post(function (req, res) {
 });
 
 //delete
-raumController.route('/delete/:id').get(function (req, res) {
+raumController.route('/raum/delete/:id').get(function (req, res) {
 
-    let raumId = req.params.id;
+    let raumId = req.params.raum_ID;
 
-    Raum.find({ 'Raum.rid': raumId }).remove(function (err, raum) {
+    Raum.find({ 'rid': raumId }).remove(function (err, raum) {
         if (err)
             res.json({ 'Success': false, 'Message': 'Raum not found' });
         else
-            res.json({ 'Success': true });
+            res.json({ 'Success': true, 'Message' : raumId});
+
     });
 });
 
 
 // update
-raumController.route('/edit/:id').post(function (req, res) {
+raumController.route('/raum/edit/:id').post(function (req, res) {
 
     let raumId = req.params.id;
 

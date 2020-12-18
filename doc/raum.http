@@ -1,0 +1,16 @@
+/// raum create
+###
+POST http://localhost:3000/raum/add
+Content-Type: application/json
+
+{
+  "kapazitaet": 2,
+  "raumpreis": 10
+}
+
+### // Raum show
+GET http://localhost:3000/raum/show
+
+
+### // Raum delete
+POST http://localhost:3000/raum/delete/:id

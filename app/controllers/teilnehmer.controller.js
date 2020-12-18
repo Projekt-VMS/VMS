@@ -25,7 +25,7 @@ teilnehmerController.get('/registration', function (req, res){
 
 //create
 
-teilnehmerController.post('/registration/add', function (req, res) {
+teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
     console.log('erstelle teilnehmer');
     if(!req.body.name || !req.body.vorname || !req.body.email || !req.body.passwort) {
         return res.status(400).send('Der Datensatz ist unvollständig!');
@@ -47,7 +47,7 @@ teilnehmerController.post('/registration/add', function (req, res) {
 });
 
 //delete
-teilnehmerController.route('/delete/:id').get(function (req, res) {
+teilnehmerController.route('/teilnehmer/delete/:id').get(function (req, res) {
 
     let teilnehmerId = req.params.id;
 
@@ -61,7 +61,7 @@ teilnehmerController.route('/delete/:id').get(function (req, res) {
 
 
 // update
-teilnehmerController.route('/edit/:id').post(function (req, res) {
+teilnehmerController.route('/teilnehmer/edit/:id').post(function (req, res) {
 
     let teilnehmerId = req.params.id;
 

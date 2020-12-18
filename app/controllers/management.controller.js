@@ -6,7 +6,7 @@ let Management = require('../models/Management');
 
 //list managementarbeiter
 
-managementController.get('/management', function(req, res){ Management.find()
+managementController.get('/management/show', function(req, res){ Management.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })

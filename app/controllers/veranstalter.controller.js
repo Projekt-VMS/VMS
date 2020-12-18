@@ -6,7 +6,7 @@ let Veranstalter = require('../models/Veranstalter');
 
 //show veranstalter
 
-veranstalterController.get('/Veranstalter', function(req, res){ Veranstalter.find()
+veranstalterController.get('/veranstalter/show', function(req, res){ Veranstalter.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
@@ -19,7 +19,7 @@ veranstalterController.get('/Veranstalter', function(req, res){ Veranstalter.fin
 
 //create
 
-veranstalterController.post('/Veranstalter', function(req, res){
+veranstalterController.post('/veranstalter/registration', function(req, res){
 
     if(!req.body || !req.body.name){
         return res.status(400).send('Der Datensatz ist unvollständig!');
