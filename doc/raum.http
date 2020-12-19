@@ -13,17 +13,17 @@ Content-Type: application/json
 GET http://localhost:3000/raum/list
 
 ### // Raum show
-GET http://localhost:3000/raum/show/:id
+GET http://localhost:3000/raum/show/5fddfed7e64935575f958fb0
 
 ### // Raum delete
-DELETE http://localhost:3000/raum/delete/5fddd6fab1f8a854073b313a
+DELETE http://localhost:3000/raum/delete/5fdddeb216a2d413d8f0b65e
 
 ### // Raum update
-PUT  http://localhost:3000/raum/edit/5fdddeb216a2d413d8f0b65e
+PUT  http://localhost:3000/raum/edit/5fddfed7e64935575f958fb0
 Content-Type: application/json
 
 {
   "raumNr": 16,
-  "kapazitaet": 6,
+  "kapazitaet": 15,
   "raumpreis": 16
 }

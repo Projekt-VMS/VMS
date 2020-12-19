@@ -8,7 +8,7 @@ mongoose.set('useCreateIndex', true);
 var nameValidator = [
     validate({
         validator: 'matches',
-        arguments: /^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/,
+        arguments: /(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/,
         message: 'Name darf keine Sonderzeichen oder Zahlen enthalten.'
     }),
     validate({
@@ -20,7 +20,7 @@ var nameValidator = [
 var firstNameValidator = [
     validate({
         validator: 'matches',
-        arguments: /^(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/,
+        arguments: /(([a-zA-Z]{3,20})+[ ]+([a-zA-Z]{3,20})+)+$/,
         message: 'Vorname darf keine Sonderzeichen oder Zahlen enthalten.'
     }),
     validate({
@@ -34,7 +34,7 @@ var firstNameValidator = [
 var emailValidator = [
     validate({
         validator: 'matches',
-        arguments: /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,40}$/,
+        arguments: /[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,40}$/,
         message: 'Email darf keine Sonderzeichen oder Zahlen enthalten.'
     }),
     validate({
@@ -61,10 +61,10 @@ var passwordValidator = [
 
 
 var managementSchema = mongoose.Schema({
-    name: { type: String, required: true, validate: nameValidator },
-    vorname: {type: String, required: true, validate: firstNameValidator },
-    email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
-    passwort: { type: String, required: true, validate: passwordValidator, select: false },
+    name: {type: String, required: 'name can\'t be empty '},
+    vorname:{type:String, required: 'vorname can\'t be empty'},
+    email:{type:String, required: 'email can\'t be empty', unique: true, trim: true, uniqueCaseInsensitive: true},
+    passwort:{type:String, minlength: [5, 'Passwort zu kurz!']}
 }, {collection : "Management"});
 
 
@@ -80,5 +80,11 @@ managementSchema.pre('save', function(next) {
         next(); // Exit Bcrypt function
     });
 });
+
+//Email Validation
+managementSchema.path('email').validate((val) => {
+    emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(val);
+}, 'Invalid e-mail.');
 
 module.exports = mongoose.model('Management', managementSchema); // Export User Model for us in API

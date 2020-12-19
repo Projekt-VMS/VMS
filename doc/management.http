@@ -1,0 +1,31 @@
+/// Teilnehmer registration
+###
+POST http://localhost:3000/management/registration/add
+Content-Type: application/json
+
+{
+  "name": "Manager",
+  "vorname": "Joshi",
+  "email": "test12345@vms132.de",
+  "passwort": "manageR:34"
+}
+
+### // Management list all
+GET http://localhost:3000/management/show
+
+### // Management show one
+GET http://localhost:3000/raum/show/5fd4b19f21a8bedfbca30c3c
+
+### // Management delete (could be changed to :id as well
+DELETE http://localhost:3000/management/delete/5fd4b19f21a8bedfbca30c3c
+
+### // Management update
+PUT  http://localhost:3000/management/edit/5fde0f86c2d0d158d78df849
+Content-Type: application/json
+
+{
+  "name": "Update Manager",
+  "vorname": "Maximilian-Justus",
+  "email": "test666@vms.de",
+  "passwort": "123456"
+}

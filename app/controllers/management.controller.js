@@ -1,12 +1,13 @@
 const express = require('express'),
-    managementController = express.Router();
+    managementController = express();
 
 
 let Management = require('../models/Management');
 
-//list managementarbeiter
+//list all
 
-managementController.get('/management/show', function(req, res){ Management.find()
+managementController.get('/management/show', function(req, res){
+    Management.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
@@ -17,25 +18,81 @@ managementController.get('/management/show', function(req, res){ Management.find
     });
 });
 
+//show one
+
+managementController.get('/raum/show/:id', function (req, res) {
+    Management.findOne()
+        //let raum = Raum["customer" + req.params.id];
+        //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
+
+        .catch(err => {
+            console.log(err.toString());
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            console.log(dbres);
+            res.send(dbres);
+        });
+});
+
 // create
 
-managementController.post('/management/add', function(req, res){
 
-    if(!req.body || !req.body.name){
-        return res.status(400).send('Der Datensatz ist unvollständig!');
-    }
+managementController.post('/management/registration/add', function (req, res) {
+    console.log('erstelle Management User');
 
     let managementInstance = new Management(req.body);
 
-    managementInstance.save()
-        .catch(err=>{
-            console.log(err.toString());
-            res.status(500).send(err.toString()); })
-        .then(dbres=>{
+    console.log(managementInstance);
 
-            console.log(dbres);
-            res.json(dbres);
-        });
+    managementInstance.save((err, doc) =>{
+        if (!err){
+            res.send('Management User wurde  erfolgreich registriert!');}
+        else  {console.log(err.toString());
+            res.status(500).send(err.toString()); }
+
+    });
+
 });
+
+//delete
+managementController.delete('/management/delete/:id', function (req, res, next) {
+
+    Management.findByIdAndRemove({_id: req.params.id},function(err, id){
+
+        if (err){
+            return next (new Error('user not found'))}
+        else {
+            res.send('User ' + id.email + ' wurde gelöscht' );
+        }
+    });
+});
+
+//Update
+managementController.put('/management/edit/:id',function (req, res, next) {
+
+    Management.findByIdAndUpdate(
+        {_id: req.params.id},
+        {
+            name: req.body.name,
+            vorname: req.body.vorname,
+            email: req.body.email,
+            passwort: req.body.passwort
+        },
+        function (err, managementuser) {
+            if (!managementuser)
+                return next(new Error('user not found'));
+            else {
+                res.send(managementuser);
+            }
+        })});
+
+
+
+
+
+
+
+
 
 module.exports = managementController;

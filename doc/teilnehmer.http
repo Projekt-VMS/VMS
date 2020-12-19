@@ -1,0 +1,31 @@
+/// Teilnehmer registration
+###
+POST http://localhost:3000/teilnehmer/registration/add
+Content-Type: application/json
+
+{
+  "name": "test",
+  "vorname": "test",
+  "email": "test12345@test.de",
+  "passwort": "123456"
+}
+
+### // Teilnehmer list all
+GET http://localhost:3000/teilnehmer
+
+### // Teilnehmer show one
+GET http://localhost:3000/teilnehmer/show/:id
+
+### // Teilnehmer delete (could be changed to :id as well
+DELETE http://localhost:3000/teilnehmer/delete/5fdc8a634098564c24f7de70
+
+### // Teilnehmer update
+PUT  http://localhost:3000/teilnehmer/edit/:id
+Content-Type: application/json
+
+{
+  "name": "Update Teesttter",
+  "vorname": "test32123",
+  "email": "test666@test.de",
+  "passwort": "123456"
+}
