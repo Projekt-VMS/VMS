@@ -26,7 +26,7 @@ teilnehmerController.get('/registration', function (req, res){
 
 //create
 
-teilnehmerController.post('/registration/add', function (req, res) {
+teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
     console.log('erstelle teilnehmer');
 
     let teilnehmerInstance = new Teilnehmer(req.body);
@@ -42,6 +42,7 @@ teilnehmerController.post('/registration/add', function (req, res) {
 });
 
 //delete
+
 teilnehmerController.get('/delete',(function (req, res) {
     res.sendFile('userdelete.html', {root: 'vms/src/views/teilnehmer'})
 }));
@@ -53,7 +54,7 @@ teilnehmerController.get('/delete',(function (req, res) {
 
 
 // update
-teilnehmerController.route('/edit/:id').post(function (req, res) {
+teilnehmerController.route('/teilnehmer/edit/:id').post(function (req, res) {
 
     let teilnehmerId = req.params.id;
 

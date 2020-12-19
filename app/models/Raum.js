@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var validate = require('mongoose-validator');
 var autoIncrement = require('mongoose-auto-increment');
-var connection = mongoose.createConnection('mongodb+srv://admin:0Sr3xN6OfhVQzMK3@vms.eucj6.mongodb.net/VMS?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
+//var connection = mongoose.createConnection('mongodb+srv://admin:0Sr3xN6OfhVQzMK3@vms.eucj6.mongodb.net/VMS?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
 var Schema = mongoose.Schema;
 
 
-autoIncrement.initialize(connection);
+//autoIncrement.initialize(connection);
 
 // Raumgröße
 var sizeValidator = [
@@ -17,12 +17,12 @@ var sizeValidator = [
 ]
 
 var raumSchema = new Schema({
-    raum_ID: {type: Number},
+    raumNr: {type: Number, required: true},
     kapazitaet: {type: Number, required: true},
     raumpreis: {type: Number, required: true}
 }, {collection : "Raum"});
 
 
-raumSchema.plugin(autoIncrement.plugin, 'raum_ID');
+//raumSchema.plugin(autoIncrement.plugin, 'raumNr');
 
 module.exports = mongoose.model('Raum', raumSchema);

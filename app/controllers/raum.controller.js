@@ -1,17 +1,18 @@
 const express = require('express'),
-    raumController = express.Router();
+    raumController = express();
 
 
 let Raum = require('../models/Raum');
 
 
-raumController.route('/raum').get(function (req , res){
-    res.sendFile('raum.test.html',{root:'./app'})
+raumController.get(('/raum'), function (req , res){
+    res.sendFile('erstellen.raum.html',{root:'./app/view/'})
 });
 
-//show
+//list all
 
-raumController.get('/alle_raum', function(req, res){ Raum.find()
+raumController.get('/raum/list', function(req, res){
+    Raum.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
@@ -21,10 +22,26 @@ raumController.get('/alle_raum', function(req, res){ Raum.find()
     });
 });
 
+//show one
+
+raumController.get('/raum/show/:id', function (req, res) {
+        Raum.findOne()
+        //let raum = Raum["customer" + req.params.id];
+        //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
+
+        .catch(err => {
+            console.log(err.toString());
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            console.log(dbres);
+            res.send(dbres);
+        });
+});
 
 //create
 
-raumController.route('/raum/add').post(function (req, res) {
+raumController.post('/raum/add',function (req, res) {
 
     let raumInstance = new Raum(req.body);
 
@@ -41,42 +58,57 @@ raumController.route('/raum/add').post(function (req, res) {
 });
 
 //delete
-raumController.route('/delete/:id').get(function (req, res) {
+raumController.delete('/raum/delete/:id', function (req, res, next) {
 
-    let raumId = req.params.id;
+    Raum.findByIdAndRemove({_id: req.params.id}, req.body).then(function(err, raum){ // warum bleibt Raum undefined ??
 
-    Raum.find({ 'Raum.rid': raumId }).remove(function (err, raum) {
         if (err)
-            res.json({ 'Success': false, 'Message': 'Raum not found' });
-        else
-            res.json({ 'Success': true });
+            return next (new Error('raum not found'));
+        else {
+            res.send('Raum' + raum + ' wurde gelöscht' );
+        }
     });
+
+/*
+    const { id } = req.params.id;
+    console.log(id);
+    Raum.findOneAndDelete({
+        _id: id,
+    })
+        .exec((err, raum) => {
+            if(err)
+                return res.status(500).json({code: 500, message: 'There was an error deleting the raum', error: err});
+            else {
+                res.status(200).json({code: 200, message: 'raum deleted', deletedRaum: raum});
+            }
+            });
+
+ */
 });
 
 
 // update
-raumController.route('/edit/:id').post(function (req, res) {
+raumController.put('/raum/edit/:id',function (req, res, next) {
 
-    let raumId = req.params.id;
+    Raum.findByIdAndUpdate({_id: req.params.id}, req.body).then(
+        function (err, raum) {
+            if (!raum)
+                return next(new Error('raum not found'));
+            else {
+                raum.raumNr = req.body.raumNr;
+                raum.kapazitaet = req.body.kapazitaet;
+                raum.raumpreis = req.body.raumpreis;
 
-    Raum.findOne({ 'Raum.rid': raumId }, function (err, raum) {
-        if (!raum)
-            return next(new Error('user not found'));
-        else {
-            raum.kapazitaet = req.body.kapazitaet;
-            raum.raumpreis = req.body.raumpreis;
+                project.save().then(raum => {
+                    res.json({'Success': true});
+                })
+                    .catch(err => {
+                        res.status(400).json({'Success': false});
+                    });
+            }
+        });
 
-
-            raum.save().then(raum => {
-                res.json({ 'Success': true });
-            })
-                .catch(err => {
-                    res.status(400).json({ 'Success': false });
-                });
-        }
-    });
 });
-
 
 
 module.exports = raumController;
