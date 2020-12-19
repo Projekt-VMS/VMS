@@ -3,7 +3,7 @@ const app = express();
 const PORT = 3000;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+mongoose.set('useFindAndModify', false);
 const raumController = require('./app/controllers/raum.controller');
 const teilnehmerController  = require ('./app/controllers/teilnehmer.controller');
 const managementController = require ('./app/controllers/management.controller');
