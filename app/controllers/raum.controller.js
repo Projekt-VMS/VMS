@@ -11,7 +11,7 @@ raumController.get(('/raum'), function (req , res){
 
 //list all
 
-raumController.get('/raum/list', function(req, res){
+raumController.get('/raum/show', function(req, res){
     Raum.find()
     .catch(err=>{
         console.log(err.toString());

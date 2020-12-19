@@ -1,6 +1,6 @@
 /// Teilnehmer registration
 ###
-POST http://localhost:3000/management/registration/add
+POST http://localhost:3000/veranstalter/registration/add
 Content-Type: application/json
 
 {
@@ -11,16 +11,16 @@ Content-Type: application/json
 }
 
 ### // Management list all
-GET http://localhost:3000/management/show
+GET http://localhost:3000/veranstalter/show
 
 ### // Management show one
-GET http://localhost:3000/management/show/:id
+GET http://localhost:3000/veranstalter/show/:id
 
 ### // Management delete (could be changed to :id as well
-DELETE http://localhost:3000/management/delete/5fd4b19f21a8bedfbca30c3c
+DELETE http://localhost:3000/veranstalter/delete/5fd4b19f21a8bedfbca30c3c
 
 ### // Management update
-PUT  http://localhost:3000/management/edit/5fde0f86c2d0d158d78df849
+PUT  http://localhost:3000/veranstalter/edit/5fde0f86c2d0d158d78df849
 Content-Type: application/json
 
 {

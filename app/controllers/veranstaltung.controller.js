@@ -7,7 +7,7 @@ let Veranstaltung = require('../models/Veranstaltung');
 
 //show all
 
-veranstaltungsController.get('/veranstaltung/list', function (req, res) {
+veranstaltungsController.get('/veranstaltung/show', function (req, res) {
         console.log('test');
         Veranstaltung.find()
             .catch(err => {

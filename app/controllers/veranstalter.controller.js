@@ -1,12 +1,13 @@
 const express = require('express'),
-    veranstalterController = express.Router();
+    veranstalterController = express();
 
 let Veranstalter = require('../models/Veranstalter');
 
 
-//show veranstalter
+//list all
 
-veranstalterController.get('/veranstalter/show', function(req, res){ Veranstalter.find()
+veranstalterController.get('/veranstalter/show', function(req, res){
+    Veranstalter.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
@@ -17,26 +18,72 @@ veranstalterController.get('/veranstalter/show', function(req, res){ Veranstalte
     });
 });
 
+veranstalterController.get('/veranstalter/show/:id', function (req, res) {
+    Veranstalter.findOne()
+        //let raum = Raum["customer" + req.params.id];
+        //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
+
+        .catch(err => {
+            console.log(err.toString());
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            console.log(dbres);
+            res.send(dbres);
+        });
+});
+
 //create
 
-veranstalterController.post('/veranstalter/registration', function(req, res){
-
-    if(!req.body || !req.body.name){
-        return res.status(400).send('Der Datensatz ist unvollständig!');
-    }
+veranstalterController.post('/veranstalter/registration/add', function (req, res) {
 
     let veranstalterInstance = new Veranstalter(req.body);
 
-    veranstalterInstance.save()
-        .catch(err=>{
-            console.log(err.toString());
-            res.status(500).send(err.toString()); })
-        .then(dbres=>{
+    console.log(veranstalterInstance);
 
-            console.log(dbres);
-            res.json(dbres);
+    veranstalterInstance.save((err, doc) =>{
+        if (!err){
+            res.send('Veranstalter User wurde erfolgreich registriert!');}
+        else  {console.log(err.toString());
+            res.status(500).send(err.toString()); }
+
+    });
+
+});
+
+veranstalterController.delete('/veranstalter/delete/:id', function (req, res, next) {
+
+    Veranstalter.findByIdAndRemove({_id: req.params.id},function(err, id){
+
+        if (err){
+            return next (new Error('user not found'))}
+        else {
+            res.send('User ' + id.email + ' wurde gelöscht' );
+        }
+    });
+});
+
+//Update
+veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
+
+    Veranstalter.findByIdAndUpdate(
+        {_id: req.params.id},
+        {
+            name: req.body.name,
+            vorname: req.body.vorname,
+            unternehmen: req.body.unternehmen,
+            email: req.body.email,
+            passwort: req.body.passwort
+        },
+        function (err, user) {
+            if (!user)
+                return next(new Error('user not found'));
+            else {
+                res.send(user);
+            }
         });
 });
+
 
 
 module.exports = veranstalterController;
