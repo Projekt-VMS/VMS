@@ -27,3 +27,12 @@ Content-Type: application/json
   "kapazitaet": 6,
   "raumpreis": 16
 }
+
+### // Raum Verfügbarkeit
+POST http://localhost:3000/raum/verfuegbarkeit/:id
+Content-Type: application/json
+
+{
+  "startDatum": "2020-12-20",
+  "endDatum": "2020-12-20"
+}
