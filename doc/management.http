@@ -14,7 +14,7 @@ Content-Type: application/json
 GET http://localhost:3000/management/show
 
 ### // Management show one
-GET http://localhost:3000/raum/show/5fd4b19f21a8bedfbca30c3c
+GET http://localhost:3000/management/show/:id
 
 ### // Management delete (could be changed to :id as well
 DELETE http://localhost:3000/management/delete/5fd4b19f21a8bedfbca30c3c

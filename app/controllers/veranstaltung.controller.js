@@ -4,6 +4,37 @@ const express = require('express'),
 
 let Veranstaltung = require('../models/Veranstaltung');
 
+
+//show all
+
+veranstaltungsController.get('/veranstaltung/list', function (req, res) {
+        console.log('test');
+        Veranstaltung.find()
+            .catch(err => {
+                console.log(err.toString());
+                res.status(500).send(err.toString());
+            })
+            .then(dbres => {
+                console.log(dbres);
+                res.send(dbres);
+            });
+});
+
+//show one
+
+veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
+        Veranstaltung.findOne()
+
+            .catch(err => {
+                console.log(err.toString());
+                res.status(500).send(err.toString());
+            })
+            .then(dbres => {
+                console.log(dbres);
+                res.send(dbres);
+            });
+});
+
 //create
 
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
@@ -14,40 +45,13 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
 
     veranstaltungInstance.save((err, doc) =>{
         if (!err){
-            res.send('Management User wurde  erfolgreich registriert!');}
+            res.send('Veranstaltung wurde  erfolgreich erstellt!');}
         else  {console.log(err.toString());
             res.status(500).send(err.toString()); }
 
-    })});
-
-//show all
-
-veranstaltungsController.get('/veranstaltung/list', function (req, res) {
-    Veranstaltung.find()
-        .catch(err => {
-                console.log(err.toString());
-                res.status(500).send(err.toString());
-            })
-            .then(dbres => {
-                console.log(dbres);
-                res.send(dbres);
-            });
     });
+});
 
-//show one
-
-    veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
-        Raum.findOne()
-
-            .catch(err => {
-                console.log(err.toString());
-                res.status(500).send(err.toString());
-            })
-            .then(dbres => {
-                console.log(dbres);
-                res.send(dbres);
-            });
-    });
 
 //delete one
     veranstaltungsController.delete('/veranstaltung/delete/:id', function (req, res, next) {
@@ -63,7 +67,7 @@ veranstaltungsController.get('/veranstaltung/list', function (req, res) {
     });
 
 //update
-    veranstaltungsController.put('/raum/edit/:id', function (req, res, next) {
+    veranstaltungsController.put('/veranstaltung/edit/:id', function (req, res, next) {
 
         Veranstaltung.findByIdAndUpdate(
             {_id: req.params.id},

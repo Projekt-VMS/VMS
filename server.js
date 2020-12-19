@@ -8,6 +8,7 @@ const raumController = require('./app/controllers/raum.controller');
 const teilnehmerController  = require ('./app/controllers/teilnehmer.controller');
 const managementController = require ('./app/controllers/management.controller');
 const veranstalterController = require ('./app/controllers/veranstalter.controller');
+const veranstaltungsController = require ('./app/controllers/veranstaltung.controller');
 
 
 app.set('view engine', 'html');
@@ -21,6 +22,7 @@ app.use(managementController);
 app.use(veranstalterController);
 
 app.use(raumController);
+app.use(veranstaltungsController);
 
 //var routes = require('./app/routes/routes.js');
 

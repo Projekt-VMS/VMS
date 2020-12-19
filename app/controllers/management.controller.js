@@ -20,7 +20,7 @@ managementController.get('/management/show', function(req, res){
 
 //show one
 
-managementController.get('/raum/show/:id', function (req, res) {
+managementController.get('/management/show/:id', function (req, res) {
     Management.findOne()
         //let raum = Raum["customer" + req.params.id];
         //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
@@ -85,14 +85,7 @@ managementController.put('/management/edit/:id',function (req, res, next) {
             else {
                 res.send(managementuser);
             }
-        })});
-
-
-
-
-
-
-
-
+        });
+});
 
 module.exports = managementController;

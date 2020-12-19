@@ -14,7 +14,8 @@ raumController.get(('/raum'), function (req , res){
 raumController.get('/raum/list', function(req, res){
     Raum.find()
     .catch(err=>{
-        console.log(err.toString()); res.status(500).send(err.toString());
+        console.log(err.toString());
+        res.status(500).send(err.toString());
     })
     .then(dbres=>{
         console.log(dbres);

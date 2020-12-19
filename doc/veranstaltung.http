@@ -5,31 +5,33 @@ Content-Type: application/json
 
 {
   "titel": "Test Event 01",
- "start_datum": "12-01-2021",
-  "end_datum": "13-01-2021",
+
   "teilnehmerzahl": 8,
   "veranstalter_preis": 400,
- "teilnehmer_preis": 25,
+  "teilnehmer_preis": 25,
   "sichtbarkeit": true,
   "angebotsstatus": "Angebot akzeptiert"
+
 }
 
 ### // Veranstaltung list all
 GET http://localhost:3000/veranstaltung/list
 
 ### // Veranstaltung show one
-GET http://localhost:3000/raum/show/5fd4b19f21a8bedfbca30c3c
+GET http://localhost:3000/veranstaltung/show/5fde3a848cbb171f87bcb012
 
 ### // Veranstaltung delete
-DELETE http://localhost:3000/management/delete/5fd4b19f21a8bedfbca30c3c
+DELETE http://localhost:3000/veranstaltung/delete/5fde3b8f8cbb171f87bcb013
 
 ### // Veranstaltung update
-PUT  http://localhost:3000/management/edit/5fde0f86c2d0d158d78df849
+PUT  http://localhost:3000/veranstaltung/edit/5fde3a848cbb171f87bcb012
 Content-Type: application/json
 
 {
-  "name": "Update Manager",
-  "vorname": "Maximilian-Justus",
-  "email": "test666@vms.de",
-  "passwort": "123456"
+  "titel": "geupdateter Titel"
+
 }
+###
+
+
+
