@@ -60,30 +60,14 @@ raumController.post('/raum/add',function (req, res) {
 //delete
 raumController.delete('/raum/delete/:id', function (req, res, next) {
 
-    Raum.findByIdAndRemove({_id: req.params.id}, req.body).then(function(err, raum){ // warum bleibt Raum undefined ??
+    Raum.findByIdAndRemove({_id: req.params.id},function(err, raum){
 
         if (err)
             return next (new Error('raum not found'));
         else {
-            res.send('Raum' + raum + ' wurde gelöscht' );
+            res.send('Raum ' + raum.raumNr + ' wurde gelöscht' );
         }
     });
-
-/*
-    const { id } = req.params.id;
-    console.log(id);
-    Raum.findOneAndDelete({
-        _id: id,
-    })
-        .exec((err, raum) => {
-            if(err)
-                return res.status(500).json({code: 500, message: 'There was an error deleting the raum', error: err});
-            else {
-                res.status(200).json({code: 200, message: 'raum deleted', deletedRaum: raum});
-            }
-            });
-
- */
 });
 
 
