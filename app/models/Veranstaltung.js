@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
 var veranstaltungSchema = new Schema({
     titel: {type: String},
     start_datum: {type: Date},
@@ -14,13 +15,28 @@ var veranstaltungSchema = new Schema({
     veranstalter: [{
         type: Schema.Types.ObjectId,
         ref: 'Veranstalter',
-        required: true
+
     }],
     raum: [{
         type: Schema.Types.ObjectId,
         ref: 'Raum',
-        required: true
-    }]
-},  {collection : "Veranstaltung"});
 
-module.exports = mongoose.model('Veranstaltung', veranstaltungSchema);
+    }]
+}, {collection : "Veranstaltung"});
+
+// Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
+module.exports = mongoose.mode('veranstaltung', veranstaltungSchema);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
