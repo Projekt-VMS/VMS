@@ -19,4 +19,11 @@ GET http://localhost:3000/raum/show/:id
 DELETE http://localhost:3000/raum/delete/5fddd6fab1f8a854073b313a
 
 ### // Raum update
-PUT  http://localhost:3000/raum/edit/5fdcf6a7ca05950a6480621b
+PUT  http://localhost:3000/raum/edit/5fdddeb216a2d413d8f0b65e
+Content-Type: application/json
+
+{
+  "raumNr": 16,
+  "kapazitaet": 6,
+  "raumpreis": 16
+}
