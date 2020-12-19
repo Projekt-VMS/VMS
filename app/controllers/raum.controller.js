@@ -1,8 +1,8 @@
 const express = require('express'),
     raumController = express();
 
-
 let Raum = require('../models/Raum');
+let Veranstaltung = require ('../models/Veranstaltung');
 
 
 raumController.get(('/raum'), function (req , res){
@@ -89,6 +89,24 @@ raumController.put('/raum/edit/:id',function (req, res, next) {
             }
         });
 
+});
+
+// verfügbarkeit prüfen
+
+raumController.post('/raum/verfuegbarkeit/:id', function (req, res){
+    let userInputDatum = req.body;
+    let veranstaltungStart = '2020-12-19'; // der eine Tag dazwischen fehlt wenn zb am 20 der Raum nur für diesen Tag angefordert wird
+    let veranstaltungEnde = '2020-12-21';
+
+
+    console.log((userInputDatum.startDatum));
+    console.log(veranstaltungStart);
+    if( ((userInputDatum.startDatum === veranstaltungStart) || (userInputDatum.startDatum === veranstaltungEnde)) || ((userInputDatum.endDatum === veranstaltungStart) || (userInputDatum.endDatum === veranstaltungEnde)) ){
+        res.send('Raum ist nicht verfügbar.');
+    }
+    else {
+        res.send('Raum ist verfügbar.');
+    }
 });
 
 
