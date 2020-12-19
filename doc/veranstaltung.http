@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ### // Veranstaltung list all
-GET http://localhost:3000/veranstaltung/list
+GET http://localhost:3000/veranstaltung/show
 
 ### // Veranstaltung show one
 GET http://localhost:3000/veranstaltung/show/5fde3a848cbb171f87bcb012

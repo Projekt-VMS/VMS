@@ -61,11 +61,11 @@ var passwordValidator = [
 
 
 var veranstalterSchema = mongoose.Schema({
-    name: { type: String, required: true, validate: nameValidator },
-    vorname: {type: String, required: true, validate: firstNameValidator },
-    unternehmen: { type: String, required: true },
-    email: { type: String, required: true, lowercase: true, unique: true, validate: emailValidator },
-    passwort: { type: String, required: true, validate: passwordValidator, select: false },
+    name: { type: String, required: 'name can\'t be empty '},
+    vorname: {type: String, required: 'name can\'t be empty '},
+    unternehmen: { type: String, required: 'name can\'t be empty '},
+    email:{type:String, required: 'email can\'t be empty', unique: true, trim: true, uniqueCaseInsensitive: true},
+    passwort:{type:String, minlength: [5, 'Passwort zu kurz!']}
 }, {collection : "Veranstalter"});
 
 
@@ -92,5 +92,12 @@ veranstalterSchema.pre('save', function(next) {
         next(); // Exit Bcrypt function
     });
 });
+
+//Email Validation
+veranstalterSchema.path('email').validate((val) => {
+    emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(val);
+}, 'Invalid e-mail.');
+
 
 module.exports = mongoose.model('Veranstalter', veranstalterSchema);

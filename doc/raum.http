@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ### // Raum list all
-GET http://localhost:3000/raum/list
+GET http://localhost:3000/raum/show
 
 ### // Raum show
 GET http://localhost:3000/raum/show/5fddfed7e64935575f958fb0
