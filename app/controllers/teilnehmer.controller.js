@@ -1,6 +1,5 @@
 const express = require('express');
 const teilnehmerController = express();
-var ObjectId = require('mongoose').Types.ObjectId;
 let Teilnehmer = require('../models/Teilnehmer');
 const {delay} = require("rxjs/operators");
 
@@ -19,14 +18,14 @@ teilnehmerController.get('/teilnehmer', function(req, res){ Teilnehmer.find()
 
 //registration
 
-teilnehmerController.get('/registration', function (req, res){
+teilnehmerController.get('/t/registration', function (req, res){
     res.sendFile('registration.html',{root:'./vms/src/views/teilnehmer'});
 });
 
 
 //create
 
-teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
+teilnehmerController.post('/t/registration/add', function (req, res) {
     console.log('erstelle teilnehmer');
 
     let teilnehmerInstance = new Teilnehmer(req.body);
@@ -34,10 +33,10 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
     console.log(teilnehmerInstance);
 
     teilnehmerInstance.save((err, doc) =>{
-        if (!err)
-            res.send('Sie wurden  erfolgreich registriert!');
-        else  console.log(err.toString());
-        res.status(500).send(err.toString()); })
+        if (!err){
+            res.send('Sie wurden  erfolgreich registriert!');}
+        else  {console.log(err.toString());
+        res.status(500).send(err.toString()); }});
 
 });
 

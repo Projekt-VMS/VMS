@@ -16,7 +16,7 @@ GET http://localhost:3000/raum/list
 GET http://localhost:3000/raum/show/:id
 
 ### // Raum delete
-DELETE http://localhost:3000/raum/delete/5fdd11e7d5943e0ed57a5771
+DELETE http://localhost:3000/raum/delete/5fddd6fab1f8a854073b313a
 
 ### // Raum update
 PUT  http://localhost:3000/raum/edit/5fdcf6a7ca05950a6480621b

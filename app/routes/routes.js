@@ -15,10 +15,7 @@ router.get ('/', function(req, res) {
     res.send('homepage')
 });
 
-// registration route
-router.get ('/registration', function(req, res) {
-    res.sendFile('registration.html',{root:'./vms/src/views/teilnehmer'})
-});
+
 
 
 
