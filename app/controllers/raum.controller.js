@@ -90,21 +90,18 @@ raumController.delete('/raum/delete/:id', function (req, res, next) {
 // update
 raumController.put('/raum/edit/:id',function (req, res, next) {
 
-    Raum.findByIdAndUpdate({_id: req.params.id}, req.body).then(
+    Raum.findByIdAndUpdate(
+        {_id: req.params.id},
+        {
+            raumNr: req.body.raumNr,
+            kapazitaet: req.body.kapazitaet,
+            raumpreis: req.body.raumpreis
+        },
         function (err, raum) {
             if (!raum)
                 return next(new Error('raum not found'));
             else {
-                raum.raumNr = req.body.raumNr;
-                raum.kapazitaet = req.body.kapazitaet;
-                raum.raumpreis = req.body.raumpreis;
-
-                project.save().then(raum => {
-                    res.json({'Success': true});
-                })
-                    .catch(err => {
-                        res.status(400).json({'Success': false});
-                    });
+                res.send(raum);
             }
         });
 
