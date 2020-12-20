@@ -1,9 +1,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+let Raum = require('../models/Raum');
+let Veranstalter = require('../models/Veranstalter');
 
 
 var veranstaltungSchema = new Schema({
     titel: {type: String},
+    //raum_nr: {type: Number},
     /*
     start_datum: {type: Date},
     end_datum: {type: Date},
@@ -15,16 +18,10 @@ var veranstaltungSchema = new Schema({
     sichtbarkeit: {type: Boolean},
     angebotsstatus: {type: String},
 
-    veranstalter: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Veranstalter',
-
+    veranstalter: [{  // wird ja eig wie auch raum vom management ausgewählt
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Veranstalter'
     }],
-    raum: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Raum',
-
-    }]
 
 }, {collection : "Veranstaltung"});
 
