@@ -1,15 +1,25 @@
 const express = require('express'),
     veranstaltungsController = express();
 
-
 let Veranstaltung = require('../models/Veranstaltung');
+
+
+// get with Veranstalter
+
+function getVeranstaltungWithVeranstalter (veranstaltung_ID){
+    console.log(veranstaltung_ID);
+    return Veranstaltung.findOne({ veranstaltung_id: veranstaltung_ID })
+        .populate('veranstalter').exec((err, veranstalter) => {
+            console.log("Populated Veranstaltung " + veranstalter);
+        })
+}
 
 
 //show all
 
 veranstaltungsController.get('/veranstaltung/show', function (req, res) {
-        console.log('test');
-        Veranstaltung.find()
+
+    Veranstaltung.find()
             .catch(err => {
                 console.log(err.toString());
                 res.status(500).send(err.toString());
@@ -23,8 +33,9 @@ veranstaltungsController.get('/veranstaltung/show', function (req, res) {
 //show one
 
 veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
-        Veranstaltung.findOne()
+        //getVeranstaltungWithVeranstalter(req.params.id);
 
+    Veranstaltung.findOne()
             .catch(err => {
                 console.log(err.toString());
                 res.status(500).send(err.toString());
@@ -33,6 +44,7 @@ veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
                 console.log(dbres);
                 res.send(dbres);
             });
+
 });
 
 //create

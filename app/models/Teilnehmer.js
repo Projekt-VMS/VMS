@@ -13,8 +13,9 @@ var teilnehmerSchema = mongoose.Schema({
             trim: true,
             uniqueCaseInsensitive: true},
     passwort:{type:String,
-                minlength: [5, 'Passwort zu kurz!']}
-}, {collection : "Teilnehmer"});
+                minlength: [5, 'Passwort zu kurz!']},
+});
+
 teilnehmerSchema.plugin(uniqueValidator,{message: '{PATH} wurde bereits registriert !'});
 
 //Email Validation
@@ -24,30 +25,6 @@ teilnehmerSchema.path('email').validate((val) => {
 }, 'Invalid e-mail.');
 
 
-
-
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
-var Teilnehmer = mongoose.model('teilnehmer', teilnehmerSchema);
-
-
-/*router.post('/registration', function(req, res){
-// Überprüfen, ob die notwendigen Daten übermittelt wurden.
-    if(!req.body.name || !req.body.vorname || !req.body.email || !reqbody.passwort){
-        return res.status(400).send('Der Datensatz ist unvollständig!');
-    }
-// Neuen Teilnehmer anlegen.
-    let teilnehmerInstance = new Teilnehmer(req.body);
-// Teilnehmer in Datenbank ablegen.
-    teilnehmerInstance.save()
-        .catch(err=>{
-            console.log(err.toString());
-            res.status(500).send(err.toString()); })
-        .then(dbres=>{
-// Gibt die eingetragenen Werte zurück.
-            console.log(dbres);
-            res.json(dbres);
-        });
-});*/
-
-// Export für externen Aufruf
+const Teilnehmer = mongoose.model('Teilnehmer', teilnehmerSchema, 'teilnehmer');
 module.exports = Teilnehmer;

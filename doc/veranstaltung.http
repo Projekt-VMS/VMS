@@ -4,8 +4,9 @@ POST http://localhost:3000/veranstaltung/add
 Content-Type: application/json
 
 {
-  "titel": "Test Event 01",
-
+  "titel": "Test Event 1",
+  "raum": "5fdfbca159f91f35fcb8446d",
+  "veranstalter": "5fdfbd4c59f91f35fcb8446e",
   "teilnehmerzahl": 8,
   "veranstalter_preis": 400,
   "teilnehmer_preis": 25,
@@ -18,10 +19,10 @@ Content-Type: application/json
 GET http://localhost:3000/veranstaltung/show
 
 ### // Veranstaltung show one
-GET http://localhost:3000/veranstaltung/show/5fde3a848cbb171f87bcb012
+GET http://localhost:3000/veranstaltung/show/5fdf45bc456c312bb092086f
 
 ### // Veranstaltung delete
-DELETE http://localhost:3000/veranstaltung/delete/5fde3b8f8cbb171f87bcb013
+DELETE http://localhost:3000/veranstaltung/delete/5fdfb9fced9dea3581f17ff0
 
 ### // Veranstaltung update
 PUT  http://localhost:3000/veranstaltung/edit/5fde3a848cbb171f87bcb012

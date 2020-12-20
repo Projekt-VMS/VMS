@@ -65,7 +65,7 @@ var managementSchema = mongoose.Schema({
     vorname:{type:String, required: 'vorname can\'t be empty'},
     email:{type:String, required: 'email can\'t be empty', unique: true, trim: true, uniqueCaseInsensitive: true},
     passwort:{type:String, minlength: [5, 'Passwort zu kurz!']}
-}, {collection : "Management"});
+});
 
 
 managementSchema.pre('save', function(next) {
@@ -87,4 +87,5 @@ managementSchema.path('email').validate((val) => {
     return emailRegex.test(val);
 }, 'Invalid e-mail.');
 
-module.exports = mongoose.model('Management', managementSchema); // Export User Model for us in API
+const Management = mongoose.model('Management', managementSchema, 'managements');
+module.exports = Management;

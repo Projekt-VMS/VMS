@@ -6,11 +6,18 @@ let Veranstalter = require('../models/Veranstalter');
 
 var veranstaltungSchema = new Schema({
     titel: {type: String},
-    //raum_nr: {type: Number},
+    veranstalter: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Veranstalter'
+    },
+    raum: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Raum'
+    },
+    // teilnehmer: [ embedded]
     /*
     start_datum: {type: Date},
     end_datum: {type: Date},
-
      */
     teilnehmerzahl: {type: Number},
     veranstalter_preis: {type: Number},
@@ -18,15 +25,11 @@ var veranstaltungSchema = new Schema({
     sichtbarkeit: {type: Boolean},
     angebotsstatus: {type: String},
 
-    veranstalter: [{  // wird ja eig wie auch raum vom management ausgewählt
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Veranstalter'
-    }],
-
-}, {collection : "Veranstaltung"});
+});
 
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
-module.exports = mongoose.model('Veranstaltung', veranstaltungSchema);
+const Veranstaltung = mongoose.model('Veranstaltung', veranstaltungSchema, 'veranstaltungen');
+module.exports = Veranstaltung;
 
 
 

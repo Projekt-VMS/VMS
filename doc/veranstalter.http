@@ -3,11 +3,12 @@
 POST http://localhost:3000/veranstalter/registration/add
 Content-Type: application/json
 
+
 {
   "name": "mueller",
   "vorname": "bernd",
   "unternehmen": "google",
-  "email": "test12345@1234.de",
+  "email": "test12345@12345.de",
   "passwort": "müller1"
 }
 
@@ -31,3 +32,7 @@ Content-Type: application/json
   "email": "test12345@vms132.de",
   "passwort": "müller1"
 }
+
+### // get
+
+GET http://localhost:3000/veranstalter/get/5fdf842e0a5c7a3039b8810c

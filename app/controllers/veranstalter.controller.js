@@ -20,8 +20,6 @@ veranstalterController.get('/veranstalter/show', function(req, res){
 
 veranstalterController.get('/veranstalter/show/:id', function (req, res) {
     Veranstalter.findOne()
-        //let raum = Raum["customer" + req.params.id];
-        //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
 
         .catch(err => {
             console.log(err.toString());
@@ -43,7 +41,7 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
 
     veranstalterInstance.save((err, doc) =>{
         if (!err){
-            res.send('Veranstalter User wurde erfolgreich registriert!');}
+            res.send('Veranstalter wurde erfolgreich registriert!');}
         else  {console.log(err.toString());
             res.status(500).send(err.toString()); }
 
@@ -65,6 +63,8 @@ veranstalterController.delete('/veranstalter/delete/:id', function (req, res, ne
 
 //Update
 veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
+
+    //if(req.body.name != null) { array.push("name",req.body.name)}
 
     Veranstalter.findByIdAndUpdate(
         {_id: req.params.id},

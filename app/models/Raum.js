@@ -19,10 +19,15 @@ var sizeValidator = [
 var raumSchema = new Schema({
     raumNr: {type: Number, required: true},
     kapazitaet: {type: Number, required: true},
-    raumpreis: {type: Number, required: true}
-}, {collection : "Raum"});
-
+    raumpreis: {type: Number, required: true},
+    veranstaltung: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Veranstaltung'
+    }
+});
 
 //raumSchema.plugin(autoIncrement.plugin, 'raumNr');
 
-module.exports = mongoose.model('Raum', raumSchema);
+
+const Raum =  mongoose.model('Raum', raumSchema, 'räume');
+module.exports = Raum;
