@@ -1,19 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <script>
-    $(function(){
-      var includes = $('[data-include]');
-      jQuery.each(includes, function(){
-        var file = 'components/sidebar/' + $(this).data('include') + '.html';
-        $(this).load(file);
-      });
-    });
-  </script>
-</head>
-<body>
-  <div data-include="sidebar.component"></div>
-</body>
-</html>
+
+  <div data-include="dashboard.component">
+
+    <div ngIF="rooms">
+      <ng-container *ngFor="let room of objectKEys(rooms)">
+        <div> {{room.kapayitaet}}</div>
+        <div {{room.number}}</ng-container>
+      </foreach>
+    </div>
+
+
+  </div>

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var validate = require('mongoose-validator');
+var Schema = mongoose.Schema;
 mongoose.set('useCreateIndex', true);
 
 
@@ -60,16 +61,20 @@ var passwordValidator = [
 ];
 
 
-var veranstalterSchema = mongoose.Schema({
+var veranstalterSchema = new Schema({
     name: { type: String, required: 'name can\'t be empty '},
     vorname: {type: String, required: 'name can\'t be empty '},
     unternehmen: { type: String, required: 'name can\'t be empty '},
     email:{type:String, required: 'email can\'t be empty', unique: true, trim: true, uniqueCaseInsensitive: true},
-    passwort:{type:String, minlength: [5, 'Passwort zu kurz!']}
-}, {collection : "Veranstalter"});
+    passwort:{type:String, minlength: [5, 'Passwort zu kurz!']},
+    veranstaltungen: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Veranstaltung'
+    }]
+},{timestamps: true});
 
 
-
+/*
 veranstalterSchema.virtual('Veranstaltungen', {
     ref: 'Veranstaltung',
     localField: '_id', //Find in Model, where localField
@@ -79,6 +84,8 @@ veranstalterSchema.virtual('Veranstaltungen', {
 veranstalterSchema.set('toObject', { virtuals: true });
 veranstalterSchema.set('toJSON', { virtuals: true });
 
+
+ */
 
 veranstalterSchema.pre('save', function(next) {
     var user = this;
@@ -99,5 +106,5 @@ veranstalterSchema.path('email').validate((val) => {
     return emailRegex.test(val);
 }, 'Invalid e-mail.');
 
-
-module.exports = mongoose.model('Veranstalter', veranstalterSchema);
+const Veranstalter = mongoose.model ("Veranstalter", veranstalterSchema, 'veranstalter');
+module.exports = Veranstalter;

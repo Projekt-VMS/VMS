@@ -44,10 +44,13 @@ raumController.get('/raum/show/:id', function (req, res) {
 
 raumController.post('/raum/add',function (req, res) {
 
+//     console.log(req.body.kapazitaet)
+//     let raumInstance = new Raum();
+//     raumInstance.kapazitaet = req.body.kapazitaet
+//                    raum =  Raum.findOne(raumNummer: req.body.raumnummer)
+// raumInstance.raum = raum.id
+//     console.log(raumInstance);
     let raumInstance = new Raum(req.body);
-
-    console.log(raumInstance);
-
     raumInstance.save()
         .then(raumInstance => {
             res.status(200).json({ 'Success': true })
@@ -99,6 +102,9 @@ raumController.post('/raum/verfuegbarkeit/:id', function (req, res){
     let veranstaltungStart = '2020-12-19'; // der eine Tag dazwischen fehlt wenn zb am 20 der Raum nur für diesen Tag angefordert wird
     let veranstaltungEnde = '2020-12-21';
 
+    let raumInstance = Raum.findById({_id: req.params.id});
+    //finde Veranstaltungen von diesem Raum
+    console.log(raumInstance);
 
     console.log((userInputDatum.startDatum));
     console.log(veranstaltungStart);
