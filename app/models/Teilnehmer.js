@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var router = require('../routes/routes')
 var uniqueValidator = require('mongoose-unique-validator');
+var jwt = require('jsonwebtoken');
 
 var teilnehmerSchema = mongoose.Schema({
     name: {type: String,
@@ -12,8 +13,8 @@ var teilnehmerSchema = mongoose.Schema({
             unique: true,
             trim: true,
             uniqueCaseInsensitive: true},
-    passwort:{type:String,
-                minlength: [5, 'Passwort zu kurz!']},
+    password:{type:String,
+            minlength: [5, 'Passwort zu kurz!']},
 });
 
 teilnehmerSchema.plugin(uniqueValidator,{message: '{PATH} wurde bereits registriert !'});
@@ -24,6 +25,20 @@ teilnehmerSchema.path('email').validate((val) => {
     return emailRegex.test(val);
 }, 'Invalid e-mail.');
 
+
+//erstelle Token
+teilnehmerSchema.methods.generateJwt = function() {
+    var expiry = new Date();
+    expiry.setDate(expiry.getDate() + 7);
+
+    return jwt.sign({
+        _id: this._id,
+        name: this.name,
+        vorname: this.vorname,
+        email: this.email,
+        exp: parseInt(expiry.getTime() / 1000),
+    }, "MY_SECRET"); // DO NOT KEEP YOUR SECRET IN THE CODE!
+};
 
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
 const Teilnehmer = mongoose.model('Teilnehmer', teilnehmerSchema, 'teilnehmer');
