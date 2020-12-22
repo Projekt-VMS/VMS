@@ -31,13 +31,14 @@
     "mongoose-unique-validator": "^2.0.3",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "nodemailer": "^6.4.17",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1100.2",
-    "@angular/cli": "~11.0.2",
+    "@angular/cli": "^11.0.4",
     "@angular/compiler-cli": "~11.0.1",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",

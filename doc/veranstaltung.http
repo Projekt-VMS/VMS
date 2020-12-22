@@ -4,7 +4,7 @@ POST http://localhost:3000/veranstaltung/add
 Content-Type: application/json
 
 {
-  "titel": "Test Event 1",
+  "titel": "Test Event 4",
   "raum": "5fdfbca159f91f35fcb8446d",
   "veranstalter": "5fdfbd4c59f91f35fcb8446e",
   "teilnehmerzahl": 8,
