@@ -1,7 +1,8 @@
 const express = require('express');
 const teilnehmerController = express();
-let Teilnehmer = require('../models/Teilnehmer');
-const {delay} = require("rxjs/operators");
+const Teilnehmer = require('../models/Teilnehmer');
+const passport = require('passport');
+const bcrypt = require('bcryptjs');
 
 
 //show all Teilnehmer
@@ -18,8 +19,9 @@ teilnehmerController.get('/teilnehmer', function(req, res){ Teilnehmer.find()
 
 //Show one Teilnehmer
 
-teilnehmerController.get('/teilnehmer/show/:id', function (req, res) {
-    Teilnehmer.findOne()
+teilnehmerController.get('/teilnehmer/showOne', function (req, res) {
+
+    Teilnehmer.findById(req.body.ObjectId)
 
         .catch(err => {
             console.log(err.toString());
@@ -31,31 +33,73 @@ teilnehmerController.get('/teilnehmer/show/:id', function (req, res) {
         });
 });
 
-//registration
-
-teilnehmerController.get('/teilnehmer/registration', function (req, res){
-    res.sendFile('registration.html',{root:'./vms/src/views/teilnehmer'});
-});
-
-
 //Registration Teilnehmer
 
 teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
     console.log('erstelle teilnehmer');
 
-    let teilnehmerInstance = new Teilnehmer(req.body);
+    const { name, vorname, email, password, password2 } = req.body;
+    let errors = [];
 
-    console.log(teilnehmerInstance);
+    if (!name || !vorname || !email || !password || !password2) {
+        errors.push({ msg: 'Please enter all fields' });
+    }
 
-    teilnehmerInstance.save((err, doc) =>{
-        if (!err){
-            res.send('Sie wurden  erfolgreich registriert!');}
-        else  {console.log(err.toString());
-        res.status(500).send(err.toString()); }
+    if (password !== password2) {
+        errors.push({ msg: 'Passwords do not match' });
+    }
 
-   });
+    if (errors.length > 0) {
+        res.send({
+            errors,
+            name,
+            vorname,
+            email,
+            password,
+            password2
+        });
+    } else {
+        const newTeilnehmer = new Teilnehmer({
+            name,
+            vorname,
+            email,
+            password
+        });
 
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newTeilnehmer.password, salt, (err, hash) => {
+                if (err) throw err;
+                newTeilnehmer.password = hash;
+                newTeilnehmer
+                    .save((err, doc) => {
+                        const token = newTeilnehmer.generateJwt();
+                        if (!err){
+                            res.json({
+                                "token": token
+                            })
+                        }
+                        else  {console.log(err.toString());
+                            res.status(500).send(err.toString()); }
+                    })
+
+                req.flash('success_msg', 'Du bist nun registriert')
+                console.log(newTeilnehmer);
+            });
+        });
+    }
 });
+
+// login teilnehmer
+teilnehmerController.post('/teilnehmer/login', function (req, res, next) {
+        const dataJson = req.body.email;
+        passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/error/login',
+            failureFlash: true
+        })(req, res, next);
+        console.log(req.body.email);
+});
+
 
 //delete Teilnehmer
 

@@ -4,17 +4,23 @@ POST http://localhost:3000/teilnehmer/registration/add
 Content-Type: application/json
 
 {
-  "name": "test",
+  "name": "maxi",
   "vorname": "test",
-  "email": "test12345@test.de",
-  "passwort": "123456"
+  "email": "max@test9.de",
+  "password": "123456",
+  "password2": "123456"
 }
 
 ### // Teilnehmer list all
 GET http://localhost:3000/teilnehmer
 
 ### // Teilnehmer show one
-GET http://localhost:3000/teilnehmer/show/:id
+GET http://localhost:3000/teilnehmer/showOne
+Content-Type: application/json
+
+{
+  "ObjectId": "5fe1d9c1f9f0cb4d1d97b1e6"
+}
 
 ### // Teilnehmer delete (could be changed to :id as well
 DELETE http://localhost:3000/teilnehmer/delete/5fdc8a634098564c24f7de70
@@ -28,4 +34,13 @@ Content-Type: application/json
   "vorname": "test32123",
   "email": "test666@test.de",
   "passwort": "123456"
+}
+
+### // log in
+POST http://localhost:3000/teilnehmer/login
+Content-Type: application/json
+
+{
+  "email": "max@test8.de",
+  "password": "123456"
 }

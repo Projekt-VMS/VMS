@@ -1,9 +1,14 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
+
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const flash = require('connect-flash');
+const session = require('express-session');
+
 const raumController = require('./app/controllers/raum.controller');
 const teilnehmerController  = require ('./app/controllers/teilnehmer.controller');
 const managementController = require ('./app/controllers/management.controller');
@@ -11,12 +16,40 @@ const veranstalterController = require ('./app/controllers/veranstalter.controll
 const veranstaltungsController = require ('./app/controllers/veranstaltung.controller');
 
 
+require ('/Users/dorian/Development/GitHub/VMS/app/config/passport.js')(passport);
+
 app.set('view engine', 'html');
+
+//Body parser
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Express session
+app.use(
+    session({
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true
+    })
+);
 
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect flash
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next) {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    next();
+});
+
+// Controller
 app.use(teilnehmerController);
 app.use(managementController);
 app.use(veranstalterController);
@@ -31,7 +64,7 @@ app.use(veranstaltungsController);
 
 
 
-const Veranstalter = require("./app/models/Veranstalter");
+/*const Veranstalter = require("./app/models/Veranstalter");
 const Veranstaltung = require("./app/models/Veranstaltung");
 const Raum = require("./app/models/Raum");
 
@@ -72,7 +105,7 @@ app.use("/",async (req, res) => {
         veranstaltungTest: await Veranstaltung.find().populate('Veranstalter').populate('Raum'),
         veranstalterTest2: await Veranstalter.find()
     });
-});
+});*/
 
 app.listen(PORT, function(){
     console.log('Server running at port:'+PORT);
@@ -93,5 +126,9 @@ app.get ('/', function(req, res) {
     res.send('homepage')
 });
 
+//log in error
+app.get ('/error/login', function(req, res) {
+    res.send('login failed')
+});
 
 
