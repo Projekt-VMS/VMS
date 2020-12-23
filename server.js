@@ -16,7 +16,7 @@ const veranstalterController = require ('./app/controllers/veranstalter.controll
 const veranstaltungsController = require ('./app/controllers/veranstaltung.controller');
 
 
-require ('/Users/dorian/Development/GitHub/VMS/app/config/passport.js')(passport);
+require ('./app/config/passport')(passport);
 
 app.set('view engine', 'html');
 

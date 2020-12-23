@@ -29,3 +29,12 @@ Content-Type: application/json
   "email": "test666@vms.de",
   "passwort": "123456"
 }
+
+
+### // log in
+POST http://localhost:3000/management/login
+Content-Type: application/json
+
+{
+  "email": "",
+  "password": "123456"}

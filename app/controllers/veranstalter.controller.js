@@ -84,6 +84,43 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
         });
 });
 
+//login
+
+veranstalterController.post('/veranstalter/login', (req, res, next) =>{
+
+    let fetchedUser;
+
+    Veranstalter.findOne({email:req.body.email}).then(function(veranstalter){
+        if(!veranstalter){
+            return res.status(401).json({message: 'Login Failed, no such User!'})
+        }
+        fetchedUser=veranstalter;
+        return bcrypt.compare(req.body.password, veranstalter.password);
+    }).then (result => {
+        console.log(fetchedUser)
+        if (!result) {
+            return res.status(401).json({message: 'Login failed: wrong password!'})
+        }
+        else {
+
+            const token = jwt.sign(
+                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
+                {expiresIn: "1h"}
+            );
+            res.status(200).json({
+                token: token,
+                expiresIn: 3600,
+                userID: fetchedUser._id
+            });
+            console.log('logged in!')
+        }
+
+    })
+        .catch(e=>{
+            console.log(e)
+        })
+})
+
 
 
 module.exports = veranstalterController;
