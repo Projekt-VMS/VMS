@@ -128,10 +128,6 @@ teilnehmerController.post('/teilnehmer/login', (req, res, next) =>{
 })
 
 
-
-
-
-
 /*teilnehmerController.post('/teilnehmer/login', function (req, res, next) {
         const dataJson = req.body.email;
         passport.authenticate('local', {

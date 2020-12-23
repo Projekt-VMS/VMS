@@ -18,6 +18,8 @@ veranstalterController.get('/veranstalter/show', function(req, res){
     });
 });
 
+//show one
+
 veranstalterController.get('/veranstalter/show/:id', function (req, res) {
     Veranstalter.findOne()
 
@@ -34,7 +36,6 @@ veranstalterController.get('/veranstalter/show/:id', function (req, res) {
 //Registration
 
 veranstalterController.post('/veranstalter/registration/add', function (req, res) {
-    console.log('erstelle veranstalter');
 
     const { name, vorname, unternehmen, email, password, password2 } = req.body;
     let errors = [];

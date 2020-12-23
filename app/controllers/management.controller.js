@@ -1,8 +1,6 @@
-const express = require('express'),
-    managementController = express();
-
-
-let Management = require('../models/Management');
+const express = require('express');
+const managementController = express();
+const Management = require('../models/Management');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
@@ -38,24 +36,60 @@ managementController.get('/management/show/:id', function (req, res) {
         });
 });
 
-// create
+// Registration Management
 
 
 managementController.post('/management/registration/add', function (req, res) {
-    console.log('erstelle Management User');
 
-    let managementInstance = new Management(req.body);
+    const { name, vorname, email, password, password2 } = req.body;
+    let errors = [];
 
-    console.log(managementInstance);
+    if (!name || !vorname || !email || !password || !password2) {
+        errors.push({ msg: 'Please enter all fields' });
+    }
 
-    managementInstance.save((err, doc) =>{
-        if (!err){
-            res.send('Management User wurde  erfolgreich registriert!');}
-        else  {console.log(err.toString());
-            res.status(500).send(err.toString()); }
+    if (password !== password2) {
+        errors.push({ msg: 'Passwords do not match' });
+    }
 
-    });
+    if (errors.length > 0) {
+        res.send({
+            errors,
+            name,
+            vorname,
+            email,
+            password,
+            password2
+        });
+    } else {
+        const newManagement = new Management({
+            name,
+            vorname,
+            email,
+            password
+        });
 
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newManagement.password, salt, (err, hash) => {
+                if (err) throw err;
+                newManagement.password = hash;
+                newManagement
+                    .save((err, doc) => {
+                        const token = newManagement.generateJwt();
+                        if (!err){
+                            res.json({
+                                "token": token
+                            })
+                        }
+                        else  {console.log(err.toString());
+                            res.status(500).send(err.toString()); }
+                    })
+
+                req.flash('success_msg', 'Du bist nun registriert')
+                console.log(newManagement);
+            });
+        });
+    }
 });
 
 //delete

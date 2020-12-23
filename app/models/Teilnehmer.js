@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var router = require('../routes/routes')
 var uniqueValidator = require('mongoose-unique-validator');
 var jwt = require('jsonwebtoken');
 
-var teilnehmerSchema = mongoose.Schema({
+var teilnehmerSchema = new Schema({
     name: {type: String,
             required: 'name can\'t be empty '},
     vorname:{type:String,

@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+var Schema = mongoose.Schema;
+var uniqueValidator = require('mongoose-unique-validator');
 var validate = require('mongoose-validator');
-mongoose.set('useCreateIndex', true);
+var jwt = require('jsonwebtoken');
 
 
 // User Name Validator
@@ -60,32 +61,34 @@ var passwordValidator = [
 ];
 
 
-var managementSchema = mongoose.Schema({
+var managementSchema = new Schema({
     name: {type: String, required: 'name can\'t be empty '},
     vorname:{type:String, required: 'vorname can\'t be empty'},
     email:{type:String, required: 'email can\'t be empty', unique: true, trim: true, uniqueCaseInsensitive: true},
-    passwort:{type:String, minlength: [5, 'Passwort zu kurz!']}
+    password:{type:String, minlength: [5, 'Passwort zu kurz!']}
 });
 
-
-managementSchema.pre('save', function(next) {
-    var user = this;
-
-    if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
-
-    // Function to encrypt password
-    bcrypt.hash(user.password, null, null, function(err, hash) {
-        if (err) return next(err); // Exit if error is found
-        user.password = hash; // Assign the hash to the user's password so it is saved in database encrypted
-        next(); // Exit Bcrypt function
-    });
-});
+managementSchema.plugin(uniqueValidator,{message: '{PATH} wurde bereits registriert !'});
 
 //Email Validation
 managementSchema.path('email').validate((val) => {
     emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegex.test(val);
 }, 'Invalid e-mail.');
+
+//erstelle Token
+managementSchema.methods.generateJwt = function() {
+    var expiry = new Date();
+    expiry.setDate(expiry.getDate() + 7);
+
+    return jwt.sign({
+        _id: this._id,
+        name: this.name,
+        vorname: this.vorname,
+        email: this.email,
+        exp: parseInt(expiry.getTime() / 1000),
+    }, "MY_SECRET"); // DO NOT KEEP YOUR SECRET IN THE CODE!
+};
 
 const Management = mongoose.model('Management', managementSchema, 'managements');
 module.exports = Management;

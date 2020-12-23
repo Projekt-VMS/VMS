@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
-var validate = require('mongoose-validator');
 var Schema = mongoose.Schema;
-mongoose.set('useCreateIndex', true);
+var validate = require('mongoose-validator');
+var uniqueValidator = require('mongoose-unique-validator');
 var jwt = require('jsonwebtoken');
 
 // User Name Validator
@@ -71,7 +70,7 @@ var veranstalterSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Veranstaltung'
     }]
-},{timestamps: true});
+});
 
 
 /*
@@ -87,25 +86,13 @@ veranstalterSchema.set('toJSON', { virtuals: true });
 
  */
 
-veranstalterSchema.pre('save', function(next) {
-    var user = this;
-
-    if (!user.isModified('password')) return next(); // If password was not changed or is new, ignore middleware
-
-    // Function to encrypt password
-    bcrypt.hash(user.password, null, null, function(err, hash) {
-        if (err) return next(err); // Exit if error is found
-        user.password = hash; // Assign the hash to the user's password so it is saved in database encrypted
-        next(); // Exit Bcrypt function
-    });
-});
+veranstalterSchema.plugin(uniqueValidator,{message: '{PATH} wurde bereits registriert !'});
 
 //Email Validation
 veranstalterSchema.path('email').validate((val) => {
     emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegex.test(val);
 }, 'Invalid e-mail.');
-
 
 
 //token

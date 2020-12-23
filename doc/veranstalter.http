@@ -5,12 +5,12 @@ Content-Type: application/json
 
 
 {
-  "name": "mueller",
-  "vorname": "bernd",
+  "name": "meier2",
+  "vorname": "frank2",
   "unternehmen": "google",
-  "email": "test@vms.de",
-  "password": "müller",
-  "password2": "müller"
+  "email": "frank2@meier2.de",
+  "password": "test",
+  "password2": "test"
 }
 
 ### // veranstalter list all
@@ -43,6 +43,6 @@ POST http://localhost:3000/veranstalter/login
 Content-Type: application/json
 
 {
-  "email": "test@vms.de",
-  "password": "müller"
+  "email": "frank2@meier2.de",
+  "password": "test"
 }
