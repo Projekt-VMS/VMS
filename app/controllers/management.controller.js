@@ -3,6 +3,9 @@ const express = require('express'),
 
 
 let Management = require('../models/Management');
+const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+
 
 //list all
 
@@ -87,5 +90,42 @@ managementController.put('/management/edit/:id',function (req, res, next) {
             }
         });
 });
+
+//login
+
+managementController.post('/management/login', (req, res, next) =>{
+
+    let fetchedUser;
+
+    Management.findOne({email:req.body.email}).then(function(manager){
+        if(!manager){
+            return res.status(401).json({message: 'Login Failed, no such User!'})
+        }
+        fetchedUser=manager;
+        return bcrypt.compare(req.body.password, manager.password);
+    }).then (result => {
+        console.log(fetchedUser)
+        if (!result) {
+            return res.status(401).json({message: 'Login failed: wrong password!'})
+        }
+        else {
+
+            const token = jwt.sign(
+                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
+                {expiresIn: "1h"}
+            );
+            res.status(200).json({
+                token: token,
+                expiresIn: 3600,
+                userID: fetchedUser._id
+            });
+            console.log('logged in!')
+        }
+
+    })
+        .catch(e=>{
+            console.log(e)
+        })
+})
 
 module.exports = managementController;

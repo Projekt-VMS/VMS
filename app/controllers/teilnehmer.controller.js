@@ -3,6 +3,7 @@ const teilnehmerController = express();
 const Teilnehmer = require('../models/Teilnehmer');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
 
 
 //show all Teilnehmer
@@ -90,7 +91,48 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
 });
 
 // login teilnehmer
-teilnehmerController.post('/teilnehmer/login', function (req, res, next) {
+
+teilnehmerController.post('/teilnehmer/login', (req, res, next) =>{
+
+    let fetchedUser;
+
+    Teilnehmer.findOne({email:req.body.email}).then(function(teilnehmer){
+        if(!teilnehmer){
+            return res.status(401).json({message: 'Login Failed, no such User!'})
+        }
+        fetchedUser=teilnehmer;
+        return bcrypt.compare(req.body.password, teilnehmer.password);
+    }).then (result => {
+        console.log(fetchedUser)
+        if (!result) {
+            return res.status(401).json({message: 'Login failed: wrong password!'})
+        }
+            else {
+
+                const token = jwt.sign(
+                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
+                {expiresIn: "1h"}
+            );
+        res.status(200).json({
+                token: token,
+                expiresIn: 3600,
+                userID: fetchedUser._id
+            });
+        console.log('logged in!')
+            }
+
+    })
+        .catch(e=>{
+            console.log(e)
+        })
+})
+
+
+
+
+
+
+/*teilnehmerController.post('/teilnehmer/login', function (req, res, next) {
         const dataJson = req.body.email;
         passport.authenticate('local', {
             successRedirect: '/',
@@ -99,7 +141,7 @@ teilnehmerController.post('/teilnehmer/login', function (req, res, next) {
         })(req, res, next);
         console.log(req.body.email);
 });
-
+*/
 
 //delete Teilnehmer
 
