@@ -8,8 +8,9 @@ Content-Type: application/json
   "name": "mueller",
   "vorname": "bernd",
   "unternehmen": "google",
-  "email": "test12345@12345.de",
-  "passwort": "müller1"
+  "email": "test@vms.de",
+  "password": "müller",
+  "password2": "müller"
 }
 
 ### // veranstalter list all
@@ -30,7 +31,7 @@ Content-Type: application/json
   "vorname": "bernd",
   "unternehmen": "google",
   "email": "test12345@vms132.de",
-  "passwort": "müller1"
+  "passwort": "mueller1"
 }
 
 ### // get
@@ -42,6 +43,6 @@ POST http://localhost:3000/veranstalter/login
 Content-Type: application/json
 
 {
-  "email": "",
-  "password": "123456"
+  "email": "test@vms.de",
+  "password": "müller"
 }

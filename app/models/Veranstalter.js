@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt-nodejs');
 var validate = require('mongoose-validator');
 var Schema = mongoose.Schema;
 mongoose.set('useCreateIndex', true);
-
+var jwt = require('jsonwebtoken');
 
 // User Name Validator
 var nameValidator = [
@@ -66,7 +66,7 @@ var veranstalterSchema = new Schema({
     vorname: {type: String, required: 'name can\'t be empty '},
     unternehmen: { type: String, required: 'name can\'t be empty '},
     email:{type:String, required: 'email can\'t be empty', unique: true, trim: true, uniqueCaseInsensitive: true},
-    passwort:{type:String, minlength: [5, 'Passwort zu kurz!']},
+    password:{type:String, minlength: [5, 'Passwort zu kurz!']},
     veranstaltungen: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Veranstaltung'
@@ -105,6 +105,25 @@ veranstalterSchema.path('email').validate((val) => {
     emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegex.test(val);
 }, 'Invalid e-mail.');
+
+
+
+//token
+
+veranstalterSchema.methods.generateJwt = function() {
+    var expiry = new Date();
+    expiry.setDate(expiry.getDate() + 7);
+
+    return jwt.sign({
+        _id: this._id,
+        name: this.name,
+        vorname: this.vorname,
+        unternehmen: this.unternehmen,
+        email: this.email,
+        exp: parseInt(expiry.getTime() / 1000),
+    }, "MY_SECRET"); // DO NOT KEEP YOUR SECRET IN THE CODE!
+};
+
 
 const Veranstalter = mongoose.model ("Veranstalter", veranstalterSchema, 'veranstalter');
 module.exports = Veranstalter;

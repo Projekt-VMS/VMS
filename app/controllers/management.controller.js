@@ -3,6 +3,9 @@ const express = require('express'),
 
 
 let Management = require('../models/Management');
+const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
+
 
 //list all
 

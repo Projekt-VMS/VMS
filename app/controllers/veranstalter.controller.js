@@ -1,8 +1,8 @@
-const express = require('express'),
-    veranstalterController = express();
-
-let Veranstalter = require('../models/Veranstalter');
-
+const express = require('express');
+const veranstalterController = express();
+const Veranstalter = require('../models/Veranstalter');
+const bcrypt = require('bcryptjs');
+const jwt = require("jsonwebtoken");
 
 //list all
 
@@ -31,23 +31,66 @@ veranstalterController.get('/veranstalter/show/:id', function (req, res) {
         });
 });
 
-//create
+//Registration
 
 veranstalterController.post('/veranstalter/registration/add', function (req, res) {
+    console.log('erstelle veranstalter');
 
-    let veranstalterInstance = new Veranstalter(req.body);
+    const { name, vorname, unternehmen, email, password, password2 } = req.body;
+    let errors = [];
 
-    console.log(veranstalterInstance);
+    if (!name || !vorname || !unternehmen|| !email || !password || !password2) {
+        errors.push({ msg: 'Please enter all fields' });
+    }
 
-    veranstalterInstance.save((err, doc) =>{
-        if (!err){
-            res.send('Veranstalter wurde erfolgreich registriert!');}
-        else  {console.log(err.toString());
-            res.status(500).send(err.toString()); }
+    if (password !== password2) {
+        errors.push({ msg: 'Passwords do not match' });
+    }
 
-    });
+    if (errors.length > 0) {
+        res.send({
+            errors,
+            name,
+            vorname,
+            unternehmen,
+            email,
+            password,
+            password2
+        });
+    } else {
+        const newVeranstalter = new Veranstalter({
+            name,
+            vorname,
+            unternehmen,
+            email,
+            password
+        });
 
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newVeranstalter.password, salt, (err, hash) => {
+                if (err) throw err;
+                newVeranstalter.password = hash;
+                newVeranstalter
+                    .save((err, doc) => {
+                        const token = newVeranstalter.generateJwt();
+                        if (!err){
+                            res.json({
+                                "token": token
+                            })
+                        }
+                        else  {console.log(err.toString());
+                            res.status(500).send(err.toString()); }
+                    })
+
+                req.flash('success_msg', 'Du bist nun registriert')
+                console.log(newVeranstalter);
+            });
+        });
+    }
 });
+
+
+//delete
 
 veranstalterController.delete('/veranstalter/delete/:id', function (req, res, next) {
 
