@@ -14,7 +14,7 @@ const teilnehmerController  = require ('./app/controllers/teilnehmer.controller'
 const managementController = require ('./app/controllers/management.controller');
 const veranstalterController = require ('./app/controllers/veranstalter.controller');
 const veranstaltungsController = require ('./app/controllers/veranstaltung.controller');
-
+const adminController = require ('./app/controllers/admin.controller')
 
 require ('./app/config/passport')(passport);
 
@@ -53,6 +53,7 @@ app.use(function(req, res, next) {
 app.use(teilnehmerController);
 app.use(managementController);
 app.use(veranstalterController);
+app.use(adminController);
 
 app.use(raumController);
 app.use(veranstaltungsController);

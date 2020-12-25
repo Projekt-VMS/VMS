@@ -1,0 +1,19 @@
+/// Teilnehmer registration
+###
+POST http://localhost:3000/admin/registration/add
+Content-Type: application/json
+
+{
+  "email": "admin@admin.de",
+  "password": "admin123",
+  "password2": "admin123"
+}
+
+### // log in
+POST http://localhost:3000/admin/login
+Content-Type: application/json
+
+{
+  "email": "admin@admin.de",
+  "password": "admin123"
+}
