@@ -6,13 +6,14 @@ Content-Type: application/json
 {
   "name": "meier",
   "vorname": "herbert",
-  "email": "herbert@meier2.de",
+  "email": "herbert@tokentest4.de",
   "password": "test",
   "password2": "test"
 }
 
 ### // Teilnehmer list all
 GET http://localhost:3000/teilnehmer
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlcmJlcnRAbWVpZXIyLmRlIiwidXNlcklEIjoiNWZlMzJlMjg3YzdlOTE1Yzk1MzBjNWNjIiwiaWF0IjoxNjA4OTgxODcxLCJleHAiOjE2MDg5ODU0NzF9.e7Zn4ZUfKuBRmP13KSgdpd_rieL5VXg0ixA-VUB1MAk
 
 ### // Teilnehmer show one
 GET http://localhost:3000/teilnehmer/showOne
@@ -41,6 +42,14 @@ POST http://localhost:3000/teilnehmer/login
 Content-Type: application/json
 
 {
-  "email": "herbert@meier2.de",
+  "email": "herbert@tokentest2.de",
   "password": "test"
+}
+
+### // log out
+DELETE http://localhost:3000/teilnehmer/logout
+Content-Type: application/json
+
+{
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlcmJlcnRAdG9rZW50ZXN0Mi5kZSIsInVzZXJJRCI6IjVmZTcxOTEwODQ5OTA3Njk2NjI2YThlMCIsImlhdCI6MTYwODk4MzQ1MywiZXhwIjoxNjA4OTg3MDUzfQ.szleymoDS1Kli1CyZtV_77m0XWzG-fvPNsl5iOEsW3g"
 }
