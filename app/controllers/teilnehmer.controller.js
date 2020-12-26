@@ -4,11 +4,14 @@ const Teilnehmer = require('../models/Teilnehmer');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const authenticate = require('./authentication');
+
+let tokens = [];
 
 
 //show all Teilnehmer
 
-teilnehmerController.get('/teilnehmer', function(req, res){ Teilnehmer.find()
+teilnehmerController.get('/teilnehmer', authenticate.authenticateToken, function(req, res){ Teilnehmer.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
@@ -73,11 +76,17 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
                 newTeilnehmer.password = hash;
                 newTeilnehmer
                     .save((err, doc) => {
-                        const token = newTeilnehmer.generateJwt();
+                        const token = jwt.sign(
+                            {email: newTeilnehmer.email, userID: newTeilnehmer._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                            {expiresIn: "1h"})
                         if (!err){
-                            res.json({
-                                "token": token
-                            })
+                            res.status(200).json({
+                                token: token,
+                                expiresIn: 3600,
+                                userID: newTeilnehmer._id
+                            });
+                            tokens.push(token);
+                            console.log(tokens);
                         }
                         else  {console.log(err.toString());
                             res.status(500).send(err.toString()); }
@@ -110,7 +119,7 @@ teilnehmerController.post('/teilnehmer/login', (req, res, next) =>{
             else {
 
                 const token = jwt.sign(
-                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
+                {email: fetchedUser.email, userID: fetchedUser._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
                 {expiresIn: "1h"}
             );
         res.status(200).json({
@@ -118,6 +127,9 @@ teilnehmerController.post('/teilnehmer/login', (req, res, next) =>{
                 expiresIn: 3600,
                 userID: fetchedUser._id
             });
+        tokens.push(token);
+        console.log(tokens);
+
         console.log('logged in!')
             }
 
@@ -171,6 +183,15 @@ teilnehmerController.put('/teilnehmer/edit/:id',function (req, res, next) {
             else {
                 res.send(teilnehmer);
             }
-        })});
+        })
+});
+
+//logout
+
+teilnehmerController.delete('/teilnehmer/logout', function (req, res) {
+    tokens = tokens.filter(token => token !== req.body.token)
+    res.send("Logout successful");
+    console.log(tokens);
+});
 
 module.exports = teilnehmerController;

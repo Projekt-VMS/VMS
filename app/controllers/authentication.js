@@ -1,51 +1,17 @@
-// var passport = require('passport');
-// var mongoose = require('mongoose');
-// var Teilnehmer = mongoose.model('Teilnehmer');
-// require('passport-local');
-// require ('/Users/dorian/Development/GitHub/VMS/app/config/passport.js');
-//
-//
-//
-// var sendJSONresponse = function(res, status, content) {
-//     res.status(status);
-//     res.json(content);
-// };
-//
-//
-//
-// /*module.exports.login = function(req, res, next) {
-//     if(!req.email || !req.password) {
-//        sendJSONresponse(res, 400, {
-//         "message": "All fields required"});
-//       return;
-//      }*/
-//
-//     /*passport.authenticate('local', {
-//         successRedirect: '/',
-//         failureRedirect: '/login'}, function (err, user, info)
-//     {
-//
-//         console.log(user);
-//         var token;
-//
-//         // If Passport throws/catches an error
-//         if (err) {
-//             res.status(404).json(err);
-//             return;
-//         }
-//
-//         // If a user is found
-//         if(user){
-//             token = user.generateJwt();
-//             res.status(200);
-//             res.json({
-//                 "token" : token
-//             });
-//         } else {
-//             // If user is not found
-//             console.log('Authentication failed => user set to false');
-//             res.status(401).json(info);
-//         }*/
-//    //}) (req, res, next);
-//
-// //};
+const jwt = require('jsonwebtoken');
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (token == null) return res.sendStatus(401)
+
+    jwt.verify(token, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601', (err, user) => {
+        console.log(err)
+        if (err) return res.sendStatus(403)
+        req.user = user
+        next()
+    })
+}
+
+module.exports.authenticateToken = authenticateToken;
+
