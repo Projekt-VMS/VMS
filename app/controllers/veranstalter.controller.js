@@ -36,7 +36,6 @@ veranstalterController.get('/veranstalter/show/:id', function (req, res) {
 //Registration
 
 veranstalterController.post('/veranstalter/registration/add', function (req, res) {
-
     const { name, vorname, unternehmen, email, password, password2 } = req.body;
     let errors = [];
 
