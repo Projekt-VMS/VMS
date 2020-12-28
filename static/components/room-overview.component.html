@@ -1,0 +1,48 @@
+<h1 id="roomText">Alle Räume</h1>
+<div class="sidenav">
+    <h1>Management</h1>
+    <a href='#!/profile'><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
+    <hr>
+    <a href='#!/dashboard'><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+    <a href='#!/room-overview' class="currentPage"><i class="fa fa-fw fa-list"></i> Räume</a>
+    <a href='#!/offer-create'><i class="fa fa-fw fa-plus"></i> Angebot erstellen</a>
+    <a href='#!/events'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <a href='#!/email'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <hr>
+    <a href='#!/settings'><i class="fa fa-fw fa-gear"></i> Einstellungen</a>
+</div>
+<table border="6">
+    <tr>
+        <th>Raum-Nr.</th>
+        <th>Größe</th>
+        <th>Preis</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td>Raum 1</td>
+        <td>max. 15</td>
+        <td>75€</td>
+        <td><a href="#!/room-modify"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify"></i></a></td>
+    </tr>
+    <tr>
+        <td>Raum 2</td>
+        <td>max. 30</td>
+        <td>150€</td>
+        <td><a href="#!/room-modify"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify"></i></a></td>
+    </tr>
+    <tr>
+        <td>Raum 3</td>
+        <td>max. 40</td>
+        <td>200€</td>
+        <td><a href="#!/room-modify"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify"></i></a></td>
+    </tr>
+    <tr>
+        <td>Raum 4</td>
+        <td>max. 50</td>
+        <td>300€</td>
+        <td><a href="#!/room-modify"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify"></i></a></td>
+    </tr>
+    <tr>
+        <td colspan="4"><a href="#!/room-add"><button class="addRoomButton" [routerlink]="/room-add">+ weiteren Raum hinzufügen ...</a></button></td>
+    </tr>
+</table>

@@ -40,7 +40,7 @@ teilnehmerController.get('/teilnehmer/showOne', function (req, res) {
 //Registration Teilnehmer
 
 teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
-    console.log('erstelle teilnehmer');
+    console.log(req.body);
 
     const { name, vorname, email, password, password2 } = req.body;
     let errors = [];
@@ -54,6 +54,7 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
     }
 
     if (errors.length > 0) {
+        console.log('fail');
         res.send({
             errors,
             name,
@@ -104,8 +105,8 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
 teilnehmerController.post('/teilnehmer/login', (req, res, next) =>{
 
     let fetchedUser;
-
     Teilnehmer.findOne({email:req.body.email}).then(function(teilnehmer){
+
         if(!teilnehmer){
             return res.status(401).json({message: 'Login Failed, no such User!'})
         }

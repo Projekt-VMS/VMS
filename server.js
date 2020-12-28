@@ -58,6 +58,9 @@ app.use(adminController);
 app.use(raumController);
 app.use(veranstaltungsController);
 
+app.use(express.static('static'));
+
+
 //var routes = require('./app/routes/routes.js');
 
 //app.use('/', routes);
@@ -123,13 +126,8 @@ mongoose.connection.once('open', ()=>console.log('Mit Datenbank verbunden'));
 
 
 // home
-app.get ('/', function(req, res) {
-    res.send('homepage')
-});
-
-//log in error
-app.get ('/error/login', function(req, res) {
-    res.send('login failed')
-});
+// app.get ('/', function(req, res) {
+//     res.render('/VMS_Frontend-main/static/index.html');
+// });
 
 
