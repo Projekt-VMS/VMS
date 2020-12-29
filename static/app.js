@@ -78,14 +78,23 @@ angular.module('dashboard', ['ngRoute'])
 		.when('/room-modify', {
 			templateUrl: 'components/room-modify.component.html'
 		})
-		.when('/room-add', {
-			templateUrl: 'components/room-add.component.html'
+		.when('/room-create', {
+			templateUrl: 'components/room-create.component.html'
 		})
 		.when('/offer-create', {
 			templateUrl: 'components/offer-create.component.html'
 		})
 		.when('/profile', {
 			templateUrl: 'components/profile.component.html'
+		})
+		.when('/event-overview', {
+			templateUrl: 'components/event-overview.component.html'
+		})
+		.when('/event-create', {
+			templateUrl: 'components/event-create.component.html'
+		})
+		.when('/event-modify', {
+			templateUrl: 'components/event-modify.component.html'
 		})
 	.otherwise({
 		redirectTo: '/login'
