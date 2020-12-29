@@ -1,6 +1,7 @@
 
 var moment = require('moment'); // require
 moment().format();
+moment.locale('de',{week:{dow : 1}})
 const express = require('express'),
     veranstaltungsController = express();
 const nodemailer = require('nodemailer');
