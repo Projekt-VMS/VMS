@@ -1,5 +1,5 @@
 body {
-	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif; 
+	font-family: Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
 }
 
 header {
@@ -64,29 +64,27 @@ label {
 input {
 	border-radius: 12px;
 	padding: 0.5%;
-	border: 0.1px solid gray;
+	padding-left: 1%;
 	margin-top: 5px;
 	margin-bottom: 15px;
 }
 
 [type="number"] {
-	width: 12%;
+	width: 15%;
 }
 
 [type="date"] {
-	width: 12%;
+	width: 15%;
 }
 
 [type="text"] {
 	width: 30%;
-	padding: 8px 20px;
 	display: inline-block;
 	box-sizing: border-box;
 }
 
 [type="password"] {
 	width: 30%;
-	padding: 8px 20px;
 	display: inline-block;
 	box-sizing: border-box;
 }
@@ -128,6 +126,11 @@ a {
 	text-decoration: none;
 }
 
+b {
+	text-align: center;
+	float: bottom;
+}
+
 div [id="registration"] {
 	margin-top: 20px;
 	padding-top: 12px;
@@ -144,10 +147,15 @@ div [id="request"]{
 	border: 3px groove orange;
 }
 
+div [id="logoutButton"] {
+	text-align: center;
+}
+
 table {
-	width: 75%;
-	margin: 2.5%;
+	width: 79%;
+	margin: 0.25%;
 	float: right;
+	text-align: center;
 }
 
 td {
@@ -208,6 +216,9 @@ th {
 	font-size: x-large;
 }
 
-[id="logutButton"] {
+[id="priceText"] {
+	float: right;
+	width: 75%;
+	margin: 2%;
 	text-align: center;
 }
