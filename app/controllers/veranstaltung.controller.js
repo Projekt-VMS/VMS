@@ -1,9 +1,14 @@
+
+var moment = require('moment'); // require
+moment().format();
 const express = require('express'),
     veranstaltungsController = express();
-const nodemailer = require('nodemailer')
-
+const nodemailer = require('nodemailer');
+const Veranstalter = require('../models/Veranstalter');
 let Veranstaltung = require('../models/Veranstaltung');
+var date = new Date();
 
+date.setDate(date.getDate() + 7)
 
 // get with Veranstalter
 
@@ -37,6 +42,9 @@ veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
         //getVeranstaltungWithVeranstalter(req.params.id);
 
     Veranstaltung.findOne()
+        .populate('raum')
+        .populate('veranstalter')
+        .exec()
             .catch(err => {
                 console.log(err.toString());
                 res.status(500).send(err.toString());
@@ -50,9 +58,8 @@ veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
 
 //create
 
-veranstaltungsController.post('/veranstaltung/add',function (req, res) {
-
-    let veranstaltungInstance = new Veranstaltung(req.body);
+veranstaltungsController.post('/veranstaltung/add',async (req, res) => {
+   let veranstaltungInstance = new Veranstaltung(req.body);
     let  transport = nodemailer.createTransport({
         host: "smtp.mailtrap.io",
         port: 2525,
@@ -61,25 +68,27 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
             pass: "e0703dbc730281"
         }
     });
-    console.log(veranstaltungInstance);
+    if (moment(req.body.start_datum).isSame (req.body.end_datum, 'week')){ // checks if event ends in same week --> no event longer than sunday
+        veranstaltungInstance.save((err, doc) => {
+            if (!err) {
+                console.log(doc._id);
 
-    veranstaltungInstance.save((err, doc) =>{
-        if (!err){
-            res.send('Veranstaltung wurde erfolgreich erstellt!');
-            transport.sendMail({
-                from: 'test@vms.de',
-                to: 'test@kunde.de' ,
-                subject: 'Test Mail 1',
-                text: 'Herzlich Willkommen bei VMS'
-            })
-
+                res.send('Veranstaltung wurde erfolgreich erstellt!');
+                transport.sendMail({
+                    from: 'test@vms.de',
+                    to: 'test@kunde.de',
+                    subject: 'Test Mail 1',
+                    text: 'Ihre Veranstaltung wurde erfolgreich erstellt'
+                })
+            } else {
+                console.log(err.toString());
+                res.status(500).send(err.toString());
             }
 
-
-        else  {console.log(err.toString());
-            res.status(500).send(err.toString()); }
-
-    });
+        });
+    }
+    else {console.log ('Fehler!')
+    res.status(500).send('Veranstaltung darf nicht länger als Sonntag dauern!');}
 });
 
 
