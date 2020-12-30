@@ -8,28 +8,34 @@ const jwt = require("jsonwebtoken");
 
 veranstalterController.get('/veranstalter/show', function(req, res){
     Veranstalter.find()
-    .catch(err=>{
+        .populate('veranstaltungen', 'titel', 'Veranstaltung')
+        .exec(function (err, veranstalter){
+            if(err){
         console.log(err.toString()); res.status(500).send(err.toString());
-    })
-    .then(dbres=>{
+    }
+    else {
 
-        console.log(dbres);
-        res.send(dbres);
-    });
-});
+        console.log(veranstalter);
+        res.send(veranstalter);
+    }
+})});
 
 //show one
 
 veranstalterController.get('/veranstalter/show/:id', function (req, res) {
     Veranstalter.findOne()
+        .populate('veranstaltungen','titel', 'Veranstaltung')
+        .exec(function(err,result){
 
-        .catch(err => {
+
+            if(err) {
             console.log(err.toString());
-            res.status(500).send(err.toString());
-        })
-        .then(dbres => {
-            console.log(dbres);
-            res.send(dbres);
+            res.status(500).send(err.toString())}
+            else {
+                console.log(result);
+                res.send(result);
+            }
+
         });
 });
 
@@ -58,13 +64,14 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
             password2
         });
     } else {
-        const newVeranstalter = new Veranstalter({
+        let newVeranstalter = new Veranstalter({
             name,
             vorname,
             unternehmen,
             email,
             password
         });
+
 
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newVeranstalter.password, salt, (err, hash) => {
@@ -88,6 +95,7 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
         });
     }
 });
+
 
 
 //delete

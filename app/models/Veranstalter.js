@@ -70,6 +70,7 @@ var veranstalterSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Veranstaltung'
     }]
+
 });
 
 
