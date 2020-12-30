@@ -60,37 +60,71 @@ veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
 //create
 
 veranstaltungsController.post('/veranstaltung/add',async (req, res) => {
-   let veranstaltungInstance = new Veranstaltung(req.body);
-    let  transport = nodemailer.createTransport({
-        host: "smtp.mailtrap.io",
-        port: 2525,
-        auth: {
-            user: "f91515824063a2",
-            pass: "e0703dbc730281"
-        }
-    });
-    if (moment(req.body.start_datum).isSame (req.body.end_datum, 'week')){ // checks if event ends in same week --> no event longer than sunday
-        veranstaltungInstance.save((err, doc) => {
-            if (!err) {
-                console.log(doc._id);
 
-                res.send('Veranstaltung wurde erfolgreich erstellt!');
-                transport.sendMail({
-                    from: 'test@vms.de',
-                    to: 'test@kunde.de',
-                    subject: 'Test Mail 1',
-                    text: 'Ihre Veranstaltung wurde erfolgreich erstellt'
-                })
-            } else {
-                console.log(err.toString());
-                res.status(500).send(err.toString());
-            }
+    const { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus } = req.body;
+    let errors = [];
 
-        });
+    if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus) {
+        errors.push({ msg: 'Please enter all fields' });
     }
-    else {console.log ('Fehler!')
-    res.status(500).send('Veranstaltung darf nicht länger als Sonntag dauern!');}
+
+    if ((Veranstalter.findOne({email: veranstalter}))) {
+            errors.push({msg: 'Veranstalter gibt es nicht'});
+    }
+
+    if (errors.length > 0) {
+        console.log('fail');
+        res.send({
+            errors, titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus
+        });
+    } else {
+        const veranstaltungInstance = new Veranstaltung({
+            titel,
+            veranstalter,
+            raum,
+            start_datum,
+            end_datum,
+            teilnehmerzahl,
+            teilnehmer_preis,
+            sichtbarkeit,
+            angebotsstatus
+        })
+
+
+        console.log(veranstaltungInstance);
+        let transport = nodemailer.createTransport({
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+                user: "f91515824063a2",
+                pass: "e0703dbc730281"
+            }
+        });
+        if (moment(req.body.start_datum).isSame(req.body.end_datum, 'week')) { // checks if event ends in same week --> no event longer than sunday
+            veranstaltungInstance.save((err, doc) => {
+                if (!err) {
+                    console.log(doc._id);
+
+                    res.send('Veranstaltung wurde erfolgreich erstellt!');
+                    transport.sendMail({
+                        from: 'test@vms.de',
+                        to: 'test@kunde.de',
+                        subject: 'Test Mail 1',
+                        text: 'Ihre Veranstaltung wurde erfolgreich erstellt'
+                    })
+                } else {
+                    console.log(err.toString());
+                    res.status(500).send(err.toString());
+                }
+
+            });
+        } else {
+            console.log('Fehler!')
+            res.status(500).send('Veranstaltung darf nicht länger als Sonntag dauern!');
+        }
+    }
 });
+
 
 
 //delete one

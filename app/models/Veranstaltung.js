@@ -7,21 +7,20 @@ let today = new Date();
 var veranstaltungSchema = new Schema({
     titel: {type: String},
     veranstalter: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.String,
         ref: 'Veranstalter',
     },
     raum: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Number,
         ref: 'Raum'
     },
     // teilnehmer: [ embedded]
     start_datum: {type: Date, min: today},
     end_datum:{type: Date},
     teilnehmerzahl: {type: Number},
-    veranstalter_preis: {type: Number},
     teilnehmer_preis: {type: Number},
-    sichtbarkeit: {type: Boolean},
-    angebotsstatus: {type: String},
+    sichtbarkeit: {type: String},
+    angebotsstatus: {type: String}
 });
 
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
