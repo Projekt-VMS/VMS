@@ -16,12 +16,8 @@ GET http://localhost:3000/teilnehmer
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlcmJlcnRAbWVpZXIyLmRlIiwidXNlcklEIjoiNWZlMzJlMjg3YzdlOTE1Yzk1MzBjNWNjIiwiaWF0IjoxNjA4OTgxODcxLCJleHAiOjE2MDg5ODU0NzF9.e7Zn4ZUfKuBRmP13KSgdpd_rieL5VXg0ixA-VUB1MAk
 
 ### // Teilnehmer show one
-GET http://localhost:3000/teilnehmer/showOne
-Content-Type: application/json
-
-{
-  "ObjectId": "5fe1d9c1f9f0cb4d1d97b1e6"
-}
+GET http://localhost:3000/teilnehmer/show
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlcmJlcnRAdG9rZW50ZXN0Mi5kZSIsInVzZXJJRCI6IjVmZTcxOTEwODQ5OTA3Njk2NjI2YThlMCIsImlhdCI6MTYwOTIzODQ2MSwiZXhwIjoxNjA5MjQyMDYxfQ.dTFJP9osAiZnm4mKiZM-tio7Q-K8UIGGkIjk8qkSmII
 
 ### // Teilnehmer delete (could be changed to :id as well
 DELETE http://localhost:3000/teilnehmer/delete/5fdc8a634098564c24f7de70

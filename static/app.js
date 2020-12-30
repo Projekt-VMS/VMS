@@ -1,10 +1,35 @@
+//import {Headers} from '@angular/http';
+//import {Injectable} from "@angular/core";
+
+/*
+export class AuthService {
+
+	getProfile(){
+		let headers = new Headers();
+		this.loadToken();
+		headers.append('Authorization', this.authToken);
+	}
+
+	storeUserData(token, user){
+		localStorage.setItem('id_token', token);
+		localStorage.setItem('user', JSON.stringify(user));
+		this.authToken = token;
+	}
+	loadToken(){
+		this.authToken = localStorage.getItem('id_token');
+	}
+
+}
+*/
+
 // Erstellt ein Modul mit Services (Factories) und einem zugeh�rigen Controller.
 // F�r das Routing (config) muss die 'ngRoute'-Dependency gealden werden.
-angular.module('dashboard', ['ngRoute']) 
-//Erstelle den Service um auf die Kunden-API zuzugreifen. 
+
+angular.module('dashboard', ['ngRoute'])
+
+
+//Erstelle den Service um auf die Kunden-API zuzugreifen.
 //Dazu mus die HTTP-Dependecy injected werden.
-
-
 .factory('registrierenService', ['$http', function ($http){
 		function registrierenTeilnehmer(teilnehmer){
 			return $http.post('/teilnehmer/registration/add', teilnehmer)
@@ -26,9 +51,21 @@ angular.module('dashboard', ['ngRoute'])
 		return {loginTeilnehmer, loginVeranstalter};
 }])
 
+.factory('teilnehmerService', ['$http', function ($http){
+		function getTeilnehmer(token){
+			return $http.get('/teilnehmer/show', { Authorization: `Bearer ${token}` })
+			//return $http.get('/teilnehmer/show', {headers: headers})
+		}
+		return {getTeilnehmer};
+}])
+
+
+
 // Erstelle den Controller f�r die Dashboar-App. Hier muss der Scope injected werden und alle Services, die verwendet werden sollen.
-.controller('dashboardController', ['$scope', 'registrierenService', 'loginService', function($scope, registrierenService, loginService) {
+.controller('dashboardController', ['$scope', 'registrierenService', 'loginService', 'teilnehmerService', function($scope, registrierenService, loginService, teilnehmerService){
+
 	console.log('Dashboard Controller is running');
+
 
 	function erstelleTeilnehmer(teilnehmer){
 		// Input-Felder zur�cksetzen.
@@ -44,6 +81,7 @@ angular.module('dashboard', ['ngRoute'])
 	function loggeTeilnehmer(daten){
 		$scope.daten={};
 		loginService.loginTeilnehmer(daten);
+
 	}
 
 	function loggeVeranstalter(daten){
@@ -55,6 +93,7 @@ angular.module('dashboard', ['ngRoute'])
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
 	$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
 	$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
+
 }])
 
 // Hier werden die Routes angelegt, die vom Nutzer angesteuert werden k�nnen sollen.
