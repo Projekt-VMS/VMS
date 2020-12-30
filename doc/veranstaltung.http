@@ -9,11 +9,10 @@ Content-Type: application/json
   "veranstalter": "5fe095001b550c3f060ed989",
   "teilnehmerzahl": 8,
   "start_datum":"2021-01-04",
-  "end_datum": "2021-01-11",
+  "end_datum": "2021-01-6",
   "veranstalter_preis": 400,
   "teilnehmer_preis": 25,
-  "sichtbarkeit": true,
-  "angebotsstatus": "Angebot akzeptiert"
+  "sichtbarkeit": true
 
 }
 

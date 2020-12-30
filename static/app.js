@@ -59,10 +59,22 @@ angular.module('dashboard', ['ngRoute'])
 		return {getTeilnehmer};
 }])
 
+.factory('veranstaltungService', ['$http', function ($http){
+		function createVeranstaltung(veranstaltung){
+			return $http.post('/veranstaltung/add', veranstaltung)
+
+		}
+		function getVeranstaltungen(){
+			return $http.get('/veranstaltung/show')
+				.catch(err=>console.log(err.toString()));
+
+		}
+		return {createVeranstaltung, getVeranstaltungen}
+}])
 
 
 // Erstelle den Controller f�r die Dashboar-App. Hier muss der Scope injected werden und alle Services, die verwendet werden sollen.
-.controller('dashboardController', ['$scope', 'registrierenService', 'loginService', 'teilnehmerService', function($scope, registrierenService, loginService, teilnehmerService){
+.controller('dashboardController', ['$scope', 'registrierenService', 'loginService', 'teilnehmerService', 'veranstaltungService', function($scope, registrierenService, loginService, teilnehmerService, veranstaltungService){
 
 	console.log('Dashboard Controller is running');
 
@@ -89,10 +101,20 @@ angular.module('dashboard', ['ngRoute'])
 		loginService.loginVeranstalter(daten);
 	}
 
+	function erstelleVeranstaltung(veranstaltung){
+		$scope.daten={};
+		veranstaltungService.createVeranstaltung(veranstaltung);
+	}
+
 	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
 	$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
 	$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
+
+	$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
+
+	veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+	$scope.veranstaltungen = [];
 
 }])
 
