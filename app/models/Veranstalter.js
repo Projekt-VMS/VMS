@@ -66,10 +66,10 @@ var veranstalterSchema = new Schema({
     unternehmen: { type: String, required: 'name can\'t be empty '},
     email:{type:String, required: 'email can\'t be empty', unique: true, trim: true, uniqueCaseInsensitive: true},
     password:{type:String, minlength: [5, 'Passwort zu kurz!']},
-    veranstaltungen: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Veranstaltung'
-    }]
+    //veranstaltungen: [{
+      //  type: mongoose.Schema.Types.ObjectId,
+     //   ref: 'Veranstaltung'
+    //}]
 
 });
 

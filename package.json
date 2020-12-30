@@ -26,6 +26,7 @@
     "express": "^4.16.0",
     "jquery": "^3.5.1",
     "moment": "^2.29.1",
+    "moment-range": "^4.0.2",
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.5",
     "mongoose-auto-increment": "^5.0.1",
