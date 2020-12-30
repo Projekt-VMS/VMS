@@ -23,9 +23,9 @@ teilnehmerController.get('/teilnehmer', authenticate.authenticateToken, function
 
 //Show one Teilnehmer
 
-teilnehmerController.get('/teilnehmer/showOne', function (req, res) {
+teilnehmerController.get('/teilnehmer/show', authenticate.authenticateToken, function (req, res) {
 
-    Teilnehmer.findById(req.body.ObjectId)
+    Teilnehmer.findById(req.currentUser.userID)
 
         .catch(err => {
             console.log(err.toString());

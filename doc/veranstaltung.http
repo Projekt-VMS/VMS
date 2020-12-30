@@ -12,8 +12,7 @@ Content-Type: application/json
   "end_datum": "2021-02-25",
   "veranstalter_preis": 400,
   "teilnehmer_preis": 25,
-  "sichtbarkeit": true,
-  "angebotsstatus": "Angebot akzeptiert"
+  "sichtbarkeit": true
 
 }
 

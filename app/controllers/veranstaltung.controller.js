@@ -68,9 +68,6 @@ veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
 });
 
 //create
-
-
-
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let veranstaltungInstance = new Veranstaltung(req.body);
     let foundevents;
@@ -78,7 +75,38 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let range2;
     let result2;
     result2 = false;
-    Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) { //this is the check for availability function
+
+    const { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus } = req.body;
+    let errors = [];
+
+    if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus) {
+        errors.push({ msg: 'Please enter all fields' });
+    }
+
+    if ((Veranstalter.findOne({email: veranstalter}))) {
+            errors.push({msg: 'Veranstalter gibt es nicht'});
+    }
+
+    if (errors.length > 0) {
+        console.log('fail');
+        res.send({
+            errors, titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus
+        });
+    } else {
+        const veranstaltungInstance = new Veranstaltung({
+            titel,
+            veranstalter,
+            raum,
+            start_datum,
+            end_datum,
+            teilnehmerzahl,
+            teilnehmer_preis,
+            sichtbarkeit,
+            angebotsstatus
+        })
+
+
+            Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) { //this is the check for availability function
 
 
 

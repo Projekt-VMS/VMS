@@ -11,63 +11,38 @@
     <hr>
     <a href='#!/settings'><i class="fa fa-fw fa-gear"></i> Einstellungen</a>
 </div>
+
 <table border="6">
     <tr>
-        <th>VID</th>
         <th>Titel</th>
-        <th>AID</th>
-        <th>RID</th>
+        <th>User</th>
+        <th>Raum</th>
         <th>Von</th>
         <th>Bis</th>
         <th><i class="fa fa fa-fw fa-user"></i></th>
-        <th>Preis*</th>
-        <th>Sichtbarkeit</th>
+        <th>Teilnehmerpreis</th>
+        <th>Art</th>
         <th>Status</th>
         <th> </th>
     </tr>
-    <tr>
-        <td>001</td>
-        <td>Veranstaltung 1</td>
-        <td>0000</td>
-        <td>1</td>
-        <td>01.01.21</td>
-        <td>04.01.21</td>
-        <td>15</td>
-        <td>100€</td>
-        <td>öffentlich</td>
-        <td>intern</td>
-        <td><a href="#!/event-modify"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify"></i></a></td>
+    <tr data-ng-repeat='veranstaltung in veranstaltungen'>
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.veranstalter}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}</td>
+        <td>{{veranstaltung.sichtbarkeit}}</td>
+        <td>{{veranstaltung.angebotsstatus}}</td>
+        <td><a href="#!/event-modify"><i class="fa fa-fw fa-pencil" ></i></a></td>
     </tr>
     <tr>
-        <td>002</td>
-        <td>Veranstaltung 2</td>
-        <td>0001</td>
-        <td>2</td>
-        <td>03.01.21</td>
-        <td>07.01.21</td>
-        <td>30</td>
-        <td>750€</td>
-        <td>geschlossen</td>
-        <td>in Abrechnung</td>
-        <td><a href="#!/event-modify"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify"></i></a></td>
-    </tr>
-    <tr>
-        <td align=center>003</td>
-        <td>Veranstaltung 3</td>
-        <td>0002</td>
-        <td>3</td>
-        <td>11.01.21</td>
-        <td>17.01.21</td>
-        <td>40</td>
-        <td>1400€</td>
-        <td>öffentlich</td>
-        <td>Angebot offen</td>
-        <td><a href="#!/event-modify"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify"></i></a></td>
-    </tr>
-    <tr>
-        <td colspan="11"><a href="#!/event-create"><button class="addRoomButton" [routerlink]="/event-create">+ neue Veranstaltung erstellen ...</button></a></td>
+        <td colspan="11"><a href="#!/event-create"><button class="addRoomButton">+ neue Veranstaltung erstellen ...</button></a></td>
     </tr>
 </table>
 <div id="priceText">
     <b>* Bei internen Veranstaltungen wird hier zu entrichtende Preis pro Teilnehmer angegeben, bei allen anderen Veranstaltungen ist hier der vom Veranstalter zu zahlende Preis vermerkt.</b>
 </div>
+
+
