@@ -32,10 +32,12 @@
     <p>Preis:  <input type="number" placeholder="Preis" data-ng-model='veranstaltung.teilnehmer_preis'></p>
     <hr>
     <h3>Öffentlich oder Privat</h3>
-    <p>Öffentlich:  <input type="checkbox" data-ng-model='veranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" data-ng-false-value="'privat'"></p>
+    <p>Öffentlich:  <input type="checkbox" data-ng-model='veranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" ></p>
+    <p>Privat:  <input type="checkbox" data-ng-model='veranstaltung.sichtbarkeit' data-ng-true-value="'Privat'" ></p>
     <hr>
     <h3>Extern oder Intern</h3>
-    <p>Intern:  <input type="checkbox" data-ng-model='veranstaltung.angebotsstatus' data-ng-true-value="'Intern'" data-ng-false-value="'Angebot offen'"></p>
+    <p>Extern:  <input type="checkbox" data-ng-model='veranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"></p>
+    <p>Intern:  <input type="checkbox" data-ng-model='veranstaltung.angebotsstatus' data-ng-true-value="'Intern'"></p>
     <br>
     <div class="container">
         <button data-ng-click='erstelleVeranstaltung(veranstaltung)' class="loginButton">Veranstaltung anlegen</button>
