@@ -33,6 +33,7 @@ POST http://localhost:3000/raum/verfuegbarkeit/5fdf48ac29a2292c321404a7
 Content-Type: application/json
 
 {
-  "startDatum": "2020-12-20",
-  "endDatum": "2020-12-20"
+  "raum": 1,
+  "start_datum": "2028-12-31",
+  "end_datum": "2029-02-02"
 }
