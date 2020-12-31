@@ -4,15 +4,16 @@ POST http://localhost:3000/veranstaltung/add
 Content-Type: application/json
 
 {
-  "titel": "Test Event 11",
-  "raum": "5fecb38a477f4722004bbdb0",
+  "titel": "BugCheck",
+  "raum": "1",
   "veranstalter": "5fe095001b550c3f060ed989",
   "teilnehmerzahl": 8,
-  "start_datum":"2021-02-23",
-  "end_datum": "2021-02-25",
+  "start_datum":"2024-01-07",
+  "end_datum": "2024-01-07",
   "veranstalter_preis": 400,
   "teilnehmer_preis": 25,
-  "sichtbarkeit": true
+  "sichtbarkeit": true,
+  "angebotsstatus": "intern"
 
 }
 

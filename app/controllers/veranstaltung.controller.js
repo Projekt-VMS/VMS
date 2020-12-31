@@ -84,7 +84,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     }
 
     if ((Veranstalter.findOne({email: veranstalter}))) {
-            errors.push({msg: 'Veranstalter gibt es nicht'});
+           errors.push({msg: 'Veranstalter gibt es nicht'});
     }
 
     if (errors.length > 0) {
@@ -159,7 +159,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
         } else  //error if room is not available at requested date
             res.status(500).send('Leider ist dieser Raum zu dieser Zeit blockiert. Bitte versuchen Sie eine andere Kombination aus Datum und Raum!')
     });
-})
+}})
 
 
 
