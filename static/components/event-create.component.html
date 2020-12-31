@@ -4,7 +4,7 @@
     <hr>
     <a href='#!/dashboard'><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
     <a href='#!/room-overview'><i class="fa fa-fw fa-list"></i> Räume</a>
-    <a href='#!/offer-create'><i class="fa fa-fw fa-plus"></i> Angebot erstellen</a>
+    <a href='#!/event-create' class="currentPage"><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
     <a href='#!/event-overview'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
     <a href='#!/email'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
     <hr>
@@ -13,13 +13,13 @@
 <div id="roomModify" data-ng-submit='erstelleVeranstaltung(veranstaltung)'>
     <h1>Neue Veranstaltung</h1>
     <h3>Titel festlegen</h3>
-    <p>Titel:  <input type="text" data-ng-model='veranstaltung.titel'></p>
+    <p>Titel:  <input type="text" placeholder="Titel eingeben" data-ng-model='veranstaltung.titel'></p>
     <hr>
     <h3>Veranstalter wählen</h3>
-    <p>User-Email:  <input type="text" data-ng-model='veranstaltung.veranstalter'></p>
+    <p>User-Email:  <input type="text" placeholder="E-Mail eingeben" data-ng-model='veranstaltung.veranstalter'></p>
     <hr>
     <h3>Raum wählen</h3>
-    <p>Raumnr.:  <input type="number" data-ng-model='veranstaltung.raum'></p>
+    <p>Raumnr.:  <input type="number" placeholder="RID" data-ng-model='veranstaltung.raum'></p>
     <hr>
     <h3>Zeitraum festlegen</h3>
     <p>Startdatum:  <input type="date" data-ng-model='veranstaltung.start_datum'></p>
@@ -29,7 +29,7 @@
     <p>Teilnehmerzahl:  <input type="number" placeholder="Teilnehmerzahl" data-ng-model='veranstaltung.teilnehmerzahl'></p>
     <hr>
     <h3>Preis für Teilnehmer festlegen</h3>
-    <p>Preis:  <input type="number" placeholder="Preis" data-ng-model='veranstaltung.teilnehmer_preis'></p>
+    <p>Preis:  <input type="number" placeholder="Preis in €" data-ng-model='veranstaltung.teilnehmer_preis'></p>
     <hr>
     <h3>Öffentlich oder Privat</h3>
     <p>Öffentlich:  <input type="checkbox" data-ng-model='veranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" ></p>

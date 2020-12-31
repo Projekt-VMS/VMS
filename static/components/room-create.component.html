@@ -4,28 +4,28 @@
     <hr>
     <a href='#!/dashboard'><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
     <a href='#!/room-overview'><i class="fa fa-fw fa-list"></i> Räume</a>
-    <a href='#!/offer-create'><i class="fa fa-fw fa-plus"></i> Angebot erstellen</a>
+    <a href='#!/event-create'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
     <a href='#!/event-overview'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
     <a href='#!/email'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
     <hr>
     <a href='#!/settings'><i class="fa fa-fw fa-gear"></i> Einstellungen</a>
 </div>
-<div id="roomModify">
+<form id="roomModify" data-ng-submit='erstelleRaum(raum)'>
     <h1>Neuer Raum</h1>
+    <h3>Raumnummer festlegen</h3>
+    <input type="number" placeholder="RID" data-ng-model='raum.raumNr'>
     <br>
-    <h3>Preis festlegen (in €)</h3>
-    <p>Preis:</p>
-    <input type="number" placeholder="Preis">
+    <hr>
+    <br>
+    <h3>Preis festlegen</h3>
+    <input type="number" placeholder="Preis in €" data-ng-model='raum.raumpreis'>
     <br>
     <hr>
     <br>
     <h3>Kapazität festlegen</h3>
-    <p>Kapazität:</p>
-    <input type="number" placeholder="max. 50" max="50">
+    <input type="number" placeholder="max. 100" max="100" data-ng-model='raum.kapazitaet'>
     <br>
     <br>
     <br>
-    <div>
-        <button class="loginButton">Raum anlegen</button>
-    </div>
-</div>
+    <button class="loginButton" data-ng-click="erstelleRaum(raum)">Raum anlegen</button>
+</form>
