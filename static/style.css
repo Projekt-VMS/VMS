@@ -77,6 +77,11 @@ input {
 	width: 15%;
 }
 
+[type="submit"] {
+	background-color: orange;
+	font-size: x-large;
+}
+
 [type="text"] {
 	width: 30%;
 	display: inline-block;
