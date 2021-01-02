@@ -105,10 +105,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
             angebotsstatus
         })
 
-
-            Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) { //this is the check for availability function
-
-
+        Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) { //this is the check for availability function
 
         if (!err) {
             foundevents = veranstaltung //saves all found events as arrays to foundevents
