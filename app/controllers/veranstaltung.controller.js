@@ -49,10 +49,10 @@ veranstaltungsController.get('/veranstaltung/show', function (req, res) {
 
 //show one
 
-veranstaltungsController.get('/veranstaltung/show/:id', function (req, res) {
+veranstaltungsController.get('/veranstaltung/showOne/:id', function (req, res) {
         //getVeranstaltungWithVeranstalter(req.params.id);
 
-    Veranstaltung.findOne()
+    Veranstaltung.findOne({_id: req.params.id})
      //   .populate('raum')
      //   .populate('veranstalter')
      //   .exec()

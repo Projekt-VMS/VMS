@@ -69,15 +69,21 @@ angular.module('dashboard', ['ngRoute'])
 				.catch(err=>console.log(err.toString()));
 
 		}
-		return {createVeranstaltung, getVeranstaltungen}
+		function getVeranstaltung(veranstaltungID){
+			return $http.get('/veranstaltung/showOne/'+veranstaltungID)
+				.catch(err=>console.log(err.toString()));
+
+		}
+		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung}
 }])
 
 
 // Erstelle den Controller f�r die Dashboar-App. Hier muss der Scope injected werden und alle Services, die verwendet werden sollen.
-.controller('dashboardController', ['$scope', 'registrierenService', 'loginService', 'teilnehmerService', 'veranstaltungService', function($scope, registrierenService, loginService, teilnehmerService, veranstaltungService){
+.controller('dashboardController', ['$scope','$routeParams', 'registrierenService', 'loginService', 'teilnehmerService', 'veranstaltungService', function($scope, $routeParams, registrierenService, loginService, teilnehmerService, veranstaltungService){
 
 	console.log('Dashboard Controller is running');
 
+	var paramID = $routeParams.id;
 
 	function erstelleTeilnehmer(teilnehmer){
 		// Input-Felder zur�cksetzen.
@@ -85,7 +91,7 @@ angular.module('dashboard', ['ngRoute'])
 		// Daten an Service weiterleiten.
 		registrierenService.registrierenTeilnehmer(teilnehmer);
 	}
-	 function erstelleVeranstalter(veranstalter){
+	function erstelleVeranstalter(veranstalter){
 	 	$scope.veranstalter={};
 	 	registrierenService.registrierenVeranstalter(veranstalter)
 	}
@@ -106,6 +112,9 @@ angular.module('dashboard', ['ngRoute'])
 		veranstaltungService.createVeranstaltung(veranstaltung);
 	}
 
+
+
+
 	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
 	$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
@@ -115,6 +124,10 @@ angular.module('dashboard', ['ngRoute'])
 
 	veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 	$scope.veranstaltungen = [];
+	$scope.param1 = paramID;
+	veranstaltungService.getVeranstaltung(paramID);
+
+
 
 }])
 
@@ -154,8 +167,9 @@ angular.module('dashboard', ['ngRoute'])
 		.when('/event-create', {
 			templateUrl: 'components/event-create.component.html'
 		})
-		.when('/event-modify', {
-			templateUrl: 'components/event-modify.component.html'
+		.when('/event-modify/:id', {
+			templateUrl: 'components/event-modify.component.html',
+			controller: 'dashboardController'
 		})
 	.otherwise({
 		redirectTo: '/login'

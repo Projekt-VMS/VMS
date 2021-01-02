@@ -21,7 +21,7 @@ Content-Type: application/json
 GET http://localhost:3000/veranstaltung/show
 
 ### // Veranstaltung show one
-GET http://localhost:3000/veranstaltung/show/5fdf45bc456c312bb092086f
+GET http://localhost:3000/veranstaltung/showOne/5fecf24d3c728baf92e6278f
 
 ### // Veranstaltung delete
 DELETE http://localhost:3000/veranstaltung/delete/5fdfb9fced9dea3581f17ff0
