@@ -92,7 +92,7 @@ angular.module('dashboard', ['ngRoute'])
 
 
 // Erstelle den Controller f�r die Dashboar-App. Hier muss der Scope injected werden und alle Services, die verwendet werden sollen.
-.controller('dashboardController', ['$scope','$routeParams', 'registrierenService', 'loginService', 'teilnehmerService', 'veranstaltungService', function($scope, $routeParams, registrierenService, loginService, teilnehmerService, veranstaltungService){
+.controller('dashboardController', ['$scope','$routeParams', 'registrierenService', 'loginService', 'teilnehmerService', 'veranstaltungService', 'raumService', function($scope, $routeParams, registrierenService, loginService, teilnehmerService, veranstaltungService, raumService){
 
 		console.log('Dashboard Controller is running');
 
@@ -128,8 +128,7 @@ angular.module('dashboard', ['ngRoute'])
 
 		function erstelleRaum(raum){
 			$scope.raum={};
-			raumService.createRaum(raum)
-			);
+			raumService.createRaum(raum);
 		}
 
 
