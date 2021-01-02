@@ -3,13 +3,11 @@
 
 /*
 export class AuthService {
-
 	getProfile(){
 		let headers = new Headers();
 		this.loadToken();
 		headers.append('Authorization', this.authToken);
 	}
-
 	storeUserData(token, user){
 		localStorage.setItem('id_token', token);
 		localStorage.setItem('user', JSON.stringify(user));
@@ -18,7 +16,6 @@ export class AuthService {
 	loadToken(){
 		this.authToken = localStorage.getItem('id_token');
 	}
-
 }
 */
 
@@ -69,7 +66,14 @@ angular.module('dashboard', ['ngRoute'])
 				.catch(err=>console.log(err.toString()));
 
 		}
-		return {createVeranstaltung, getVeranstaltungen}
+
+		function getVeranstaltung(veranstaltungID){
+			return $http.get('/veranstaltung/showOne/'+veranstaltungID)
+				.catch(err=>console.log(err.toString()));
+
+		}
+		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung}
+
 	}])
 
 	.factory('raumService', ['$http', function ($http){
@@ -83,16 +87,14 @@ angular.module('dashboard', ['ngRoute'])
 		return {createRaum, getRaeume}
 	}])
 
+
 	// Erstelle den Controller f�r die Dashboar-App. Hier muss der Scope injected werden und alle Services, die verwendet werden sollen.
-	.controller('dashboardController', ['$scope', 'registrierenService', 'loginService', 'teilnehmerService', 'veranstaltungService', 'raumService', function($scope, registrierenService, loginService, teilnehmerService, veranstaltungService, raumService){
+	.controller('dashboardController', ['$scope','$routeParams', 'registrierenService', 'loginService', 'teilnehmerService', 'veranstaltungService', 'raumService', function($scope, $routeParams, registrierenService, loginService, teilnehmerService, veranstaltungService, raumService){
 
 		console.log('Dashboard Controller is running');
 
-		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-		raumService.getRaeume().then(res=>$scope.raeume = res.data);
+		var paramID = $routeParams.id;
 
-		$scope.veranstaltungen = [];
-		$scope.raeume = [];
 
 		function erstelleTeilnehmer(teilnehmer){
 			// Input-Felder zur�cksetzen.
@@ -123,17 +125,28 @@ angular.module('dashboard', ['ngRoute'])
 
 		function erstelleRaum(raum){
 			$scope.raum={};
-			raumService.createRaum(raum).then(
-				raumService.getRaeume().then(res=>$scope.raeume = res.data)
-			);
+			raumService.createRaum(raum);
 		}
+
 
 		$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 		$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
 		$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
 		$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
+
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
+
+		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+		raumService.getRaeume().then(res=>$scope.raeume = res.data);
+		$scope.veranstaltungen = [];
+		$scope.raeume = [];
+
+
+		$scope.param1 = paramID;
+		veranstaltungService.getVeranstaltung(paramID);
+
+
 
 	}])
 
@@ -141,39 +154,97 @@ angular.module('dashboard', ['ngRoute'])
 	// Die hinterlegten Templates werden in '<div ng-view></div>' der index.html angezeigt.
 	// Bei gr��erne Projekten sollten zu den einzelnen Kompotenten auch (jeweils) eigene Modules angelegt werden,
 	// damit nur die f�r die Anzeige ben�tigten Daten geladen werden.
-	.config(function($routeProvider){
-		$routeProvider
-			.when('/login', {
-				templateUrl: 'components/login.component.html'
-			})
-			.when('/registration', {
-				templateUrl: 'components/registration.component.html'
-			})
-			.when('/request', {
-				templateUrl: 'components/request.component.html'
-			})
-			.when('/room-overview', {
-				templateUrl: 'components/room-overview.component.html'
-			})
-			.when('/room-modify', {
-				templateUrl: 'components/room-modify.component.html'
-			})
-			.when('/room-create', {
-				templateUrl: 'components/room-create.component.html'
-			})
-			.when('/profile', {
-				templateUrl: 'components/profile.component.html'
-			})
-			.when('/event-overview', {
-				templateUrl: 'components/event-overview.component.html'
-			})
-			.when('/event-create', {
-				templateUrl: 'components/event-create.component.html'
-			})
-			.when('/event-modify', {
-				templateUrl: 'components/event-modify.component.html'
-			})
-			.otherwise({
-				redirectTo: '/login'
-			});
-	});
+.config(function($routeProvider){
+	$routeProvider
+		.when('/login', {
+			templateUrl: 'components/login.component.html'
+		})
+		.when('/registration', {
+			templateUrl: 'components/registration.component.html'
+		})
+		.when('/request', {
+			templateUrl: 'components/request.component.html'
+		})
+		.when('/room-overview', {
+			templateUrl: 'components/room-overview.component.html'
+		})
+		.when('/room-modify', {
+			templateUrl: 'components/room-modify.component.html'
+		})
+		.when('/room-create', {
+			templateUrl: 'components/room-create.component.html'
+		})
+		.when('/profile', {
+			templateUrl: 'components/profile.component.html'
+		})
+		.when('/event-overview', {
+			templateUrl: 'components/event-overview.component.html'
+		})
+		.when('/event-create', {
+			templateUrl: 'components/event-create.component.html'
+		})
+		.when('/event-modify', {
+			templateUrl: 'components/event-modify.component.html'
+		})
+		.when('/event-search', {
+			templateUrl: 'components/event-search.component.html'
+		})
+		.when('/profile-host', {
+			templateUrl: 'components/profile-host.component.html'
+		})
+		.when('/profile-participant', {
+			templateUrl: 'components/profile-participant.component.html'
+		})
+		.when('/event-overview-host', {
+			templateUrl: 'components/event-overview-host.component.html'
+		})
+		.when('/event-overview-participant', {
+			templateUrl: 'components/event-overview-participant.component.html'
+		})
+		.when('/stats', {
+			templateUrl: 'components/stats.component.html'
+		})
+		.when('/email', {
+			templateUrl: 'components/email.component.html'
+		})
+		.when('/email-host', {
+			templateUrl: 'components/email-host.component.html'
+		})
+		.when('/email-participant', {
+			templateUrl: 'components/email-participant.component.html'
+		})
+		.when('/room-overview-admin', {
+			templateUrl: 'components/room-overview-admin.component.html'
+		})
+		.when('/room-modify-admin', {
+			templateUrl: 'components/room-modify-admin.component.html'
+		})
+		.when('/room-create-admin', {
+			templateUrl: 'components/room-create-admin.component.html'
+		})
+		.when('/profile-admin', {
+			templateUrl: 'components/profile-admin.component.html'
+		})
+		.when('/event-overview-admin', {
+			templateUrl: 'components/event-overview-admin.component.html'
+		})
+		.when('/event-create-admin', {
+			templateUrl: 'components/event-create-admin.component.html'
+		})
+		.when('/event-modify-admin', {
+			templateUrl: 'components/event-modify-admin.component.html'
+		})
+		.when('/stats-admin', {
+			templateUrl: 'components/stats-admin.component.html'
+		})
+		.when('/email-admin', {
+			templateUrl: 'components/email-admin.component.html'
+		})
+		.when('/event-modify/:id', {
+			templateUrl: 'components/event-modify.component.html',
+			controller: 'dashboardController'
+		})
+		.otherwise({
+			redirectTo: '/login'
+		});
+});
