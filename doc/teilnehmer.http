@@ -23,7 +23,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlcmJlc
 DELETE http://localhost:3000/teilnehmer/delete/5fdc8a634098564c24f7de70
 
 ### // Teilnehmer update
-PUT  http://localhost:3000/teilnehmer/edit/:id
+PUT  http://localhost:3000/teilnehmer/edit/5feb2d81728ccf1f6542a691
 Content-Type: application/json
 
 {
@@ -48,4 +48,22 @@ Content-Type: application/json
 
 {
 "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlcmJlcnRAdG9rZW50ZXN0Mi5kZSIsInVzZXJJRCI6IjVmZTcxOTEwODQ5OTA3Njk2NjI2YThlMCIsImlhdCI6MTYwODk4MzQ1MywiZXhwIjoxNjA4OTg3MDUzfQ.szleymoDS1Kli1CyZtV_77m0XWzG-fvPNsl5iOEsW3g"
+}
+
+
+### // teilnehmen
+
+PUT http://localhost:3000/teilnehmer/participate/5feb2d81728ccf1f6542a691
+Content-Type: application/json
+
+{
+  "id": "5ff21f4a00bec85767370674"
+}
+
+### // abmelden
+PUT http://localhost:3000/teilnehmer/deregisterevent/5feb2d81728ccf1f6542a691
+Content-Type: application/json
+
+{
+  "id": "5ff21f4a00bec85767370674"
 }
