@@ -1,4 +1,3 @@
-
 // Erstellt ein Modul mit Services (Factories) und einem zugeh�rigen Controller.
 // F�r das Routing (config) muss die 'ngRoute'-Dependency gealden werden.
 
@@ -225,9 +224,9 @@ app.config(function($routeProvider){
 			templateUrl: 'components/registration.component.html',
 			controller: 'loginController'
 		})
-		.when('/request', {
-			templateUrl: 'components/request.component.html',
-			controller: 'managementController'
+		.when('/request-host', {
+			templateUrl: 'components/request-host.component.html',
+			controller: 'veranstalterController'
 		})
 		.when('/room-overview-management', {
 			templateUrl: 'components/room-overview-management.component.html',
@@ -257,8 +256,8 @@ app.config(function($routeProvider){
 			templateUrl: 'components/event-modify-management.component.html',
 			controller: 'managementController'
 		})
-		.when('/event-search', {
-			templateUrl: 'components/event-search.component.html',
+		.when('/event-search-participant', {
+			templateUrl: 'components/event-search-host.component.html',
 			controller: 'teilnehmerController'
 		})
 		.when('/profile-host', {
@@ -329,8 +328,8 @@ app.config(function($routeProvider){
 			templateUrl: 'components/email-admin.component.html',
 			controller: 'dashboardController'
 		})
-		.when('/user-create', {
-			templateUrl: 'components/user-create.component.html'
+		.when('/user-create-admin', {
+			templateUrl: 'components/user-create-admin.component.html'
 		})
 		.when('/event-modify-management/:id', {
 			templateUrl: 'components/event-modify-management.component.html',
