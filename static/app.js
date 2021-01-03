@@ -1,33 +1,13 @@
-//import {Headers} from '@angular/http';
-//import {Injectable} from "@angular/core";
-
-/*
-export class AuthService {
-	getProfile(){
-		let headers = new Headers();
-		this.loadToken();
-		headers.append('Authorization', this.authToken);
-	}
-	storeUserData(token, user){
-		localStorage.setItem('id_token', token);
-		localStorage.setItem('user', JSON.stringify(user));
-		this.authToken = token;
-	}
-	loadToken(){
-		this.authToken = localStorage.getItem('id_token');
-	}
-}
-*/
 
 // Erstellt ein Modul mit Services (Factories) und einem zugeh�rigen Controller.
 // F�r das Routing (config) muss die 'ngRoute'-Dependency gealden werden.
 
-angular.module('dashboard', ['ngRoute'])
+var app = angular.module('app', ['ngRoute']);
 
 
 	//Erstelle den Service um auf die Kunden-API zuzugreifen.
 	//Dazu mus die HTTP-Dependecy injected werden.
-	.factory('registrierenService', ['$http', function ($http){
+app.factory('registrierenService', ['$http', function ($http){
 		function registrierenTeilnehmer(teilnehmer){
 			return $http.post('/teilnehmer/registration/add', teilnehmer)
 
@@ -44,6 +24,7 @@ angular.module('dashboard', ['ngRoute'])
 	.factory('loginService', ['$http', function ($http){
 		function loginTeilnehmer(daten){
 			return $http.post('/teilnehmer/login', daten)
+				.catch(err=>console.log(err.toString()));
 		}
 		function loginVeranstalter(daten){
 			return $http.post('/veranstalter/login', daten)
@@ -57,8 +38,17 @@ angular.module('dashboard', ['ngRoute'])
 	.factory('teilnehmerService', ['$http', function ($http){
 		function getTeilnehmer(userID){
 			return $http.get('/teilnehmer/showOne/'+ userID)
+				.catch(err=>console.log(err.toString()));
 		}
 		return {getTeilnehmer};
+	}])
+
+	.factory('veranstalterService', ['$http', function ($http){
+		function getVeranstalter(userID){
+			return $http.get('/veranstalter/showOne/'+ userID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {getVeranstalter};
 	}])
 
 	.factory('veranstaltungService', ['$http', function ($http){
@@ -98,114 +88,147 @@ angular.module('dashboard', ['ngRoute'])
 		return {createRaum, getRaeume}
 	}])
 
-
-	// Erstelle den Controller f�r die Dashboar-App. Hier muss der Scope injected werden und alle Services, die verwendet werden sollen.
-	.controller('dashboardController', ['$scope','$routeParams', 'registrierenService', 'loginService', 'teilnehmerService', 'veranstaltungService', 'raumService', function($scope, $routeParams, registrierenService, loginService, teilnehmerService, veranstaltungService, raumService){
-
-		  console.log('Dashboard Controller is running');
-    
-	  	var paramID = $routeParams.id;
-
-    
-	  function getToken(){
+	.factory('tokenService', [ function (){
+		function getToken(){
 			return localStorage.getItem('token_id');
 		}
+
 		function getID(){
 			return localStorage.getItem('user_id');
 		}
+		return{getToken, getID}
+	}])
 
-		function erstelleTeilnehmer(teilnehmer){
-			// Input-Felder zur�cksetzen.
-			$scope.teilnehmer={};
-			// Daten an Service weiterleiten.
-			registrierenService.registrierenTeilnehmer(teilnehmer);
-		}
+app.controller('loginController', ['$scope', 'registrierenService', 'loginService', function ($scope, registrierenService, loginService){
+	console.log('Login Controller is running');
 
-		function erstelleVeranstalter(veranstalter){
-			$scope.veranstalter={};
-			registrierenService.registrierenVeranstalter(veranstalter)
-		}
+	function erstelleTeilnehmer(teilnehmer){
+		// Input-Felder zur�cksetzen.
+		$scope.teilnehmer={};
+		// Daten an Service weiterleiten.
+		registrierenService.registrierenTeilnehmer(teilnehmer);
+	}
 
-		function erstelleManagement(management){
+	function erstelleVeranstalter(veranstalter){
+		$scope.veranstalter={};
+		registrierenService.registrierenVeranstalter(veranstalter)
+	}
+
+	function erstelleManagement(management){
 			$scope.management={};
 			registrierenService.registrierenManagement(management)
-		}
+	}
 
-		function loggeTeilnehmer(daten){
-			$scope.daten={};
-			loginService.loginTeilnehmer(daten).then(function (res){
-				localStorage.setItem('user_id', res.data.userID);
-				localStorage.setItem('token_id', res.data.token);
-			});
-		}
 
-		function loggeVeranstalter(daten){
-			$scope.daten={};
-			loginService.loginVeranstalter(daten);
-		}
+	function loggeTeilnehmer(daten){
+		$scope.daten={};
+		loginService.loginTeilnehmer(daten).then(function (res){
+			localStorage.setItem('user_id', res.data.userID);
+			localStorage.setItem('token_id', res.data.token);
+		}).catch(
+			//error => $scope.error = error
+			//alert(JSON.stringify(error))
+			error => alert(error.message)
+		);
+	}
 
-		function loggeManagement(daten){
+	function loggeVeranstalter(daten){
+		$scope.daten={};
+		loginService.loginVeranstalter(daten).then(function (res){
+			localStorage.setItem('user_id', res.data.userID);
+			localStorage.setItem('token_id', res.data.token);
+		}).catch(
+			error => alert(error.message)
+		);
+	}
+
+	function loggeManagement(daten){
 			$scope.daten={};
 			loginService.loginManagement(daten);
-		}
+	}
 
-		function erstelleVeranstaltung(veranstaltung){
-			$scope.daten={};
-			veranstaltungService.createVeranstaltung(veranstaltung);
-		}
 
-		function erstelleRaum(raum){
-			$scope.raum={};
-			raumService.createRaum(raum);
-		}
+	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
+	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
+	$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
+	$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
+}])
+
+app.controller('teilnehmerController', ['$scope','tokenService', 'teilnehmerService', function($scope, tokenService, teilnehmerService){
+	console.log('Teilnehmer Controller');
+
+	teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
+}])
+
+app.controller('veranstalterController', ['$scope', 'tokenService', 'veranstalterService', function ($scope, tokenService, veranstalterService){
+	console.log('Veranstalter Controller');
+	veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.veranstalter = res.data);
+}])
+
+app.controller('managementController', ['$scope','$routeParams', 'veranstaltungService', 'raumService', function($scope, $routeParams, veranstaltungService, raumService){
+
+	console.log('Management Controller');
+
+	var paramID = $routeParams.id;
+
+
+	function erstelleVeranstaltung(veranstaltung){
+		$scope.daten={};
+		veranstaltungService.createVeranstaltung(veranstaltung);
+	}
+
+	function erstelleRaum(raum){
+		$scope.raum={};
+		raumService.createRaum(raum);
+	}
 
 		/*function updateVeranstaltung(neueVeranstaltung){
 			$scope=neueVeranstaltung={};
 			neueVeranstaltung.titel = neueVeranstaltung.titel;
 			veranstaltungService.editVeranstaltung(neueVeranstaltung);
 		}*/
-	// Die Funtion muss f�r den scope verf�gbar gemacht werden.
-	//$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
 
-		$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
-		$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
+		//$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+
+
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
-		$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
-		$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
 		$scope.loggeManagement = (daten) => loggeManagement(daten);
 
-	  $scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
-	  veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-	  $scope.veranstaltungen = [];
-    $scope.param1 = paramID;
-	  veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 
-  	$scope.erstelleRaum = (raum) => erstelleRaum(raum);
-  	raumService.getRaeume().then(res=>$scope.raeume = res.data);
-  	$scope.raeume = [];
+	  	$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
+	  	$scope.zeigeVeranstaltungen = veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+	  	$scope.veranstaltungen = [];
+	  	$scope.param1 = paramID;
+	  	$scope.zeigeVeranstaltung = veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 
-  	teilnehmerService.getTeilnehmer(getID()).then(res => $scope.teilnehmer = res.data);
+	  	$scope.erstelleRaum = (raum) => erstelleRaum(raum);
+	  	raumService.getRaeume().then(res=>$scope.raeume = res.data);
+	  	$scope.raeume = [];
 
-	  /*$scope.filterByID = function (ID) {
+	  	/*$scope.filterByID = function (ID) {
 		  return ID === 'paramId';
-	  };*/
-    }])
+	  	};*/
+}])
 
 
-	// Hier werden die Routes angelegt, die vom Nutzer angesteuert werden k�nnen sollen.
-	// Die hinterlegten Templates werden in '<div ng-view></div>' der index.html angezeigt.
-	// Bei gr��erne Projekten sollten zu den einzelnen Kompotenten auch (jeweils) eigene Modules angelegt werden,
-	// damit nur die f�r die Anzeige ben�tigten Daten geladen werden.
-.config(function($routeProvider){
+
+
+
+
+
+app.config(function($routeProvider){
 	$routeProvider
 		.when('/login', {
-			templateUrl: 'components/login.component.html'
+			templateUrl: 'components/login.component.html',
+			controller: 'loginController'
 		})
 		.when('/registration', {
-			templateUrl: 'components/registration.component.html'
+			templateUrl: 'components/registration.component.html',
+			controller: 'loginController'
 		})
 		.when('/request', {
-			templateUrl: 'components/request.component.html'
+			templateUrl: 'components/request.component.html',
+			controller: 'managementController'
 		})
 		.when('/room-overview-management', {
 			templateUrl: 'components/room-overview-management.component.html'
@@ -229,19 +252,24 @@ angular.module('dashboard', ['ngRoute'])
 			templateUrl: 'components/event-modify-management.component.html'
 		})
 		.when('/event-search', {
-			templateUrl: 'components/event-search.component.html'
+			templateUrl: 'components/event-search.component.html',
+			controller: 'teilnehmerController'
 		})
 		.when('/profile-host', {
-			templateUrl: 'components/profile-host.component.html'
+			templateUrl: 'components/profile-host.component.html',
+			controller: 'veranstalterController'
 		})
 		.when('/profile-participant', {
-			templateUrl: 'components/profile-participant.component.html'
+			templateUrl: 'components/profile-participant.component.html',
+			controller: 'teilnehmerController'
 		})
 		.when('/event-overview-host', {
-			templateUrl: 'components/event-overview-host.component.html'
+			templateUrl: 'components/event-overview-host.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/event-overview-participant', {
-			templateUrl: 'components/event-overview-participant.component.html'
+			templateUrl: 'components/event-overview-participant.component.html',
+			controller: 'teilnehmerController'
 		})
 		.when('/stats-management', {
 			templateUrl: 'components/stats-management.component.html'
@@ -250,37 +278,51 @@ angular.module('dashboard', ['ngRoute'])
 			templateUrl: 'components/email-management.component.html'
 		})
 		.when('/email-host', {
-			templateUrl: 'components/email-host.component.html'
+			templateUrl: 'components/email-host.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/email-participant', {
-			templateUrl: 'components/email-participant.component.html'
+			templateUrl: 'components/email-participant.component.html',
+			controller: 'teilnehmerController'
 		})
 		.when('/room-overview-admin', {
-			templateUrl: 'components/room-overview-admin.component.html'
+			templateUrl: 'components/room-overview-admin.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/room-modify-admin', {
-			templateUrl: 'components/room-modify-admin.component.html'
+			templateUrl: 'components/room-modify-admin.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/room-create-admin', {
-			templateUrl: 'components/room-create-admin.component.html'
+			templateUrl: 'components/room-create-admin.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/profile-admin', {
-			templateUrl: 'components/profile-admin.component.html'
+			templateUrl: 'components/profile-admin.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/event-overview-admin', {
-			templateUrl: 'components/event-overview-admin.component.html'
+			templateUrl: 'components/event-overview-admin.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/event-create-admin', {
-			templateUrl: 'components/event-create-admin.component.html'
+			templateUrl: 'components/event-create-admin.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/event-modify-admin', {
-			templateUrl: 'components/event-modify-admin.component.html'
+			templateUrl: 'components/event-modify-admin.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/stats-admin', {
-			templateUrl: 'components/stats-admin.component.html'
+			templateUrl: 'components/stats-admin.component.html',
+			controller: 'dashboardController'
 		})
 		.when('/email-admin', {
-			templateUrl: 'components/email-admin.component.html'
+			templateUrl: 'components/email-admin.component.html',
+			controller: 'dashboardController'
+		})
+		.when('/event-modify/:id', {
+			templateUrl: 'components/event-modify.component.html',
 		})
 		.when('/user-create', {
 			templateUrl: 'components/user-create.component.html'
@@ -292,4 +334,4 @@ angular.module('dashboard', ['ngRoute'])
 		.otherwise({
 			redirectTo: '/login'
 		});
-});
+	});
