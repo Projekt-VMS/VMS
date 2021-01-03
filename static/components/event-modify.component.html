@@ -13,30 +13,32 @@
 <div id="roomModify">
     <h2>Veranstaltung 1<i class="fa fa-fw fa-trash"></i></h2>
     <h3>Titel ändern</h3>
-    <p>aktueller Titel:</p>
+    <p>aktueller Titel: {{veranstaltung.titel}}</p>
     <p>neuer Titel:  <input type="text" placeholder="neuer Titel"></p>
     <hr>
     <h3>Raum ändern</h3>
-    <p>aktuelle RID:  1</p>
-    <p>neue RID:  <input type="number" placeholder="neue RID"></p>
+    <p>aktuelle RaumNr.:  {{veranstaltung.raum}}</p>
+    <p>neue RaumNr.:  <input type="number" placeholder="neue RID"></p>
     <hr>
     <h3>Zeitraum ändern</h3>
-    <p>aktuelles Startdatum:  01.01.21</p>
+    <p>aktuelles Startdatum:  {{veranstaltung.start_datum}}</p>
     <p>neues Startdatum:  <input type="date"></p>
-    <p>aktuelles Enddatum:  04.01.21</p>
+    <p>aktuelles Enddatum:  {{veranstaltung.end_datum}}</p>
     <p>neues Enddatum:  <input type="date"></p>
     <hr>
     <h3>Teilnehmerzahl ändern</h3>
-    <p>aktuelle Teilnehmerzahl:  15</p>
+    <p>aktuelle Teilnehmerzahl:  {{veranstaltung.teilnehmerzahl}}</p>
     <p>neue Teilnehmerzahl:  <input type="number" placeholder="neue Anzahl"></p>
     <hr>
-    <h3>Neuen Preis festlegen (in €)</h3>
-    <p>aktueller Preis:  100</p>
+    <h3>Neuen Preis für Teilnehmer festlegen (in €)</h3>
+    <p>aktueller Preis:  {{veranstaltung.teilnehmer_preis}}</p>
     <p>neuer Preis:  <input type="number" placeholder="neuer Preis"></p>
     <hr>
-    <h3>Sichtbarkeit ändern</h3>
-    <p>aktuelle Sichtbarkeit:  öffentlich</p>
-    <p>neue Sichtbarkeit:  <input type="radio" name="visibility">öffentlich<input type="radio" name="visibility">geschlossen</p>
+    <h3>Verfügbarkeit ändern</h3>
+    <p>aktuell:  {{veranstaltung.sichtbarkeit}}</p>
+    <p>änder in:  <input type="radio" name="visibility">öffentlich<input type="radio" name="visibility">geschlossen</p>
+    <h3>Status ändern</h3>
+    <p>aktueller Status:  {{veranstaltung.angebotsstatus}}</p>
     <br>
     <div>
         <button class="loginButton">Änderung bestätigen</button>
