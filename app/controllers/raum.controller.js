@@ -8,10 +8,6 @@ let Raum = require('../models/Raum');
 let Veranstaltung = require ('../models/Veranstaltung');
 
 
-raumController.get(('/raum'), function (req , res){
-    res.sendFile('erstellen.raum.html',{root:'./app/view/'})
-});
-
 //list all
 
 raumController.get('/raum/show', function(req, res){
@@ -21,7 +17,6 @@ raumController.get('/raum/show', function(req, res){
         res.status(500).send(err.toString());
     })
     .then(dbres=>{
-        console.log(dbres);
         res.send(dbres);
     });
 });

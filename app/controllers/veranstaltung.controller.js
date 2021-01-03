@@ -42,7 +42,6 @@ veranstaltungsController.get('/veranstaltung/show', function (req, res) {
                 res.status(500).send(err.toString());
             })
             .then(dbres => {
-                console.log(dbres);
                 res.send(dbres);
             });
 });
