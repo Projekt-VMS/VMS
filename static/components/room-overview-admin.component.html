@@ -11,7 +11,7 @@
     <a href='#!/email-admin'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
-<table border="6">
+<table id="table">
     <tr>
         <th>Raum-Nr.</th>
         <th>Größe</th>
@@ -22,9 +22,9 @@
         <td>{{raum.raumNr}}</td>
         <td>{{raum.kapazitaet}}</td>
         <td>{{raum.raumpreis}}</td>
-        <td><a href="#!/room-modify"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify"></i></a></td>
+        <td><a href="#!/room-modify-admin"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify-admin"></i></a></td>
     </tr>
     <tr>
-        <td colspan="4"><a href="#!/room-create"><button class="addRoomButton" [routerlink]="/room-create">+ weiteren Raum hinzufügen ...</button></a></td>
+        <td colspan="4"><a href="#!/room-create-admin"><button class="addRoomButton" [routerlink]="/room-create-admin">+ weiteren Raum hinzufügen ...</button></a></td>
     </tr>
 </table>

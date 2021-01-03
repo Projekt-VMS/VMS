@@ -15,7 +15,10 @@ app.factory('registrierenService', ['$http', function ($http){
 		function registrierenVeranstalter(veranstalter){
 			return $http.post('/veranstalter/registration/add', veranstalter)
 		}
-		return {registrierenTeilnehmer, registrierenVeranstalter};
+		function registrierenManagement(management){
+			return $http.post('/management/registration/add', management)
+		}
+		return {registrierenTeilnehmer, registrierenVeranstalter, registrierenManagement};
 	}])
 
 	.factory('loginService', ['$http', function ($http){
@@ -26,7 +29,10 @@ app.factory('registrierenService', ['$http', function ($http){
 		function loginVeranstalter(daten){
 			return $http.post('/veranstalter/login', daten)
 		}
-		return {loginTeilnehmer, loginVeranstalter};
+		function loginManagement(daten){
+			return $http.post('/management/login', daten)
+		}
+		return {loginTeilnehmer, loginVeranstalter, loginManagement};
 	}])
 
 	.factory('teilnehmerService', ['$http', function ($http){
@@ -108,6 +114,12 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		registrierenService.registrierenVeranstalter(veranstalter)
 	}
 
+	function erstelleManagement(management){
+			$scope.management={};
+			registrierenService.registrierenManagement(management)
+	}
+
+
 	function loggeTeilnehmer(daten){
 		$scope.daten={};
 		loginService.loginTeilnehmer(daten).then(function (res){
@@ -129,6 +141,12 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			error => alert(error.message)
 		);
 	}
+
+	function loggeManagement(daten){
+			$scope.daten={};
+			loginService.loginManagement(daten);
+	}
+
 
 	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
@@ -172,6 +190,11 @@ app.controller('managementController', ['$scope','$routeParams', 'veranstaltungS
 
 		//$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
 
+
+		$scope.erstelleManagement = (management) => erstelleManagement(management);
+		$scope.loggeManagement = (daten) => loggeManagement(daten);
+
+
 	  	$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 	  	$scope.zeigeVeranstaltungen = veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 	  	$scope.veranstaltungen = [];
@@ -207,33 +230,26 @@ app.config(function($routeProvider){
 			templateUrl: 'components/request.component.html',
 			controller: 'managementController'
 		})
-		.when('/room-overview', {
-			templateUrl: 'components/room-overview.component.html',
-			controller: 'managementController'
+		.when('/room-overview-management', {
+			templateUrl: 'components/room-overview-management.component.html'
 		})
-		.when('/room-modify', {
-			templateUrl: 'components/room-modify.component.html',
-			controller: 'managementController'
+		.when('/room-modify-management', {
+			templateUrl: 'components/room-modify-management.component.html'
 		})
-		.when('/room-create', {
-			templateUrl: 'components/room-create.component.html',
-			controller: 'managementController'
+		.when('/room-create-management', {
+			templateUrl: 'components/room-create-management.component.html'
 		})
-		.when('/profile', {
-			templateUrl: 'components/profile.component.html',
-			controller: 'managementController'
+		.when('/profile-management', {
+			templateUrl: 'components/profile-management.component.html'
 		})
-		.when('/event-overview', {
-			templateUrl: 'components/event-overview.component.html',
-			controller: 'managementController'
+		.when('/event-overview-management', {
+			templateUrl: 'components/event-overview-management.component.html'
 		})
-		.when('/event-create', {
-			templateUrl: 'components/event-create.component.html',
-			controller: 'managementController'
+		.when('/event-create-management', {
+			templateUrl: 'components/event-create-management.component.html'
 		})
-		.when('/event-modify', {
-			templateUrl: 'components/event-modify.component.html',
-			controller: 'managementController'
+		.when('/event-modify-management', {
+			templateUrl: 'components/event-modify-management.component.html'
 		})
 		.when('/event-search', {
 			templateUrl: 'components/event-search.component.html',
@@ -255,13 +271,11 @@ app.config(function($routeProvider){
 			templateUrl: 'components/event-overview-participant.component.html',
 			controller: 'teilnehmerController'
 		})
-		.when('/stats', {
-			templateUrl: 'components/stats.component.html',
-			controller: 'dashboardController'
+		.when('/stats-management', {
+			templateUrl: 'components/stats-management.component.html'
 		})
-		.when('/email', {
-			templateUrl: 'components/email.component.html',
-			controller: 'dashboardController'
+		.when('/email-management', {
+			templateUrl: 'components/email-management.component.html'
 		})
 		.when('/email-host', {
 			templateUrl: 'components/email-host.component.html',
@@ -309,6 +323,12 @@ app.config(function($routeProvider){
 		})
 		.when('/event-modify/:id', {
 			templateUrl: 'components/event-modify.component.html',
+		})
+		.when('/user-create', {
+			templateUrl: 'components/user-create.component.html'
+		})
+		.when('/event-modify-management/:id', {
+			templateUrl: 'components/event-modify-management.component.html',
 			controller: 'dashboardController'
 		})
 		.otherwise({
