@@ -4,6 +4,7 @@ const Management = require('../models/Management');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
+let tokens =[];
 
 //list all
 
@@ -21,8 +22,8 @@ managementController.get('/management/show', function(req, res){
 
 //show one
 
-managementController.get('/management/show/:id', function (req, res) {
-    Management.findOne()
+managementController.get('/management/showOne/:id', function (req, res) {
+    Management.findOne({_id: req.params.id})
         //let raum = Raum["customer" + req.params.id];
         //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
 
@@ -153,6 +154,8 @@ managementController.post('/management/login', (req, res, next) =>{
                 expiresIn: 3600,
                 userID: fetchedUser._id
             });
+            tokens.push(token);
+            console.log(tokens);
             console.log('logged in!')
         }
 

@@ -115,10 +115,9 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	}
 
 	function erstelleManagement(management){
-			$scope.management={};
-			registrierenService.registrierenManagement(management)
+		$scope.management={};
+		registrierenService.registrierenManagement(management)
 	}
-
 
 	function loggeTeilnehmer(daten){
 		$scope.daten={};
@@ -143,15 +142,22 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	}
 
 	function loggeManagement(daten){
-			$scope.daten={};
-			loginService.loginManagement(daten);
+		$scope.daten={};
+		loginService.loginManagement(daten).then(function (res){
+			localStorage.setItem('user_id', res.data.userID);
+			localStorage.setItem('token_id', res.data.token);
+		}).catch(
+			error => alert(error.message)
+		);
 	}
 
 
 	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
+	$scope.erstelleManagement = (management) => erstelleManagement(management);
 	$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
 	$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
+	$scope.loggeManagement = (daten) => loggeManagement(daten);
 }])
 
 app.controller('teilnehmerController', ['$scope','tokenService', 'teilnehmerService', function($scope, tokenService, teilnehmerService){
@@ -191,9 +197,6 @@ app.controller('managementController', ['$scope','$routeParams', 'veranstaltungS
 		//$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
 
 
-		$scope.erstelleManagement = (management) => erstelleManagement(management);
-		$scope.loggeManagement = (daten) => loggeManagement(daten);
-
 
 	  	$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 	  	$scope.zeigeVeranstaltungen = veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
@@ -209,10 +212,6 @@ app.controller('managementController', ['$scope','$routeParams', 'veranstaltungS
 		  return ID === 'paramId';
 	  	};*/
 }])
-
-
-
-
 
 
 

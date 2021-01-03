@@ -4,6 +4,8 @@ const Admin = require('../models/Admin');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
+let tokens=[];
+
 //Registration
 
 adminController.post('/admin/registration/add', function (req, res) {
@@ -82,6 +84,8 @@ adminController.post('/admin/login', (req, res, next) =>{
                 expiresIn: 3600,
                 userID: fetchedUser._id
             });
+            tokens.push(token);
+            console.log(tokens);
             console.log('logged in!')
         }
 
