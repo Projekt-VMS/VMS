@@ -18,8 +18,14 @@
     <input type="checkbox" data-ng-model="price2">25-49
     <input type="checkbox" data-ng-model="price3">50-99
     <input type="checkbox" data-ng-model="price4">100+
+    <br>
+    <label>Teilnehmerzahl:</label>
+    <input type="checkbox" data-ng-model="attendence1">5-9
+    <input type="checkbox" data-ng-model="attendence2">10-19
+    <input type="checkbox" data-ng-model="attendence3">20-49
+    <input type="checkbox" data-ng-model="attendence4">50+
 </div>
-<table id="table" class="sortable" data-ng-if="all">
+<table id="table" data-ng-if="all">
     <tr>
         <th>Titel</th>
         <th>User</th>
@@ -39,7 +45,7 @@
         <td>{{veranstaltung.teilnehmer_preis}}</td>
     </tr>
 </table>
-<table id="table" class="sortable" data-ng-if="available">
+<table id="table" data-ng-if="available">
     <tr>
         <th>Titel</th>
         <th>User</th>
@@ -59,7 +65,7 @@
         <td>{{veranstaltung.teilnehmer_preis}}</td>
     </tr>
 </table>
-<table id="table" class="sortable" data-ng-if="price1">
+<table id="table" data-ng-if="price1">
     <tr>
         <th>Titel</th>
         <th>User</th>
@@ -69,7 +75,7 @@
         <th><i class="fa fa fa-fw fa-user"></i></th>
         <th>Preis in €</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="veranstaltung.teilnehmer_preis < 25">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.veranstalter}}</td>
         <td>{{veranstaltung.raum}}</td>
@@ -79,7 +85,7 @@
         <td>{{veranstaltung.teilnehmer_preis}}</td>
     </tr>
 </table>
-<table id="table" class="sortable" data-ng-if="price1">
+<table id="table" data-ng-if="price2">
     <tr>
         <th>Titel</th>
         <th>User</th>
@@ -89,7 +95,7 @@
         <th><i class="fa fa fa-fw fa-user"></i></th>
         <th>Preis in €</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="(veranstaltung.teilnehmer_preis < 50)&&(veranstaltung.teilnehmer_preis >= 25)">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.veranstalter}}</td>
         <td>{{veranstaltung.raum}}</td>
@@ -99,7 +105,7 @@
         <td>{{veranstaltung.teilnehmer_preis}}</td>
     </tr>
 </table>
-<table id="table" class="sortable" data-ng-if="price1">
+<table id="table" data-ng-if="price3">
     <tr>
         <th>Titel</th>
         <th>User</th>
@@ -109,7 +115,107 @@
         <th><i class="fa fa fa-fw fa-user"></i></th>
         <th>Preis in €</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="(veranstaltung.teilnehmer_preis < 100)&&(veranstaltung.teilnehmer_preis >= 50)">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.veranstalter}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}</td>
+    </tr>
+</table>
+<table id="table" data-ng-if="price4">
+    <tr>
+        <th>Titel</th>
+        <th>User</th>
+        <th>Raum</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th><i class="fa fa fa-fw fa-user"></i></th>
+        <th>Preis in €</th>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="veranstaltung.teilnehmer_preis >= 100">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.veranstalter}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}</td>
+    </tr>
+</table>
+<table id="table" data-ng-if="attendence1">
+    <tr>
+        <th>Titel</th>
+        <th>User</th>
+        <th>Raum</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th><i class="fa fa fa-fw fa-user"></i></th>
+        <th>Preis in €</th>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="veranstaltung.teilnehmerzahl < 10">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.veranstalter}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}</td>
+    </tr>
+</table>
+<table id="table" data-ng-if="attendence2">
+    <tr>
+        <th>Titel</th>
+        <th>User</th>
+        <th>Raum</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th><i class="fa fa fa-fw fa-user"></i></th>
+        <th>Preis in €</th>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="(veranstaltung.teilnehmerzahl < 20)&&(veranstaltung.teilnehmerzahl >= 10)">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.veranstalter}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}</td>
+    </tr>
+</table>
+<table id="table" data-ng-if="attendence3">
+    <tr>
+        <th>Titel</th>
+        <th>User</th>
+        <th>Raum</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th><i class="fa fa fa-fw fa-user"></i></th>
+        <th>Preis in €</th>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="(veranstaltung.teilnehmerzahl < 50)&&(veranstaltung.teilnehmerzahl >= 20)">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.veranstalter}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}</td>
+    </tr>
+</table>
+<table id="table" data-ng-if="attendence4">
+    <tr>
+        <th>Titel</th>
+        <th>User</th>
+        <th>Raum</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th><i class="fa fa fa-fw fa-user"></i></th>
+        <th>Preis in €</th>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="veranstaltung.teilnehmerzahl >= 50">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.veranstalter}}</td>
         <td>{{veranstaltung.raum}}</td>
