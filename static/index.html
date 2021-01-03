@@ -4,12 +4,13 @@
 	VMS
 	</title>
 	  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="style.css">
+	  <link rel="stylesheet" href="style.css">
+
   </head>
   <body data-ng-app='dashboard' data-ng-controller='dashboardController'>
 	  <header>
 		  Event-Booking
-		  <a href="#!/profile"><i class="fa fa-fw fa-user" [routerlink]="/profile"></i></a>
+		  <a href='#!/login'><i class="fa fa-fw fa-user"></i></a>
 	  </header>
 
 
@@ -17,8 +18,9 @@
 	<div data-ng-view></div>
 
 	<!--Importiere Angular �ber das CDN und den app.js-Controller-->
-	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular.min.js'></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.7.0/angular-route.min.js"></script>
-	<script src='app.js'></script>
+	  <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular.min.js'></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.7.0/angular-route.min.js"></script>
+	  <script src='app.js'></script>
+	  <script src="components/sorttable.js"></script>
   </body>
 </html>
