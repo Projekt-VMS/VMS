@@ -175,8 +175,6 @@ angular.module('dashboard', ['ngRoute'])
     }])
 
 
-	}])
-
 	// Hier werden die Routes angelegt, die vom Nutzer angesteuert werden k�nnen sollen.
 	// Die hinterlegten Templates werden in '<div ng-view></div>' der index.html angezeigt.
 	// Bei gr��erne Projekten sollten zu den einzelnen Kompotenten auch (jeweils) eigene Modules angelegt werden,
