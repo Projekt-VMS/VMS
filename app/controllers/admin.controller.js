@@ -6,6 +6,20 @@ const jwt = require("jsonwebtoken");
 
 let tokens=[];
 
+//show one
+adminController.get('/admin/showOne/:id', function (req, res) {
+    Admin.findOne({_id: req.params.id})
+
+        .catch(err => {
+            console.log(err.toString());
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            console.log('aktiver User:'+ dbres);
+            res.send(dbres);
+        });
+});
+
 //Registration
 
 adminController.post('/admin/registration/add', function (req, res) {
