@@ -1,60 +1,60 @@
 <h1>Login</h1>
 <div class="login">
-<div class="container">
-    <label>Nutzer-Typ:</label>
-    <input type="checkbox" data-ng-model="checked">Teilnehmer
-    <input type="checkbox" data-ng-model="checked2">Veranstalter
-</div>
-<div data-ng-if="checked" data-ng-submit='loggeTeilnehmer(daten)'>
     <div class="container">
-        <label>E-Mail:</label>
+        <label>Nutzer-Typ:</label>
+        <input type="checkbox" data-ng-model="checked">Teilnehmer
+        <input type="checkbox" data-ng-model="checked2">Veranstalter
+    </div>
+    <div data-ng-if="checked" data-ng-submit='loggeTeilnehmer(daten)'>
+        <div class="container">
+            <label>E-Mail:</label>
+            <br>
+            <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten.email'>
+        </div>
         <br>
-        <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten.email'>
-    </div>
-    <br>
-    <div class="container">
-        <label>Passwort:</label>
+        <div class="container">
+            <label>Passwort:</label>
+            <br>
+            <input type="text" placeholder="Passwort eingeben" data-ng-model='daten.password'>
+        </div>
         <br>
-        <input type="text" placeholder="Passwort eingeben" data-ng-model='daten.password'>
+        <br>
+        <div class="container">
+            <button data-ng-click='loggeTeilnehmer(daten)' class="loginButton"><a href="#!/event-search">Login</a></button>
+            <button class="cancelButton"><a href="#!/event-overview-management">Cancel</a></button>
+        </div>
+        <br>
+        <p>Du hast noch keinen Account?</p>
+        <p>Dann registriere dich schnell !</p>
+        <br>
+        <div>
+            <button class="loginButton" [routerlink]="/registration"><a href="#!/registration">Registrieren</a></button>
+        </div>
     </div>
-    <br>
-    <br>
-    <div class="container">
-        <button data-ng-click='loggeTeilnehmer(daten)' class="loginButton"><a href="#!/event-search">Login</a></button>
-        <button class="cancelButton"><a href="#!/event-overview">Cancel</a></button>
+    <div data-ng-if="checked2" data-ng-submit='loggeVeranstalter(daten)'>
+        <div class="container">
+            <label>E-Mail:</label>
+            <br>
+            <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten.email'>
+        </div>
+        <br>
+        <div class="container">
+            <label>Passwort:</label>
+            <br>
+            <input type="text" placeholder="Passwort eingeben" data-ng-model='daten.password'>
+        </div>
+        <br>
+        <br>
+        <div class="container">
+            <button data-ng-click='loggeVeranstalter(daten)' class="loginButton" ><a href="#!/request">Login</a></button>
+            <button class="cancelButton"><a href="#!/event-overview-admin">Cancel</a></button>
+        </div>
+        <br>
+        <p>Du hast noch keinen Account?</p>
+        <p>Dann registriere dich schnell !</p>
+        <br>
+        <div>
+            <button class="loginButton" [routerlink]="/registration"><a href="#!/registration">Registrieren</a></button>
+        </div>
     </div>
-    <br>
-    <p>Du hast noch keinen Account?</p>
-    <p>Dann registriere dich schnell !</p>
-    <br>
-    <div>
-        <button class="loginButton" [routerlink]="/registration"><a href="#!/registration">Registrieren</a></button>
-    </div>
-</div>
-<div data-ng-if="checked2" data-ng-submit='loggeVeranstalter(daten)'>
-            <div class="container">
-                <label>E-Mail:</label>
-                <br>
-                <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten.email'>
-            </div>
-            <br>
-            <div class="container">
-                <label>Passwort:</label>
-                <br>
-                <input type="text" placeholder="Passwort eingeben" data-ng-model='daten.password'>
-            </div>
-            <br>
-            <br>
-            <div class="container">
-                <button data-ng-click='loggeVeranstalter(daten)' class="loginButton" ><a href="#!/request">Login</a></button>
-                <button class="cancelButton"><a href="#!/event-overview-admin">Cancel</a></button>
-            </div>
-            <br>
-            <p>Du hast noch keinen Account?</p>
-            <p>Dann registriere dich schnell !</p>
-            <br>
-            <div>
-                <button class="loginButton" [routerlink]="/registration"><a href="#!/registration">Registrieren</a></button>
-            </div>
-</div>
 </div>
