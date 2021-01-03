@@ -69,6 +69,14 @@ input {
 	margin-bottom: 15px;
 }
 
+[type="checkbox"] {
+	margin-left: 2%;
+}
+
+[type="radio"] {
+	margin-left: 2%;
+}
+
 [type="number"] {
 	width: 15%;
 }
@@ -221,6 +229,7 @@ b {
 .filter {
 	margin-top: 1%;
 	margin-left: 21%;
+	padding: 1%;
 }
 
 thead { background: #ddd; }
