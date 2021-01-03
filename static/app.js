@@ -35,7 +35,10 @@ angular.module('dashboard', ['ngRoute'])
 		function registrierenVeranstalter(veranstalter){
 			return $http.post('/veranstalter/registration/add', veranstalter)
 		}
-		return {registrierenTeilnehmer, registrierenVeranstalter};
+		function registrierenManagement(management){
+			return $http.post('/management/registration/add', management)
+		}
+		return {registrierenTeilnehmer, registrierenVeranstalter, registrierenManagement};
 	}])
 
 	.factory('loginService', ['$http', function ($http){
@@ -45,7 +48,10 @@ angular.module('dashboard', ['ngRoute'])
 		function loginVeranstalter(daten){
 			return $http.post('/veranstalter/login', daten)
 		}
-		return {loginTeilnehmer, loginVeranstalter};
+		function loginManagement(daten){
+			return $http.post('/management/login', daten)
+		}
+		return {loginTeilnehmer, loginVeranstalter, loginManagement};
 	}])
 
 	.factory('teilnehmerService', ['$http', function ($http){
@@ -120,6 +126,11 @@ angular.module('dashboard', ['ngRoute'])
 			registrierenService.registrierenVeranstalter(veranstalter)
 		}
 
+		function erstelleManagement(management){
+			$scope.management={};
+			registrierenService.registrierenManagement(management)
+		}
+
 		function loggeTeilnehmer(daten){
 			$scope.daten={};
 			loginService.loginTeilnehmer(daten).then(function (res){
@@ -133,6 +144,10 @@ angular.module('dashboard', ['ngRoute'])
 			loginService.loginVeranstalter(daten);
 		}
 
+		function loggeManagement(daten){
+			$scope.daten={};
+			loginService.loginManagement(daten);
+		}
 
 		function erstelleVeranstaltung(veranstaltung){
 			$scope.daten={};
@@ -154,8 +169,10 @@ angular.module('dashboard', ['ngRoute'])
 
 		$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 		$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
+		$scope.erstelleManagement = (management) => erstelleManagement(management);
 		$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
 		$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
+		$scope.loggeManagement = (daten) => loggeManagement(daten);
 
 	  $scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 	  veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
@@ -190,26 +207,26 @@ angular.module('dashboard', ['ngRoute'])
 		.when('/request', {
 			templateUrl: 'components/request.component.html'
 		})
-		.when('/room-overview', {
-			templateUrl: 'components/room-overview.component.html'
+		.when('/room-overview-management', {
+			templateUrl: 'components/room-overview-management.component.html'
 		})
-		.when('/room-modify', {
-			templateUrl: 'components/room-modify.component.html'
+		.when('/room-modify-management', {
+			templateUrl: 'components/room-modify-management.component.html'
 		})
-		.when('/room-create', {
-			templateUrl: 'components/room-create.component.html'
+		.when('/room-create-management', {
+			templateUrl: 'components/room-create-management.component.html'
 		})
-		.when('/profile', {
-			templateUrl: 'components/profile.component.html'
+		.when('/profile-management', {
+			templateUrl: 'components/profile-management.component.html'
 		})
-		.when('/event-overview', {
-			templateUrl: 'components/event-overview.component.html'
+		.when('/event-overview-management', {
+			templateUrl: 'components/event-overview-management.component.html'
 		})
-		.when('/event-create', {
-			templateUrl: 'components/event-create.component.html'
+		.when('/event-create-management', {
+			templateUrl: 'components/event-create-management.component.html'
 		})
-		.when('/event-modify', {
-			templateUrl: 'components/event-modify.component.html'
+		.when('/event-modify-management', {
+			templateUrl: 'components/event-modify-management.component.html'
 		})
 		.when('/event-search', {
 			templateUrl: 'components/event-search.component.html'
@@ -226,11 +243,11 @@ angular.module('dashboard', ['ngRoute'])
 		.when('/event-overview-participant', {
 			templateUrl: 'components/event-overview-participant.component.html'
 		})
-		.when('/stats', {
-			templateUrl: 'components/stats.component.html'
+		.when('/stats-management', {
+			templateUrl: 'components/stats-management.component.html'
 		})
-		.when('/email', {
-			templateUrl: 'components/email.component.html'
+		.when('/email-management', {
+			templateUrl: 'components/email-management.component.html'
 		})
 		.when('/email-host', {
 			templateUrl: 'components/email-host.component.html'
@@ -265,9 +282,12 @@ angular.module('dashboard', ['ngRoute'])
 		.when('/email-admin', {
 			templateUrl: 'components/email-admin.component.html'
 		})
-		.when('/event-modify/:id', {
-			templateUrl: 'components/event-modify.component.html',
-			//controller: 'dashboardController'
+		.when('/user-create', {
+			templateUrl: 'components/user-create.component.html'
+		})
+		.when('/event-modify-management/:id', {
+			templateUrl: 'components/event-modify-management.component.html',
+			controller: 'dashboardController'
 		})
 		.otherwise({
 			redirectTo: '/login'

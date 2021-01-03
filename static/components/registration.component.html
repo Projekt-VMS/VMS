@@ -35,46 +35,46 @@
         <br>
         <div class="container">
             <button data-ng-click='erstelleTeilnehmer(teilnehmer)' class="loginButton"><a
-                href="#!/login">Registrieren</a></button>
+                    href="#!/login">Registrieren</a></button>
             <button class="cancelButton" [routerlink]="/login"><a href="#!/login">Cancel</a></button>
         </div>
     </div>
     <div data-ng-if="checked2" data-ng-submit='erstelleVeranstalter(veranstalter)'>
-    <div class="container">
-        <label>Name:</label>
+        <div class="container">
+            <label>Name:</label>
+            <br>
+            <input type="text" placeholder="Name eingeben" data-ng-model='veranstalter.name'>
+        </div>
+        <div class="container">
+            <label>Vorname:</label>
+            <br>
+            <input type="text" placeholder="Vorname eingeben" data-ng-model='veranstalter.vorname'>
+        </div>
+        <div class="container">
+            <label>Unternehmen:</label>
+            <br>
+            <input type="text" placeholder="Unternehmen eingeben" data-ng-model='veranstalter.unternehmen'>
+        </div>
+        <div class="container">
+            <label>E-Mail:</label>
+            <br>
+            <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='veranstalter.email'>
+        </div>
+        <div class="container">
+            <label>Passwort:</label>
+            <br>
+            <input type="text" placeholder="Passwort eingeben" data-ng-model='veranstalter.password'>
+        </div>
+        <div class="container">
+            <label>Passwort wiederholen:</label>
+            <br>
+            <input type="text" placeholder="Passwort wiederholen" data-ng-model='veranstalter.password2'>
+        </div>
         <br>
-        <input type="text" placeholder="Name eingeben" data-ng-model='veranstalter.name'>
-    </div>
-    <div class="container">
-        <label>Vorname:</label>
-        <br>
-        <input type="text" placeholder="Vorname eingeben" data-ng-model='veranstalter.vorname'>
-    </div>
-    <div class="container">
-        <label>Unternehmen:</label>
-        <br>
-        <input type="text" placeholder="Unternehmen eingeben" data-ng-model='veranstalter.unternehmen'>
-    </div>
-    <div class="container">
-        <label>E-Mail:</label>
-        <br>
-        <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='veranstalter.email'>
-    </div>
-    <div class="container">
-        <label>Passwort:</label>
-        <br>
-        <input type="text" placeholder="Passwort eingeben" data-ng-model='veranstalter.password'>
-    </div>
-    <div class="container">
-        <label>Passwort wiederholen:</label>
-        <br>
-        <input type="text" placeholder="Passwort wiederholen" data-ng-model='veranstalter.password2'>
-    </div>
-    <br>
-    <div class="container">
-        <button data-ng-click='erstelleVeranstalter(veranstalter)' class="loginButton"><a
-                href="#!/login">Registrieren</a></button>
-        <button class="cancelButton" [routerlink]="/login"><a href="#!/login">Cancel</a></button>
-    </div>
+        <div class="container">
+            <button data-ng-click='erstelleVeranstalter(veranstalter)' class="loginButton"><a
+                    href="#!/login">Registrieren</a></button>
+            <button class="cancelButton" [routerlink]="/login"><a href="#!/login">Cancel</a></button>
+        </div>
     </div>
 </div>

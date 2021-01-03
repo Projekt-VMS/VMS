@@ -10,3 +10,32 @@
     <a href='#!/email-admin'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
+<form id="roomModify" data-ng-submit='erstelleManagement(management)'>
+    <h1>Neuer Management-User</h1>
+    <h3>Name:</h3>
+    <input type="text" placeholder="Nachname eingeben" data-ng-model='management.name'>
+    <br>
+    <hr>
+    <br>
+    <h3>Vorname:</h3>
+    <input type="text" placeholder="Vorname eingeben" data-ng-model='management.vorname'>
+    <br>
+    <hr>
+    <br>
+    <h3>E-Mail-Adresse:</h3>
+    <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='management.email'>
+    <br>
+    <hr>
+    <br>
+    <h3>Passwort:</h3>
+    <input type="text" placeholder="Passwort eingeben" data-ng-model='management.password'>
+    <br>
+    <hr>
+    <br>
+    <h3>Passwort wiederholen:</h3>
+    <input type="text" placeholder="Passwort erneut eingeben" data-ng-model='management.password2'>
+    <br>
+    <br>
+    <br>
+    <button data-ng-click='erstelleManagement(management)' class="loginButton">Registrieren</button>
+</form>
