@@ -14,7 +14,8 @@ let tokens = [];
 
 //show all Teilnehmer
 
-teilnehmerController.get('/teilnehmer', function(req, res){ Teilnehmer.find()
+
+teilnehmerController.get('/teilnehmer/show', function(req, res){ Teilnehmer.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
@@ -26,16 +27,15 @@ teilnehmerController.get('/teilnehmer', function(req, res){ Teilnehmer.find()
 
 //Show one Teilnehmer
 
-teilnehmerController.get('/teilnehmer/show', authenticate.authenticateToken, function (req, res) {
-
-    Teilnehmer.findById(req.currentUser.userID)
+teilnehmerController.get('/teilnehmer/showOne/:id', function (req, res) {
+    Teilnehmer.findOne({_id: req.params.id})
 
         .catch(err => {
             console.log(err.toString());
             res.status(500).send(err.toString());
         })
         .then(dbres => {
-            console.log(dbres);
+            console.log('aktiver User:'+ dbres);
             res.send(dbres);
         });
 });
@@ -120,22 +120,20 @@ teilnehmerController.post('/teilnehmer/login', (req, res, next) =>{
         if (!result) {
             return res.status(401).json({message: 'Login failed: wrong password!'})
         }
-            else {
-
-                const token = jwt.sign(
+        else {
+            const token = jwt.sign(
                 {email: fetchedUser.email, userID: fetchedUser._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
                 {expiresIn: "1h"}
-            );
+                );
         res.status(200).json({
-                token: token,
-                expiresIn: 3600,
-                userID: fetchedUser._id
-            });
+            token: token,
+            expiresIn: 3600,
+            userID: fetchedUser._id
+        });
         tokens.push(token);
         console.log(tokens);
-
         console.log('logged in!')
-            }
+        }
 
     })
         .catch(e=>{

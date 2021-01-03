@@ -1,0 +1,27 @@
+<div class="sidenav">
+    <h1>Management</h1>
+    <a href='#!/profile-management' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
+    <hr>
+    <br>
+    <a href='#!/room-overview-management'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <a href='#!/event-overview-management'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <a href='#!/email-management'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
+</div>
+<div id="profile">
+    <h2>Mein Profil<i class="fa fa-fw fa-trash"></i></h2>
+    <h3>Aktuelle Daten</h3>
+    <p>Vorname:  {{teilnehmer.vorname}}</p>
+    <hr>
+    <p>Nachname:  {{teilnehmer.name}}<button class="profileButton">Ändern</button></p>
+    <hr>
+    <p>E-Mail-Adresse:  {{teilnehmer.email}}<button class="profileButton">Ändern</button></p>
+    <hr>
+    <p>Passwort:  {{teilnehmer.password}}<button class="profileButton">Ändern</button></p>
+    <hr>
+    <p>Nutzertyp:  Management</p>
+    <div id="logoutButton">
+        <button class="loginButton">Abmelden</button>
+    </div>
+</div>

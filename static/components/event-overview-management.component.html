@@ -1,18 +1,16 @@
 <h1 id="roomText">Alle Veranstaltungen</h1>
 <div class="sidenav">
     <h1>Management</h1>
-    <a href='#!/profile'><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
+    <a href='#!/profile-management'><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
     <hr>
-    <a href='#!/dashboard'><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
-    <a href='#!/room-overview'><i class="fa fa-fw fa-list"></i> Räume</a>
-    <a href='#!/event-create'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
-    <a href='#!/event-overview' class="currentPage"><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
-    <a href='#!/email'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
-    <hr>
-    <a href='#!/settings'><i class="fa fa-fw fa-gear"></i> Einstellungen</a>
+    <br>
+    <a href='#!/room-overview-management'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <a href='#!/event-overview-management' class="currentPage"><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <a href='#!/email-management'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
-
-<table border="6">
+<table id="table">
     <tr>
         <th>Titel</th>
         <th>User</th>
@@ -20,12 +18,12 @@
         <th>Von</th>
         <th>Bis</th>
         <th><i class="fa fa fa-fw fa-user"></i></th>
-        <th>Teilnehmerpreis</th>
+        <th>Preis in €</th>
         <th>Art</th>
         <th>Status</th>
         <th> </th>
     </tr>
-    <tr data-ng-repeat='veranstaltung in veranstaltungen'>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.veranstalter}}</td>
         <td>{{veranstaltung.raum}}</td>
@@ -35,10 +33,10 @@
         <td>{{veranstaltung.teilnehmer_preis}}</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
-        <td><a href="#!/event-modify/{{veranstaltung._id}}"><i class="fa fa-fw fa-pencil" ></i></a></td>
+        <td><a href="#!/event-modify-management/{{veranstaltung._id}}"><i class="fa fa-fw fa-pencil" ></i></a></td>
     </tr>
     <tr>
-        <td colspan="11"><a href="#!/event-create"><button class="addRoomButton">+ neue Veranstaltung erstellen ...</button></a></td>
+        <td colspan="10"><a href="#!/event-create-management"><button class="addRoomButton">+ neue Veranstaltung erstellen ...</button></a></td>
     </tr>
 </table>
 <div id="priceText">

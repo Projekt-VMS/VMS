@@ -1,0 +1,32 @@
+<h1 id="roomText">Meine Veranstaltungen</h1>
+<div class="sidenav">
+    <h1>Veranstalter</h1>
+    <a href='#!/profile-host'><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
+    <hr>
+    <br>
+    <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i>Anfrage erstellen</a>
+    <a href='#!/event-overview-host' class="currentPage"><i class="fa fa-fw fa-calendar"></i>Meine Veranstaltungen</a>
+    <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+</div>
+<table id="table">
+    <tr>
+        <th>Titel</th>
+        <th>Raum</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th><i class="fa fa fa-fw fa-user"></i></th>
+        <th>Preis in €</th>
+        <th>Art</th>
+        <th>Status</th>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.veranstalter_preis}}</td>
+        <td>{{veranstaltung.sichtbarkeit}}</td>
+        <td>{{veranstaltung.angebotsstatus}}</td>
+    </tr>
+</table>

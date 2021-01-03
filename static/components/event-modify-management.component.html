@@ -1,0 +1,47 @@
+<div class="sidenav">
+    <h1>Management</h1>
+    <a href='#!/profile-management'><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
+    <hr>
+    <br>
+    <a href='#!/room-overview-management'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <a href='#!/event-overview-management'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <a href='#!/email-management'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
+</div>
+<div id="roomModify" >
+    <h2>Veranstaltung 1<i class="fa fa-fw fa-trash"></i></h2>
+    <h3>Titel ändern</h3>
+    <p>aktueller Titel: {{veranstaltung.titel}}</p>
+    <p>neuer Titel:  <input type="text" placeholder="neuer Titel"></p>
+    <hr>
+    <h3>Raum ändern</h3>
+    <p>aktuelle RaumNr.:  {{veranstaltung.raum}}</p>
+    <p>neue RaumNr.:  <input type="number" placeholder="neue RID"></p>
+    <hr>
+    <h3>Zeitraum ändern</h3>
+    <p>aktuelles Startdatum:  {{veranstaltung.start_datum}}</p>
+    <p>neues Startdatum:  <input type="date"></p>
+    <p>aktuelles Enddatum:  {{veranstaltung.end_datum}}</p>
+    <p>neues Enddatum:  <input type="date"></p>
+    <hr>
+    <h3>Teilnehmerzahl ändern</h3>
+    <p>aktuelle Teilnehmerzahl:  {{veranstaltung.teilnehmerzahl}}</p>
+    <p>neue Teilnehmerzahl:  <input type="number" placeholder="neue Anzahl"></p>
+    <hr>
+    <h3>Neuen Preis für Teilnehmer festlegen (in €)</h3>
+    <p>aktueller Preis:  {{veranstaltung.teilnehmer_preis}}</p>
+    <p>neuer Preis:  <input type="number" placeholder="neuer Preis"></p>
+    <hr>
+    <h3>Verfügbarkeit ändern</h3>
+    <p>aktuell:  {{veranstaltung.sichtbarkeit}}</p>
+    <p>änder in:  <input type="radio" name="visibility">öffentlich<input type="radio" name="visibility">geschlossen</p>
+    <h3>Status ändern</h3>
+    <p>aktueller Status:  {{veranstaltung.angebotsstatus}}</p>
+    <br>
+    <div>
+        <button class="loginButton">Änderung bestätigen</button>
+    </div>
+</div>
+
+

@@ -1,0 +1,41 @@
+<div class="sidenav">
+    <h1>Admin</h1>
+    <a href='#!/profile-admin'><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
+    <hr>
+    <br>
+    <a href='#!/user-create-admin' class="currentPage"><i class="fa fa-fw fa-users"></i> User erstellen</a>
+    <a href='#!/room-overview-admin'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <a href='#!/event-create-admin'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <a href='#!/event-overview-admin'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <a href='#!/email-admin'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
+</div>
+<form id="roomModify" data-ng-submit='erstelleManagement(management)'>
+    <h1>Neuer Management-User</h1>
+    <h3>Name:</h3>
+    <input type="text" placeholder="Nachname eingeben" data-ng-model='management.name'>
+    <br>
+    <hr>
+    <br>
+    <h3>Vorname:</h3>
+    <input type="text" placeholder="Vorname eingeben" data-ng-model='management.vorname'>
+    <br>
+    <hr>
+    <br>
+    <h3>E-Mail-Adresse:</h3>
+    <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='management.email'>
+    <br>
+    <hr>
+    <br>
+    <h3>Passwort:</h3>
+    <input type="text" placeholder="Passwort eingeben" data-ng-model='management.password'>
+    <br>
+    <hr>
+    <br>
+    <h3>Passwort wiederholen:</h3>
+    <input type="text" placeholder="Passwort erneut eingeben" data-ng-model='management.password2'>
+    <br>
+    <br>
+    <br>
+    <button data-ng-click='erstelleManagement(management)' class="loginButton">Registrieren</button>
+</form>
