@@ -4,6 +4,8 @@ const Veranstalter = require('../models/Veranstalter');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
+let tokens = [];
+
 //list all
 
 veranstalterController.get('/veranstalter/show', function(req, res){
@@ -14,7 +16,6 @@ veranstalterController.get('/veranstalter/show', function(req, res){
         console.log(err.toString()); res.status(500).send(err.toString());
     }
     else {
-
         console.log(veranstalter);
         res.send(veranstalter);
     }
@@ -22,20 +23,16 @@ veranstalterController.get('/veranstalter/show', function(req, res){
 
 //show one
 
-veranstalterController.get('/veranstalter/show/:id', function (req, res) {
-    Veranstalter.findOne()
-        .populate('veranstaltungen','titel', 'Veranstaltung')
-        .exec(function(err,result){
+veranstalterController.get('/veranstalter/showOne/:id', function (req, res) {
+    Veranstalter.findOne({_id: req.params.id})
 
-
-            if(err) {
+        .catch(err => {
             console.log(err.toString());
-            res.status(500).send(err.toString())}
-            else {
-                console.log(result);
-                res.send(result);
-            }
-
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            console.log('aktiver User:'+ dbres);
+            res.send(dbres);
         });
 });
 
@@ -96,10 +93,46 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
     }
 });
 
+//login
+veranstalterController.post('/veranstalter/login', (req, res, next) =>{
 
+    let fetchedUser;
+
+    Veranstalter.findOne({email:req.body.email}).then(function(veranstalter){
+        if(!veranstalter){
+            return res.status(401).json({message: 'Login Failed, no such User!'})
+        }
+        fetchedUser=veranstalter;
+        return bcrypt.compare(req.body.password, veranstalter.password);
+    }).then (result => {
+        console.log(fetchedUser)
+        if (!result) {
+            return res.status(401).json({message: 'Login failed: wrong password!'})
+        }
+        else {
+
+            const token = jwt.sign(
+                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
+                {expiresIn: "1h"}
+            );
+            res.status(200).json({
+                token: token,
+                expiresIn: 3600,
+                userID: fetchedUser._id
+            });
+
+            tokens.push(token);
+            console.log(tokens);
+            console.log('logged in!')
+        }
+
+    })
+        .catch(e=>{
+            console.log(e)
+        })
+})
 
 //delete
-
 veranstalterController.delete('/veranstalter/delete/:id', function (req, res, next) {
 
     Veranstalter.findByIdAndRemove({_id: req.params.id},function(err, id){
@@ -134,44 +167,5 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
             }
         });
 });
-
-//login
-
-veranstalterController.post('/veranstalter/login', (req, res, next) =>{
-
-    let fetchedUser;
-
-    Veranstalter.findOne({email:req.body.email}).then(function(veranstalter){
-        if(!veranstalter){
-            return res.status(401).json({message: 'Login Failed, no such User!'})
-        }
-        fetchedUser=veranstalter;
-        return bcrypt.compare(req.body.password, veranstalter.password);
-    }).then (result => {
-        console.log(fetchedUser)
-        if (!result) {
-            return res.status(401).json({message: 'Login failed: wrong password!'})
-        }
-        else {
-
-            const token = jwt.sign(
-                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
-                {expiresIn: "1h"}
-            );
-            res.status(200).json({
-                token: token,
-                expiresIn: 3600,
-                userID: fetchedUser._id
-            });
-            console.log('logged in!')
-        }
-
-    })
-        .catch(e=>{
-            console.log(e)
-        })
-})
-
-
 
 module.exports = veranstalterController;
