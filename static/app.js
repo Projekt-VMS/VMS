@@ -231,25 +231,32 @@ app.config(function($routeProvider){
 			controller: 'managementController'
 		})
 		.when('/room-overview-management', {
-			templateUrl: 'components/room-overview-management.component.html'
+			templateUrl: 'components/room-overview-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/room-modify-management', {
-			templateUrl: 'components/room-modify-management.component.html'
+			templateUrl: 'components/room-modify-management.component.html',
+			controller: 'managementController',
 		})
 		.when('/room-create-management', {
-			templateUrl: 'components/room-create-management.component.html'
+			templateUrl: 'components/room-create-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/profile-management', {
-			templateUrl: 'components/profile-management.component.html'
+			templateUrl: 'components/profile-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/event-overview-management', {
-			templateUrl: 'components/event-overview-management.component.html'
+			templateUrl: 'components/event-overview-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/event-create-management', {
-			templateUrl: 'components/event-create-management.component.html'
+			templateUrl: 'components/event-create-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/event-modify-management', {
-			templateUrl: 'components/event-modify-management.component.html'
+			templateUrl: 'components/event-modify-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/event-search', {
 			templateUrl: 'components/event-search.component.html',
@@ -265,21 +272,23 @@ app.config(function($routeProvider){
 		})
 		.when('/event-overview-host', {
 			templateUrl: 'components/event-overview-host.component.html',
-			controller: 'dashboardController'
+			controller: 'veranstalterController'
 		})
 		.when('/event-overview-participant', {
 			templateUrl: 'components/event-overview-participant.component.html',
 			controller: 'teilnehmerController'
 		})
 		.when('/stats-management', {
-			templateUrl: 'components/stats-management.component.html'
+			templateUrl: 'components/stats-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/email-management', {
-			templateUrl: 'components/email-management.component.html'
+			templateUrl: 'components/email-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/email-host', {
 			templateUrl: 'components/email-host.component.html',
-			controller: 'dashboardController'
+			controller: 'managementController'
 		})
 		.when('/email-participant', {
 			templateUrl: 'components/email-participant.component.html',
@@ -287,49 +296,46 @@ app.config(function($routeProvider){
 		})
 		.when('/room-overview-admin', {
 			templateUrl: 'components/room-overview-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/room-modify-admin', {
 			templateUrl: 'components/room-modify-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/room-create-admin', {
 			templateUrl: 'components/room-create-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/profile-admin', {
 			templateUrl: 'components/profile-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/event-overview-admin', {
 			templateUrl: 'components/event-overview-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/event-create-admin', {
 			templateUrl: 'components/event-create-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/event-modify-admin', {
 			templateUrl: 'components/event-modify-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/stats-admin', {
 			templateUrl: 'components/stats-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/email-admin', {
 			templateUrl: 'components/email-admin.component.html',
 			controller: 'dashboardController'
-		})
-		.when('/event-modify/:id', {
-			templateUrl: 'components/event-modify.component.html',
 		})
 		.when('/user-create', {
 			templateUrl: 'components/user-create.component.html'
 		})
 		.when('/event-modify-management/:id', {
 			templateUrl: 'components/event-modify-management.component.html',
-			controller: 'dashboardController'
+			controller: 'managementController'
 		})
 		.otherwise({
 			redirectTo: '/login'
