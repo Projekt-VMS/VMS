@@ -204,8 +204,8 @@ angular.module('dashboard', ['ngRoute'])
 		.when('/registration', {
 			templateUrl: 'components/registration.component.html'
 		})
-		.when('/request', {
-			templateUrl: 'components/request.component.html'
+		.when('/request-host', {
+			templateUrl: 'components/request-host.component.html'
 		})
 		.when('/room-overview-management', {
 			templateUrl: 'components/room-overview-management.component.html'
@@ -228,8 +228,8 @@ angular.module('dashboard', ['ngRoute'])
 		.when('/event-modify-management', {
 			templateUrl: 'components/event-modify-management.component.html'
 		})
-		.when('/event-search', {
-			templateUrl: 'components/event-search.component.html'
+		.when('/event-search-participant', {
+			templateUrl: 'components/event-search-participant.component.html'
 		})
 		.when('/profile-host', {
 			templateUrl: 'components/profile-host.component.html'
@@ -282,8 +282,8 @@ angular.module('dashboard', ['ngRoute'])
 		.when('/email-admin', {
 			templateUrl: 'components/email-admin.component.html'
 		})
-		.when('/user-create', {
-			templateUrl: 'components/user-create.component.html'
+		.when('/user-create-admin', {
+			templateUrl: 'components/user-create-admin.component.html'
 		})
 		.when('/event-modify-management/:id', {
 			templateUrl: 'components/event-modify-management.component.html',
