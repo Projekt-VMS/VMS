@@ -69,6 +69,22 @@ app.factory('registrierenService', ['$http', function ($http){
 		return {getVeranstalter};
 	}])
 
+	.factory('managementService', ['$http', function ($http){
+		function getManagement(userID){
+			return $http.get('/management/showOne/'+ userID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {getManagement};
+	}])
+
+	.factory('adminService', ['$http', function ($http){
+		function getAdmin(userID){
+			return $http.get('/admin/showOne/'+ userID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {getAdmin};
+	}])
+
 	.factory('veranstaltungService', ['$http', function ($http){
 		function createVeranstaltung(veranstaltung){
 			return $http.post('/veranstaltung/add', veranstaltung)
@@ -240,11 +256,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.loggeOut = () => loggeOut();
 	}])
 
-	.controller('managementController', ['$scope','$routeParams', 'veranstaltungService', 'raumService', function($scope, $routeParams, veranstaltungService, raumService){
+	.controller('managementController', ['$scope','$routeParams', 'tokenService', 'managementService', 'veranstaltungService', 'raumService', function($scope, $routeParams, tokenService, managementService, veranstaltungService, raumService){
 		console.log('Management Controller');
 
 		var paramID = $routeParams.id;
 
+		managementService.getManagement(tokenService.getID()).then(res => $scope.emailManagement = res.data.email);
+		managementService.getManagement(tokenService.getID()).then(res => $scope.management = res.data);
 
 		function erstelleVeranstaltung(veranstaltung){
 			$scope.daten={};
@@ -286,10 +304,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.loggeOut = () => loggeOut();
 	}])
 
-	.controller('adminController', ['$scope','$routeParams', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, veranstaltungService, raumService, registrierenService){
+		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'adminService', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, tokenService, adminService, veranstaltungService, raumService, registrierenService){
 		console.log('Management Controller');
 
 		var paramID = $routeParams.id;
+
+		adminService.getAdmin(tokenService.getID()).then(res => $scope.emailAdmin = res.data.email);
+		adminService.getAdmin(tokenService.getID()).then(res => $scope.admin = res.data);
 
 		function erstelleManagement(management){
 			$scope.management={};
