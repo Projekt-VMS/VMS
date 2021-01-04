@@ -23,8 +23,8 @@ raumController.get('/raum/show', function(req, res){
 
 //show one
 
-raumController.get('/raum/show/:id', function (req, res) {
-        Raum.findOne()
+raumController.get('/raum/showOne/:id', function (req, res) {
+        Raum.findOne({_id: req.params.id})
         //let raum = Raum["customer" + req.params.id];
         //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
 
@@ -79,7 +79,6 @@ raumController.put('/raum/edit/:id',function (req, res, next) {
     Raum.findByIdAndUpdate(
         {_id: req.params.id},
         {
-            raumNr: req.body.raumNr,
             kapazitaet: req.body.kapazitaet,
             raumpreis: req.body.raumpreis
         },
@@ -87,6 +86,7 @@ raumController.put('/raum/edit/:id',function (req, res, next) {
             if (!raum)
                 return next(new Error('raum not found'));
             else {
+                console.log(raum);
                 res.send(raum);
             }
         });

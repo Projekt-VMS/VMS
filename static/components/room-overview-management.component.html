@@ -21,7 +21,7 @@
         <td>{{raum.raumNr}}</td>
         <td>{{raum.kapazitaet}}</td>
         <td>{{raum.raumpreis}}</td>
-        <td><a href="#!/room-modify-management"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify-management"></i></a></td>
+        <td><a href="#!/room-modify-management/{{raum._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify-management"></i></a></td>
     </tr>
     <tr>
         <td colspan="4"><a href="#!/room-create-management"><button class="addRoomButton" [routerlink]="/room-create-management">+ weiteren Raum hinzufügen ...</button></a></td>
