@@ -8,17 +8,18 @@
     <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
 <div id="profile">
-    <h2>Mein Profil<i class="fa fa-fw fa-trash" id="trashIcon"></i></h2>
+    <button class="profileButton"><a href="#!/profile-modify-host">Profil bearbeiten</a></button>
+    <h2>Mein Profil</h2>
     <h3>Aktuelle Daten</h3>
     <p>Vorname: {{veranstalter.vorname}}</p>
     <hr>
-    <p>Nachname: {{veranstalter.name}}<button class="profileButton">Ändern</button></p>
+    <p>Nachname: {{veranstalter.name}}</p>
     <hr>
-    <p>E-Mail-Adresse: {{veranstalter.email}}<button class="profileButton">Ändern</button></p>
+    <p>E-Mail-Adresse: {{veranstalter.email}}</p>
     <hr>
-    <p>Unternehmen: {{veranstalter.unternehmen}}<button class="profileButton">Ändern</button></p>
+    <p>Unternehmen: {{veranstalter.unternehmen}}</p>
     <hr>
-    <p>Passwort: *************<button class="profileButton">Ändern</button></p>
+    <p>Passwort: *************</p>
     <hr>
     <p>Nutzertyp:  Veranstalter</p>
     <div id="logoutButton">

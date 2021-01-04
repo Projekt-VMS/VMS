@@ -8,19 +8,19 @@
     <a href='#!/email-participant'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
 <div id="profile">
-    <h2>Mein Profil<i class="fa fa-fw fa-trash"></i></h2>
+    <button class="profileButton"><a href="#!/profile-modify-participant">Profil bearbeiten</a></button>
+    <h2>Mein Profil</h2>
     <h3>Aktuelle Daten</h3>
     <p>Vorname:  {{teilnehmer.vorname}}</p>
     <hr>
-    <p>Nachname:  {{teilnehmer.name}}<button class="profileButton">Ändern</button></p>
+    <p>Nachname:  {{teilnehmer.name}}</p>
     <hr>
-    <p>E-Mail-Adresse:  {{teilnehmer.email}}<button class="profileButton">Ändern</button></p>
+    <p>E-Mail-Adresse:  {{teilnehmer.email}}</p>
     <hr>
-    <p>Passwort:  {{teilnehmer.password}}<button class="profileButton">Ändern</button></p>
+    <p>Passwort:  *************</p>
     <hr>
     <p>Nutzertyp:  Teilnehmer</p>
     <div id="logoutButton">
-        <button class="loginButton">Abmelden</button>
         <button class="loginButton"><a href="#!/login">Abmelden</a></button>
     </div>
 </div>
