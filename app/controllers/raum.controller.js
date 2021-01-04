@@ -78,9 +78,7 @@ raumController.put('/raum/edit/:id',function (req, res, next) {
 
     Raum.findByIdAndUpdate(
         {_id: req.params.id},
-        {
-            kapazitaet: req.body.kapazitaet,
-            raumpreis: req.body.raumpreis
+        {$set: req.body
         },
         function (err, raum) {
             if (!raum)

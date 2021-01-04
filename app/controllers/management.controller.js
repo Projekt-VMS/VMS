@@ -111,11 +111,7 @@ managementController.put('/management/edit/:id',function (req, res, next) {
 
     Management.findByIdAndUpdate(
         {_id: req.params.id},
-        {
-            name: req.body.name,
-            vorname: req.body.vorname,
-            email: req.body.email,
-            passwort: req.body.passwort
+        {$set:req.body
         },
         function (err, managementuser) {
             if (!managementuser)

@@ -179,21 +179,18 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
         Veranstaltung.findByIdAndUpdate(
             {_id: req.params.id},
             {
-                titel: req.body.titel,
-                //start_datum: req.body.start_datum,
-                //end_datum: req.body.end_datum,
-                //teilnehmerzahl: req.body.teilnehmerzahl,
-                teilnehmer_preis: req.body.teilnehmer_preis,
-                sichtbarkeit: req.body.sichtbarkeit,
-                angebotsstatus: req.body.angebotsstatus,
+                $set: req.body
             },
             function (err, event) {
                 if (!event)
-                    return next(new Error('raum not found'));
+                    return next(new Error('Event not found'));
                 else {
                     res.send(event);
                 }
             });
+
+
+
 
     });
 

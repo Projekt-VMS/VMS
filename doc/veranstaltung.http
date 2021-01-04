@@ -27,11 +27,12 @@ GET http://localhost:3000/veranstaltung/showOne/5fecee5625f7b034db598063
 DELETE http://localhost:3000/veranstaltung/delete/5fdfb9fced9dea3581f17ff0
 
 ### // Veranstaltung update
-PUT  http://localhost:3000/veranstaltung/edit/5fde3a848cbb171f87bcb012
+PUT  http://localhost:3000/veranstaltung/edit/5fecee5625f7b034db598063
 Content-Type: application/json
 
 {
-  "titel": "geupdateter Titel"
+  "titel": "NeuerTitel",
+  "teilnehmerzahl": "10"
 
 }
 ###

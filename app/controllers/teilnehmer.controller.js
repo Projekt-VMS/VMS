@@ -173,11 +173,7 @@ teilnehmerController.put('/teilnehmer/edit/:id',function (req, res, next) {
 
     Teilnehmer.findByIdAndUpdate(
         {_id: req.params.id},
-        {
-            name: req.body.name,
-            vorname: req.body.vorname,
-            email: req.body.email,
-            passwort: req.body.passwort
+        {$set: req.body
         },
         function (err, teilnehmer) {
             if (!teilnehmer)

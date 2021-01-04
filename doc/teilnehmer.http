@@ -27,10 +27,8 @@ PUT  http://localhost:3000/teilnehmer/edit/5feb2d81728ccf1f6542a691
 Content-Type: application/json
 
 {
-  "name": "Update Teesttter",
-  "vorname": "test32123",
-  "email": "test666@test.de",
-  "passwort": "123456"
+  "name": "Müller",
+  "vorname": "Johannes"
 }
 
 ### // log in
