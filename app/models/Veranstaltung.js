@@ -14,7 +14,13 @@ var veranstaltungSchema = new Schema({
         type: mongoose.Schema.Types.Number,
         ref: 'Raum'
     },
-    // teilnehmer: [ embedded]
+    teilnehmer: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Teilnehmer',
+        unique: true
+
+    }],
+
     start_datum: {type: Date, min: today},
     end_datum:{type: Date},
     teilnehmerzahl: {type: Number},
@@ -26,6 +32,7 @@ var veranstaltungSchema = new Schema({
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
 const Veranstaltung = mongoose.model('Veranstaltung', veranstaltungSchema, 'veranstaltungen');
 module.exports = Veranstaltung;
+return veranstaltungSchema;
 
 
 

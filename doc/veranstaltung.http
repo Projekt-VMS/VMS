@@ -5,11 +5,11 @@ Content-Type: application/json
 
 {
   "titel": "BugCheck",
-  "raum": "1",
-  "veranstalter": "5fe095001b550c3f060ed989",
+  "raum": "44",
+  "veranstalter": "frank2@meier2.de",
   "teilnehmerzahl": 8,
-  "start_datum":"2024-01-07",
-  "end_datum": "2024-01-07",
+  "start_datum":"2021-01-04",
+  "end_datum": "2021-01-07",
   "veranstalter_preis": 400,
   "teilnehmer_preis": 25,
   "sichtbarkeit": true,
@@ -21,7 +21,7 @@ Content-Type: application/json
 GET http://localhost:3000/veranstaltung/show
 
 ### // Veranstaltung show one
-GET http://localhost:3000/veranstaltung/showOne/5fecf24d3c728baf92e6278f
+GET http://localhost:3000/veranstaltung/showOne/5fecee5625f7b034db598063
 
 ### // Veranstaltung delete
 DELETE http://localhost:3000/veranstaltung/delete/5fdfb9fced9dea3581f17ff0
