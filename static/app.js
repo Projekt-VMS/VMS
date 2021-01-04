@@ -170,15 +170,27 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	$scope.loggeManagement = (daten) => loggeManagement(daten);
 }])
 
-	.controller('teilnehmerController', ['$scope','tokenService', 'teilnehmerService', function($scope, tokenService, teilnehmerService){
+	.controller('teilnehmerController', ['$scope','tokenService', 'teilnehmerService','veranstaltungService', function($scope, tokenService, teilnehmerService, veranstaltungService){
 	console.log('Teilnehmer Controller');
+	//filter
+	teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.emailTeilnehmer = res.data.email);
 
+	veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+	
 	teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
 }])
 
-	.controller('veranstalterController', ['$scope', 'tokenService', 'veranstalterService', function ($scope, tokenService, veranstalterService){
+	.controller('veranstalterController', ['$scope', 'tokenService', 'veranstalterService', 'veranstaltungService', function ($scope, tokenService, veranstalterService, veranstaltungService){
 	console.log('Veranstalter Controller');
+
+
+	//filter
+	veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.emailVeranstalter = res.data.email);
+
 	veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.veranstalter = res.data);
+	veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+
+
 }])
 
 	.controller('managementController', ['$scope','$routeParams', 'veranstaltungService', 'raumService', function($scope, $routeParams, veranstaltungService, raumService){
@@ -226,9 +238,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 	$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 
-	  	/*$scope.filterByID = function (ID) {
-		  return ID === 'paramId';
-	  	};*/
+
 }])
 
 
