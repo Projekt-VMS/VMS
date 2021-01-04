@@ -82,9 +82,9 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
         errors.push({ msg: 'Please enter all fields' });
     }
 
-    if ((Veranstalter.findOne({email: veranstalter}))) {
+   /* if ((Veranstalter.findOne({email: veranstalter}))) {
            errors.push({msg: 'Veranstalter gibt es nicht'});
-    }
+    }*/
 
     if (errors.length > 0) {
         console.log('fail');

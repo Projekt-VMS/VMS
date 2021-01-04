@@ -18,7 +18,7 @@
         <th><i class="fa fa fa-fw fa-user"></i></th>
         <th>Preis in €</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailTeilnehmer :true | orderBy : 'titel'">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.veranstalter}}</td>
         <td>{{veranstaltung.raum}}</td>
