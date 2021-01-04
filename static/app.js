@@ -91,7 +91,6 @@ app.factory('registrierenService', ['$http', function ($http){
 		}
 
 		function editRaum(raumID, raum){
-			console.log('ID:'+raumID);
 			return	$http.put('/raum/edit/'+raumID, raum)
 				.catch(err=>console.log(err.toString()));
 
@@ -171,18 +170,18 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	$scope.loggeManagement = (daten) => loggeManagement(daten);
 }])
 
-app.controller('teilnehmerController', ['$scope','tokenService', 'teilnehmerService', function($scope, tokenService, teilnehmerService){
+	.controller('teilnehmerController', ['$scope','tokenService', 'teilnehmerService', function($scope, tokenService, teilnehmerService){
 	console.log('Teilnehmer Controller');
 
 	teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
 }])
 
-app.controller('veranstalterController', ['$scope', 'tokenService', 'veranstalterService', function ($scope, tokenService, veranstalterService){
+	.controller('veranstalterController', ['$scope', 'tokenService', 'veranstalterService', function ($scope, tokenService, veranstalterService){
 	console.log('Veranstalter Controller');
 	veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.veranstalter = res.data);
 }])
 
-app.controller('managementController', ['$scope','$routeParams', 'veranstaltungService', 'raumService', function($scope, $routeParams, veranstaltungService, raumService){
+	.controller('managementController', ['$scope','$routeParams', 'veranstaltungService', 'raumService', function($scope, $routeParams, veranstaltungService, raumService){
 
 	console.log('Management Controller');
 
@@ -206,27 +205,26 @@ app.controller('managementController', ['$scope','$routeParams', 'veranstaltungS
 
 	}
 
-		/*function updateVeranstaltung(neueVeranstaltung){
-			$scope=neueVeranstaltung={};
-			neueVeranstaltung.titel = neueVeranstaltung.titel;
-			veranstaltungService.editVeranstaltung(neueVeranstaltung);
-		}*/
-
-		//$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+	function updateVeranstaltung(neueVeranstaltung){
+		$scope.neueVeranstaltung={};
+		veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung);
+	}
 
 
 
-	  	$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
-	  	veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-	  	$scope.veranstaltungen = [];
-	  	$scope.param1 = paramID;
-	  	veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 
-	  	$scope.erstelleRaum = (raum) => erstelleRaum(raum);
-	  	raumService.getRaeume().then(res=>$scope.raeume = res.data);
-	  	$scope.raeume = [];
-	  	raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
-	  	$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
+	$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
+	veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+	$scope.veranstaltungen = [];
+	$scope.param1 = paramID;
+	veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
+	$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+
+	$scope.erstelleRaum = (raum) => erstelleRaum(raum);
+	raumService.getRaeume().then(res=>$scope.raeume = res.data);
+	$scope.raeume = [];
+	raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
+	$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 
 	  	/*$scope.filterByID = function (ID) {
 		  return ID === 'paramId';

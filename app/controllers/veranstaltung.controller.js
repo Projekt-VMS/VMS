@@ -180,10 +180,9 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
             {_id: req.params.id},
             {
                 titel: req.body.titel,
-                start_datum: req.body.start_datum,
-                end_datum: req.body.end_datum,
-                teilnehmerzahl: req.body.teilnehmerzahl,
-                veranstalter_preis: req.body.veranstalter_preis,
+                //start_datum: req.body.start_datum,
+                //end_datum: req.body.end_datum,
+                //teilnehmerzahl: req.body.teilnehmerzahl,
                 teilnehmer_preis: req.body.teilnehmer_preis,
                 sichtbarkeit: req.body.sichtbarkeit,
                 angebotsstatus: req.body.angebotsstatus,
