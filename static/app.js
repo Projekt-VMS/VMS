@@ -31,7 +31,10 @@ app.factory('registrierenService', ['$http', function ($http){
 		function loginManagement(daten){
 			return $http.post('/management/login', daten)
 		}
-		return {loginTeilnehmer, loginVeranstalter, loginManagement};
+		function loginAdmin(daten){
+			return $http.post('/admin/login', daten)
+		}
+		return {loginTeilnehmer, loginVeranstalter, loginManagement, loginAdmin};
 	}])
 
 	.factory('teilnehmerService', ['$http', function ($http){
@@ -124,11 +127,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		registrierenService.registrierenVeranstalter(veranstalter)
 	}
 
-	function erstelleManagement(management){
-		$scope.management={};
-		registrierenService.registrierenManagement(management)
-	}
-
 	function loggeTeilnehmer(daten){
 		$scope.daten={};
 		loginService.loginTeilnehmer(daten).then(function (res){
@@ -161,6 +159,15 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		);
 	}
 
+	function loggeAdmin(daten){
+		$scope.daten={};
+		loginService.loginAdmin(daten).then(function (res){
+			localStorage.setItem('user_id', res.data.userID);
+			localStorage.setItem('token_id', res.data.token);
+		}).catch(
+			error => alert(error.message)
+		);
+	}
 
 	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
@@ -168,6 +175,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
 	$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
 	$scope.loggeManagement = (daten) => loggeManagement(daten);
+	$scope.loggeAdmin = (daten) => loggeAdmin(daten);
+
 }])
 
 	.controller('teilnehmerController', ['$scope','tokenService', 'teilnehmerService', function($scope, tokenService, teilnehmerService){
@@ -182,7 +191,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 }])
 
 	.controller('managementController', ['$scope','$routeParams', 'veranstaltungService', 'raumService', function($scope, $routeParams, veranstaltungService, raumService){
-
 	console.log('Management Controller');
 
 	var paramID = $routeParams.id;
@@ -231,6 +239,54 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	  	};*/
 }])
 
+	.controller('adminController', ['$scope','$routeParams', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, veranstaltungService, raumService, registrierenService){
+		console.log('Management Controller');
+
+		var paramID = $routeParams.id;
+
+		function erstelleManagement(management){
+			$scope.management={};
+			registrierenService.registrierenManagement(management)
+		}
+
+		function erstelleVeranstaltung(veranstaltung){
+			$scope.daten={};
+			veranstaltungService.createVeranstaltung(veranstaltung);
+		}
+
+		function erstelleRaum(raum){
+			$scope.raum={};
+			raumService.createRaum(raum);
+		}
+
+		function updateRaum(neuerRaum){
+			$scope.neuerRaum = {};
+			console.log(neuerRaum);
+			raumService.editRaum(paramID ,neuerRaum);
+
+		}
+
+		function updateVeranstaltung(neueVeranstaltung){
+			$scope.neueVeranstaltung={};
+			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung);
+		}
+
+
+
+		$scope.erstelleManagement = (management) => erstelleManagement(management);
+		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
+		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+		$scope.veranstaltungen = [];
+		$scope.param1 = paramID;
+		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
+		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+
+		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
+		raumService.getRaeume().then(res=>$scope.raeume = res.data);
+		$scope.raeume = [];
+		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
+		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
+	}])
 
 
 app.config(function($routeProvider){
@@ -276,7 +332,7 @@ app.config(function($routeProvider){
 			controller: 'managementController'
 		})
 		.when('/event-search-participant', {
-			templateUrl: 'components/event-search-host.component.html',
+			templateUrl: 'components/event-search-participant.component.html',
 			controller: 'teilnehmerController'
 		})
 		.when('/profile-host', {
@@ -313,43 +369,43 @@ app.config(function($routeProvider){
 		})
 		.when('/room-overview-admin', {
 			templateUrl: 'components/room-overview-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/room-modify-admin', {
 			templateUrl: 'components/room-modify-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/room-create-admin', {
 			templateUrl: 'components/room-create-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/profile-admin', {
 			templateUrl: 'components/profile-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/event-overview-admin', {
 			templateUrl: 'components/event-overview-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/event-create-admin', {
 			templateUrl: 'components/event-create-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/event-modify-admin', {
 			templateUrl: 'components/event-modify-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/stats-admin', {
 			templateUrl: 'components/stats-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/email-admin', {
 			templateUrl: 'components/email-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/user-create-admin', {
 			templateUrl: 'components/user-create-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/profile-modify-management', {
 			templateUrl: 'components/profile-modify-management.component.html',
@@ -357,7 +413,7 @@ app.config(function($routeProvider){
 		})
 		.when('/profile-modify-admin', {
 			templateUrl: 'components/profile-modify-admin.component.html',
-			controller: ''
+			controller: 'adminController'
 		})
 		.when('/profile-modify-host', {
 			templateUrl: 'components/profile-modify-host.component.html',
