@@ -80,11 +80,23 @@ app.factory('registrierenService', ['$http', function ($http){
 		function createRaum(raum){
 			return $http.post('/raum/add', raum)
 		}
+
 		function getRaeume(){
 			return $http.get('/raum/show')
 				.catch(err=>console.log(err.toString()));
 		}
-		return {createRaum, getRaeume}
+
+		function getRaum(raumID){
+			return $http.get('/raum/showOne/'+raumID)
+		}
+
+		function editRaum(raumID, raum){
+			console.log('ID:'+raumID);
+			return	$http.put('/raum/edit/'+raumID, raum)
+				.catch(err=>console.log(err.toString()));
+
+		}
+		return {createRaum, getRaeume, getRaum, editRaum}
 	}])
 
 	.factory('tokenService', [ function (){
@@ -187,6 +199,13 @@ app.controller('managementController', ['$scope','$routeParams', 'veranstaltungS
 		raumService.createRaum(raum);
 	}
 
+	function updateRaum(neuerRaum){
+		$scope.neuerRaum = {};
+		console.log(neuerRaum);
+		raumService.editRaum(paramID ,neuerRaum);
+
+	}
+
 		/*function updateVeranstaltung(neueVeranstaltung){
 			$scope=neueVeranstaltung={};
 			neueVeranstaltung.titel = neueVeranstaltung.titel;
@@ -198,14 +217,16 @@ app.controller('managementController', ['$scope','$routeParams', 'veranstaltungS
 
 
 	  	$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
-	  	$scope.zeigeVeranstaltungen = veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+	  	veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 	  	$scope.veranstaltungen = [];
 	  	$scope.param1 = paramID;
-	  	$scope.zeigeVeranstaltung = veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
+	  	veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 
 	  	$scope.erstelleRaum = (raum) => erstelleRaum(raum);
 	  	raumService.getRaeume().then(res=>$scope.raeume = res.data);
 	  	$scope.raeume = [];
+	  	raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
+	  	$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 
 	  	/*$scope.filterByID = function (ID) {
 		  return ID === 'paramId';
@@ -232,7 +253,7 @@ app.config(function($routeProvider){
 			templateUrl: 'components/room-overview-management.component.html',
 			controller: 'managementController'
 		})
-		.when('/room-modify-management', {
+		.when('/room-modify-management/:id', {
 			templateUrl: 'components/room-modify-management.component.html',
 			controller: 'managementController',
 		})
