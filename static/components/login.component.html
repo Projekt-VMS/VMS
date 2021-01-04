@@ -28,7 +28,7 @@
         <br>
         <div class="container">
             <button data-ng-click='loggeTeilnehmer(daten)' class="loginButton"><a href="#!/event-search-participant">Login</a></button>
-            <button class="cancelButton">Cancel</button>
+            <button class="cancelButton"><a href="#!/login">Cancel</a></button>
         </div>
         <br>
         <p>Du hast noch keinen Account?</p>
@@ -54,7 +54,7 @@
         <br>
         <div class="container">
             <button data-ng-click='loggeVeranstalter(daten)' class="loginButton" ><a href="#!/request-host">Login</a></button>
-            <button class="cancelButton">Cancel</button>
+            <button class="cancelButton"><a href="#!/login">Cancel</a></button>
         </div>
         <br>
         <p>Du hast noch keinen Account?</p>
@@ -64,7 +64,7 @@
             <button class="loginButton" [routerlink]="/registration"><a href="#!/registration">Registrieren</a></button>
         </div>
     </div>
-    <div data-ng-if="checked3" data-ng-submit='loggeManagement(management)'>
+    <div data-ng-if="checked3" data-ng-submit='loggeManagement(daten)'>
         <div class="container">
             <label>E-Mail:</label>
             <br>
@@ -79,8 +79,8 @@
         <br>
         <br>
         <div class="container">
-            <button data-ng-click='loggeManagement(management)' class="loginButton"><a href="#!/event-overview-management">Login</a></button>
-            <button class="cancelButton">Cancel</button>
+            <button data-ng-click='loggeManagement(daten)' class="loginButton"><a href="#!/event-overview-management">Login</a></button>
+            <button class="cancelButton"><a href="#!/login">Cancel</a></button>
         </div>
     </div>
     <div data-ng-if="checked4" data-ng-submit='loggeAdmin(daten)'>
@@ -99,7 +99,7 @@
         <br>
         <div class="container">
             <button data-ng-click='loggeAdmin(daten)' class="loginButton" ><a href="#!/event-overview-admin">Login</a></button>
-            <button class="cancelButton">Cancel</button>
+            <button class="cancelButton"><a href="#!/login">Cancel</a></button>
         </div>
     </div>
 </div>
