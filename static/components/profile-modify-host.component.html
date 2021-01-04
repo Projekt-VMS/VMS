@@ -1,0 +1,31 @@
+<div class="sidenav">
+    <h1>Veranstalter</h1>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
+    <hr>
+    <br>
+    <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+</div>
+<div id="roomModify" data-ng-submit="updateVeranstalter(veranstalter)">
+    <h2>Profil bearbeiten<i class="fa fa-fw fa-trash"></i></h2>
+    <h3>Nachname ändern</h3>
+    <p>aktueller Nachname:  {{veranstalter.name}}</p>
+    <p>neuer Nachname:  <input type="text" placeholder="neuer Nachname" data-ng-model="veranstalter.name"></p>
+    <hr>
+    <h3>E-Mail-Adresse ändern</h3>
+    <p>aktuelle E-Mail-Adresse:  {{veranstalter.email}}</p>
+    <p>neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" data-ng-model="veranstalter.email"></p>
+    <hr>
+    <h3>Passwort ändern</h3>
+    <p>aktuelles Passwort:  {{veranstalter.password}}</p>
+    <p>neues Passwort:  <input type="text" placeholder="neues Passwort" data-ng-model="veranstalter.password"></p>
+    <hr>
+    <h3>Passwort wiederholen</h3>
+    <input type="text" placeholder="Passwort wiederholen" data-ng-model="veranstalter.password2">
+    <br>
+    <br>
+    <div>
+        <button class="loginButton" data-ng-click="updateVeranstalter(veranstalter)">Änderung bestätigen</button>
+    </div>
+</div>

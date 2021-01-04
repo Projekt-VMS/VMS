@@ -1,0 +1,33 @@
+<div class="sidenav">
+    <h1>Management</h1>
+    <a href='#!/profile-management'><i class="fa fa-fw fa-user" id="userIcon"></i><b>Klaus Fischer</b><p>klaus@fischer.de</p></a>
+    <hr>
+    <br>
+    <a href='#!/room-overview-management'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <a href='#!/event-overview-management'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <a href='#!/email-management'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
+</div>
+<div id="roomModify" data-ng-submit="updateManagement(management)">
+    <h2>Profil bearbeiten<i class="fa fa-fw fa-trash"></i></h2>
+    <h3>Nachname ändern</h3>
+    <p>aktueller Nachname:  {{management.name}}</p>
+    <p>neuer Nachname:  <input type="text" placeholder="neuer Nachname" data-ng-model="management.name"></p>
+    <hr>
+    <h3>E-Mail-Adresse ändern</h3>
+    <p>aktuelle E-Mail-Adresse:  {{management.email}}</p>
+    <p>neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" data-ng-model="management.email"></p>
+    <hr>
+    <h3>Passwort ändern</h3>
+    <p>aktuelles Passwort:  {{management.password}}</p>
+    <p>neues Passwort:  <input type="text" placeholder="neues Passwort" data-ng-model="management.password"></p>
+    <hr>
+    <h3>Passwort wiederholen</h3>
+    <input type="text" placeholder="Passwort wiederholen" data-ng-model="management.password2">
+    <br>
+    <br>
+    <div>
+        <button class="loginButton" data-ng-click="updateManagement(management)">Änderung bestätigen</button>
+    </div>
+</div>

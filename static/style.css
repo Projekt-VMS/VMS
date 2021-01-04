@@ -131,7 +131,10 @@ button:hover {
 
 .profileButton {
 	float: right;
-	margin-right: 1%;
+	margin: 3%;
+	margin-left: 0;
+	padding: 0.5%;
+	font-size: x-large;
 }
 
 a {

@@ -11,15 +11,12 @@
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
 <div id="profile">
-    <h2>Mein Profil<i class="fa fa-fw fa-trash"></i></h2>
+    <button class="profileButton"><a href="#!/profile-modify-admin">Profil bearbeiten</a></button>
+    <h2>Mein Profil</h2>
     <h3>Aktuelle Daten</h3>
-    <p>Vorname:  Klaus</p>
+    <p>E-Mail-Adresse:  {{admin.email}}</p>
     <hr>
-    <p>Nachname:  Fischer<button class="profileButton">Ändern</button></p>
-    <hr>
-    <p>E-Mail-Adresse:  klaus@fischer.de<button class="profileButton">Ändern</button></p>
-    <hr>
-    <p>Passwort:  Password123<button class="profileButton">Ändern</button></p>
+    <p>Passwort:  *************</p>
     <hr>
     <p>Nutzertyp:  Admin</p>
     <div id="logoutButton">

@@ -286,7 +286,7 @@ app.config(function($routeProvider){
 		})
 		.when('/email-host', {
 			templateUrl: 'components/email-host.component.html',
-			controller: 'managementController'
+			controller: 'veranstalterController'
 		})
 		.when('/email-participant', {
 			templateUrl: 'components/email-participant.component.html',
@@ -326,10 +326,27 @@ app.config(function($routeProvider){
 		})
 		.when('/email-admin', {
 			templateUrl: 'components/email-admin.component.html',
-			controller: 'dashboardController'
+			controller: ''
 		})
 		.when('/user-create-admin', {
-			templateUrl: 'components/user-create-admin.component.html'
+			templateUrl: 'components/user-create-admin.component.html',
+			controller: ''
+		})
+		.when('/profile-modify-management', {
+			templateUrl: 'components/profile-modify-management.component.html',
+			controller: 'managementController'
+		})
+		.when('/profile-modify-admin', {
+			templateUrl: 'components/profile-modify-admin.component.html',
+			controller: ''
+		})
+		.when('/profile-modify-host', {
+			templateUrl: 'components/profile-modify-host.component.html',
+			controller: 'veranstalterController'
+		})
+		.when('/profile-modify-participant', {
+			templateUrl: 'components/profile-modify-participant.component.html',
+			controller: 'teilnehmerController'
 		})
 		.when('/event-modify-management/:id', {
 			templateUrl: 'components/event-modify-management.component.html',
