@@ -191,11 +191,27 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
 
 
 
-
     });
 
+//get Teilnehmerliste pro Veranstaltung
 
+veranstaltungsController.get('/veranstaltung/showOne/list/:id', function (req, res) {
+    //getVeranstaltungWithVeranstalter(req.params.id);
 
+    Veranstaltung.findOne({_id: req.params.id}, 'teilnehmer')
+        //   .populate('raum')
+        //   .populate('veranstalter')
+        //   .exec()
+        .catch(err => {
+            console.log(err.toString());
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            console.log(dbres);
+            res.send(dbres);
+        });
+
+});
 
 
 module.exports = veranstaltungsController;

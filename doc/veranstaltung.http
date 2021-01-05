@@ -21,7 +21,7 @@ Content-Type: application/json
 GET http://localhost:3000/veranstaltung/show
 
 ### // Veranstaltung show one
-GET http://localhost:3000/veranstaltung/showOne/5fecee5625f7b034db598063
+GET http://localhost:3000/veranstaltung/showOne/5ff357a5a4cd92651c13ec2e
 
 ### // Veranstaltung delete
 DELETE http://localhost:3000/veranstaltung/delete/5fdfb9fced9dea3581f17ff0
@@ -36,6 +36,8 @@ Content-Type: application/json
 
 }
 ###
+// get Teilnehmerliste pro Veranstaltung
+GET http://localhost:3000/veranstaltung/showOne/list/5ff357a5a4cd92651c13ec2e
 
 
 
