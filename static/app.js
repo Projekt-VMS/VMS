@@ -107,7 +107,12 @@ app.factory('registrierenService', ['$http', function ($http){
 				.catch(err=>console.log(err.toString()));
 
 		}
-		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung}
+
+		function deleteVeranstaltung(veranstaltungID){
+			return $http.delete('/veranstaltung/delete/'+veranstaltungID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, deleteVeranstaltung}
     
 	}])
 
@@ -130,7 +135,11 @@ app.factory('registrierenService', ['$http', function ($http){
 				.catch(err=>console.log(err.toString()));
 
 		}
-		return {createRaum, getRaeume, getRaum, editRaum}
+		function deleteRaum(raumID){
+			return $http.delete('/raum/delete/'+raumID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {createRaum, getRaeume, getRaum, editRaum, deleteRaum}
 	}])
 
 	.factory('tokenService', [ function (){
@@ -285,18 +294,28 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung);
 		}
 
+		function loescheVeranstaltung(){
+			veranstaltungService.deleteVeranstaltung(paramID);
+		}
+
+		function loescheRaum(){
+			raumService.deleteRaum(paramID);
+		}
+
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 		$scope.veranstaltungen = [];
 		$scope.param1 = paramID;
 		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+		$scope.loescheVeranstaltung = () => loescheVeranstaltung();
 
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
 		raumService.getRaeume().then(res=>$scope.raeume = res.data);
 		$scope.raeume = [];
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
+		$scope.loescheRaum = () => loescheRaum();
 
 		function loggeOut(){
 			localStorage.clear()
@@ -339,6 +358,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung);
 		}
 
+		function loescheVeranstaltung(){
+			veranstaltungService.deleteVeranstaltung(paramID);
+		}
+
+		function loescheRaum(){
+			raumService.deleteRaum(paramID);
+		}
 
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
@@ -348,12 +374,14 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.param1 = paramID;
 		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+		$scope.loescheVeranstaltung = () => loescheVeranstaltung();
 
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
 		raumService.getRaeume().then(res=>$scope.raeume = res.data);
 		$scope.raeume = [];
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
+		$scope.loescheRaum = () => loescheRaum();
 
 		function loggeOut(){
 			localStorage.clear()

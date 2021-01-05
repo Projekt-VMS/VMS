@@ -11,19 +11,19 @@
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
 <div id="roomModify">
-    <h2>Raum 1<i class="fa fa-fw fa-trash"></i></h2>
+    <h2>Raum {{raum.raumNr}}<button class="deleteButton" data-ng-click="loescheRaum()"><i class="fa fa-fw fa-trash"></i></button></h2>
     <h3>Verfügbarkeit prüfen</h3>
     <p>von:  <input type="date"></p>
     <p>bis:  <input type="date"></p>
     <hr>
     <h3>Neuen Preis festlegen (in €)</h3>
-    <p>aktueller Preis:  75</p>
-    <p>neuer Preis:  <input type="number" placeholder="neuer Preis"></p>
+    <p>aktueller Preis:  {{raum.raumpreis}}</p>
+    <p>neuer Preis:  <input type="number" placeholder="neuer Preis" data-ng-model='neuerRaum.raumpreis'></p>
     <hr>
     <h3>Kapazität ändern</h3>
-    <p>aktuelle Kapazität:  20</p>
-    <p>neue Kapazität:  <input type="number" placeholder="max. 50" max="50"></p>
+    <p>aktuelle Kapazität:  {{raum.kapazitaet}}</p>
+    <p>neue Kapazität:  <input type="number" placeholder="max. 100" max="100" data-ng-model='neuerRaum.kapazitaet'></p>
     <div>
-        <button class="loginButton">Änderung bestätigen</button>
+        <button data-ng-click="updateRaum(neuerRaum)" class="loginButton">Änderung bestätigen</button>
     </div>
 </div>
