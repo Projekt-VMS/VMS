@@ -8,7 +8,7 @@
     <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
 <div id="roomModify" data-ng-submit="updateVeranstalter(veranstalter)">
-    <h2>Profil bearbeiten<i class="fa fa-fw fa-trash"></i></h2>
+    <h2>Profil bearbeiten<a href="#!/login"><button class="deleteButton" data-ng-click="loescheVeranstalter()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <h3>Nachname ändern</h3>
     <p>aktueller Nachname:  {{veranstalter.name}}</p>
     <p>neuer Nachname:  <input type="text" placeholder="neuer Nachname" data-ng-model="veranstalter.name"></p>
