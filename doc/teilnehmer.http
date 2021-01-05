@@ -51,17 +51,21 @@ Content-Type: application/json
 
 ### // teilnehmen
 
-PUT http://localhost:3000/teilnehmer/participate/5fe3297c8e21b55ae88ffcdf
+PUT http://localhost:3000/teilnehmer/participate/5fe716915033ac68eb0cf22e
 Content-Type: application/json
 
 {
-  "id": "5ff357a5a4cd92651c13ec2e"
+  "id": "5fecee5625f7b034db598063"
 }
 
 ### // abmelden
-PUT http://localhost:3000/teilnehmer/deregisterevent/5fe3297c8e21b55ae88ffcdf
+PUT http://localhost:3000/teilnehmer/deregisterevent/5fe1daee71415c4d4e73c01c
 Content-Type: application/json
 
 {
-  "id": "5ff357a5a4cd92651c13ec2e"
+  "id": "5fecee5625f7b034db598063"
 }
+
+### // // get all of the events one user signed up for
+GET http://localhost:3000/teilnehmer/show/5fe310af4e390f7c79986b81
+Content-Type: application/json

@@ -198,10 +198,8 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
 veranstaltungsController.get('/veranstaltung/showOne/list/:id', function (req, res) {
     //getVeranstaltungWithVeranstalter(req.params.id);
 
-    Veranstaltung.findOne({_id: req.params.id}, 'teilnehmer')
-        //   .populate('raum')
-        //   .populate('veranstalter')
-        //   .exec()
+    Veranstaltung.findOne({_id: req.params.id},'teilnehmer')
+        .populate('teilnehmer', 'name vorname email')
         .catch(err => {
             console.log(err.toString());
             res.status(500).send(err.toString());
@@ -210,6 +208,8 @@ veranstaltungsController.get('/veranstaltung/showOne/list/:id', function (req, r
             console.log(dbres);
             res.send(dbres);
         });
+
+
 
 });
 

@@ -242,9 +242,11 @@ teilnehmerController.put('/teilnehmer/deregisterevent/:id', function(req,res) {
         }
         else{Veranstaltungen.findById({_id: req.body.id}, 'teilnehmerzahl teilnehmer', function (err, event) {
             event02 = event;
+            console.log(result02)
+            console.log(event02.teilnehmer)
             event02.teilnehmer.some(e => { //if room on list --> check if user already registered for event
                 if (e == req.params.id) { //if user matches with entry in list --> break
-                    result02 = false;//if matching entries are found --> set result to false
+                    result02 = false//if matching entries are found --> set result to false
                     return false;
                     //= break
                 }
@@ -254,10 +256,11 @@ teilnehmerController.put('/teilnehmer/deregisterevent/:id', function(req,res) {
             if (result02 === false) { //if result is true, user is not yet signed in for event
                 Veranstaltungen.findByIdAndUpdate({_id: req.body.id}, //pushes userID into Veranstaltung
                     {$pull: {teilnehmer: req.params.id}}).exec();
-                res.send("sie wurden erfolgreich abgemeldet!")
-            } else { //if result is not true, user already exists in list
-                res.send("Sie sind nicht für diese Veranstaltung angemeldet!")
-                //result02 = true; //reset result variable
+                res.send("erfolgreich abgemeldet")
+            }
+            else{ //if result is not true, user already exists in list
+                res.send("Sie sind nicht angemeldet!")
+                result = true; //reset result variable
             }
 
         })}
