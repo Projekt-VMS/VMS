@@ -238,6 +238,7 @@ teilnehmerController.put('/teilnehmer/deregisterevent/:id', function(req,res) {
         let newMomentObj = moment(event.start_datum)
         if (newMomentObj.diff(currentDate, 'days') < 1){  //if you want to resign closer then 1 day before start of the event
           resignPossible = false;
+          console.log(newMomentObj.diff(currentDate, 'days'))
         }
         if(resignPossible === false){
             res.status(500).send('Die Rücktrittsfrist ist abgelaufen')
@@ -273,6 +274,18 @@ teilnehmerController.put('/teilnehmer/deregisterevent/:id', function(req,res) {
 
 
 })
+
+
+//all events for specific user
+
+teilnehmerController.get('/teilnehmer/show/:id', function(req, res){
+    Veranstaltungen.find({teilnehmer : [req.params.id]},"titel veranstalter raum start_datum end_datum teilnehmer_preis teilnehmerzahl" )
+        .then(dbres => {
+            console.log(dbres);
+            res.send(dbres);
+    })
+
+});
 
 
 module.exports = teilnehmerController;
