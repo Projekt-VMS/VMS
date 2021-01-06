@@ -1,9 +1,9 @@
 <div class="sidenav">
     <h1>Admin</h1>
-    <a href='#!/profile-admin'><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{admin.name}}</b><p>{{admin.email}}</p></a>
+    <a href='#!/profile-admin'><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.email}}</p></a>
     <hr>
     <br>
-    <a href='#!/user-create-admin'><i class="fa fa-fw fa-users"></i> User erstellen</a>
+    <a href='#!/user-overview-admin'><i class="fa fa-fw fa-users"></i> Management-User</a>
     <a href='#!/room-overview-admin'><i class="fa fa-fw fa-list"></i> Räume</a>
     <a href='#!/event-create-admin'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
     <a href='#!/event-overview-admin'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
@@ -47,6 +47,6 @@
     </div></div>
     <br>
     <div>
-        <button data-ng-click='updateVeranstaltung(neueVeranstaltung)' class="loginButton">Änderung bestätigen</button>
+        <a href="#!/event-overview-admin"><button data-ng-click='updateVeranstaltung(neueVeranstaltung)' class="loginButton">Änderung bestätigen</button></a>
     </div>
 </div>

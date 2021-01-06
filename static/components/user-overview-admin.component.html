@@ -1,0 +1,30 @@
+<h1 id="roomText">Alle Management-User</h1>
+<div class="sidenav">
+    <h1>Admin</h1>
+    <a href='#!/profile-admin'><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.email}}</p></a>
+    <hr>
+    <br>
+    <a href='#!/user-overview-admin' class="currentPage"><i class="fa fa-fw fa-users"></i> Management-User</a>
+    <a href='#!/room-overview-admin'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <a href='#!/event-create-admin'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <a href='#!/event-overview-admin'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <a href='#!/email-admin'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
+</div>
+<table id="table">
+    <tr>
+        <th>Name</th>
+        <th>Vorname</th>
+        <th>E-Mail-Adresse</th>
+        <th> </th>
+    </tr>
+    <tr data-ng-repeat="management in managements">
+        <td>{{management.name}}</td>
+        <td>{{management.vorname}}</td>
+        <td>{{management.email}}</td>
+        <td><a href="#!/user-modify-admin/{{management._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/user-modify-admin"></i></a></td>
+    </tr>
+    <tr>
+        <td colspan="4"><a href="#!/user-create-admin"><button class="addRoomButton" [routerlink]="/user-create-admin">+ weiteren User hinzufügen ...</button></a></td>
+    </tr>
+</table>
