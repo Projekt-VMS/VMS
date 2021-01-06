@@ -89,11 +89,15 @@ app.factory('registrierenService', ['$http', function ($http){
 			return $http.get('/management/showOne/'+ userID)
 				.catch(err=>console.log(err.toString()));
 		}
+		function getManagements(){
+			return $http.get('/management/show')
+				.catch(err=>console.log(err.toString()));
+		}
 		function deleteManagement(userID){
 			return $http.delete('/management/delete/'+userID)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getManagement, deleteManagement};
+		return {getManagement, getManagements, deleteManagement};
 	}])
 
 	.factory('adminService', ['$http', function ($http){
@@ -383,7 +387,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.loggeOut = () => loggeOut();
 	}])
 
-		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'adminService', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, tokenService, adminService, veranstaltungService, raumService, registrierenService){
+		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, tokenService, adminService, managementService, veranstaltungService, raumService, registrierenService){
 		console.log('Admin Controller');
 
 		var paramID = $routeParams.id;
@@ -433,6 +437,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
 		$scope.loescheManagement = () => loescheManagement();
+		managementService.getManagements().then(res=>$scope.managements = res.data);
+		$scope.managements = [];
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 		$scope.veranstaltungen = [];
@@ -593,6 +599,14 @@ app.config(function($routeProvider){
 		.when('/event-modify-management/:id', {
 			templateUrl: 'components/event-modify-management.component.html',
 			controller: 'managementController'
+		})
+		.when('/user-modify-admin/:id', {
+			templateUrl: 'components/user-modify-admin.component.html',
+			controller: 'adminController'
+		})
+		.when('/user-overview-admin', {
+			templateUrl: 'components/user-overview-admin.component.html',
+			controller: 'adminController'
 		})
 		.otherwise({
 			redirectTo: '/login'
