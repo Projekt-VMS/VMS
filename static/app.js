@@ -3,7 +3,6 @@
 
 var app = angular.module('app', ['ngRoute']);
 
-
 	//Erstelle den Service um auf die Kunden-API zuzugreifen.
 	//Dazu mus die HTTP-Dependecy injected werden.
 app.factory('registrierenService', ['$http', function ($http){
@@ -58,11 +57,19 @@ app.factory('registrierenService', ['$http', function ($http){
 			return $http.get('/teilnehmer/showOne/'+ userID)
 				.catch(err=>console.log(err.toString()));
 		}
+
+		function participate(userID, veranstaltung){
+
+			return $http.put('/teilnehmer/participate/' + userID + '/' + veranstaltung)
+				.catch(err=>console.log(err.toString()));
+		}
+
 		function deleteTeilnehmer(userID){
 			return $http.delete('/teilnehmer/delete/'+userID)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getTeilnehmer, deleteTeilnehmer};
+		return {getTeilnehmer, participate, deleteTeilnehmer};
+
 	}])
 
 	.factory('veranstalterService', ['$http', function ($http){
@@ -165,6 +172,14 @@ app.factory('registrierenService', ['$http', function ($http){
 		return{getToken, getID}
 	}])
 
+	.factory('authService',['$http', function($http){
+		function checkToken(token){
+			return $http.get('/auth/check/' +token)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {checkToken}
+	}])
+
 app.controller('loginController', ['$scope', 'registrierenService', 'loginService', function ($scope, registrierenService, loginService){
 	console.log('Login Controller is running');
 
@@ -192,14 +207,18 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	function loggeTeilnehmer(daten){
 		$scope.daten={};
-		loginService.loginTeilnehmer(daten).then(function (res){
-			localStorage.setItem('user_id', res.data.userID);
-			localStorage.setItem('token_id', res.data.token);
-		}).catch(
-			//error => $scope.error = error
-			//alert(JSON.stringify(error))
-			error => alert(error.message)
-		);
+		loginService.loginTeilnehmer(daten).then(
+			function (res) {
+				localStorage.setItem('user_id', res.data.userID);
+				localStorage.setItem('token_id', res.data.token);
+				setTimeout(function () {
+					location.href = '/#!/event-search-participant'
+				}, 500);
+			}, function (err) {
+
+				console.log('error1:' + err)
+				alert(err.message)
+		})
 	}
 
 	function loggeVeranstalter(daten){
@@ -246,28 +265,42 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 }])
 
-	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService', 'teilnehmerService','veranstaltungService', function($scope, $routeParams, tokenService, teilnehmerService, veranstaltungService){
+	.controller('teilnehmerController', ['$scope','tokenService','authService', 'teilnehmerService','veranstaltungService', function($scope, tokenService, authService, teilnehmerService, veranstaltungService){
 		console.log('Teilnehmer Controller');
-
-		var paramID = $routeParams.id;
-
+    
+    var paramID = $routeParams.id;
+    
 		//filter
-		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.emailTeilnehmer = res.data.email);
-		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
+		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmerID = res.data._id);
+
+
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-	
+
+		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
 
 
+		function teilnehmen(veranstaltung){
+			console.log('funktion läuft' + veranstaltung)
+			teilnehmerService.participate(tokenService.getID(), veranstaltung)
+		}
+    function loescheTeilnehmer(){
+			teilnehmerService.deleteTeilnehmer(paramID);
+		}
 		function loggeOut(){
 			localStorage.clear()
 		}
 
-		function loescheTeilnehmer(){
-			teilnehmerService.deleteTeilnehmer(paramID);
-		}
-
+		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
+    $scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
-		$scope.loescheTeilnehmer = () => loescheTeilnehmer();
+
+		/*authService.checkToken(tokenService.getToken()).then(function (res){
+			let bool = res.data;
+			console.log(bool.boolean)
+			if( bool.boolean === 'false') {
+				location.href = '/#!/login'
+			}
+		});*/
 	}])
 
 	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'veranstalterService', 'veranstaltungService', function ($scope, $routeParams, tokenService, veranstalterService, veranstaltungService){
@@ -351,7 +384,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	}])
 
 		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'adminService', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, tokenService, adminService, veranstaltungService, raumService, registrierenService){
-		console.log('Management Controller');
+		console.log('Admin Controller');
 
 		var paramID = $routeParams.id;
 

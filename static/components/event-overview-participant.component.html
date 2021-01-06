@@ -11,20 +11,20 @@
 <table id="table">
     <tr>
         <th>Titel</th>
-        <th>User</th>
+        <th>Veranstalter</th>
         <th>Raum</th>
         <th>Von</th>
         <th>Bis</th>
         <th><i class="fa fa fa-fw fa-user"></i></th>
-        <th>Preis in €</th>
+        <th>Preis</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailTeilnehmer :true | orderBy : 'titel'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: teilnehmerID :true | orderBy : 'titel'">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.veranstalter}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum}}</td>
         <td>{{veranstaltung.end_datum}}</td>
         <td>{{veranstaltung.teilnehmerzahl}}</td>
-        <td>{{veranstaltung.teilnehmer_preis}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}} €</td>
     </tr>
 </table>
