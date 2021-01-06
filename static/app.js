@@ -64,11 +64,17 @@ app.factory('registrierenService', ['$http', function ($http){
 				.catch(err=>console.log(err.toString()));
 		}
 
+		function deregisterEvent(userID, veranstaltung){
+
+			return $http.put('/teilnehmer/deregisterEvent/' + userID + '/' + veranstaltung)
+				.catch(err=>console.log(err.toString()));
+		}
+
 		function deleteTeilnehmer(userID){
 			return $http.delete('/teilnehmer/delete/'+userID)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getTeilnehmer, participate, deleteTeilnehmer};
+		return {getTeilnehmer, participate, deregisterEvent, deleteTeilnehmer};
 
 	}])
 
@@ -78,10 +84,14 @@ app.factory('registrierenService', ['$http', function ($http){
 				.catch(err=>console.log(err.toString()));
 		}
 		function deleteVeranstalter(userID){
-			return $http.delete('/veranstalter/delete/'+userID)
+			return $http.delete('/veranstalter/delete/'+ userID)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getVeranstalter, deleteVeranstalter};
+		function request(userID, daten){
+			return $http.post('/veranstalter/request/'+ userID, daten)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {getVeranstalter, deleteVeranstalter, request};
 	}])
 
 	.factory('managementService', ['$http', function ($http){
@@ -285,8 +295,11 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 
 		function teilnehmen(veranstaltung){
-			console.log('funktion läuft' + veranstaltung)
 			teilnehmerService.participate(tokenService.getID(), veranstaltung)
+		}
+		function abmelden(veranstaltung){
+			console.log('funktion läuft' + veranstaltung)
+			teilnehmerService.deregisterEvent(tokenService.getID(), veranstaltung)
 		}
     	function loescheTeilnehmer(){
 			teilnehmerService.deleteTeilnehmer(paramID);
@@ -296,6 +309,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		}
 
 		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
+		$scope.abmelden = (veranstaltung) => abmelden(veranstaltung);
     	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
 
@@ -315,8 +329,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		//filter
 		veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.emailVeranstalter = res.data.email);
+
 		veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.veranstalter = res.data);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+
+		function anfragen(daten){
+			veranstalterService.request(tokenService.getID(), daten)
+		}
 
 		function loggeOut(){
 			localStorage.clear()
@@ -326,6 +345,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstalterService.deleteVeranstalter(paramID);
 		}
 
+		$scope.anfragen = (daten) => anfragen(daten);
 		$scope.loggeOut = () => loggeOut();
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
 	}])

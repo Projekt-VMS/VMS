@@ -3,6 +3,15 @@ const veranstalterController = express();
 const Veranstalter = require('../models/Veranstalter');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const nodemailer = require('nodemailer');
+let  transport = nodemailer.createTransport({
+    host: "smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+        user: "f91515824063a2",
+        pass: "e0703dbc730281"
+    }
+});
 
 let tokens = [];
 
@@ -162,5 +171,41 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
             }
         });
 });
+
+//anfragen
+veranstalterController.post('/veranstalter/request/:id', function (req, res){
+    console.log(req.params.id)
+
+    const {titel, kapazitaet, start_datum, end_datum, verfuegbarkeit} = req.body
+
+    let errors = [];
+
+    if (!titel || !kapazitaet || !start_datum|| !end_datum || !verfuegbarkeit ) {
+        errors.push({ msg: 'Please enter all fields' });
+    }
+    if (errors.length > 0) {
+        res.send({
+            errors,
+            titel,
+            kapazitaet,
+            start_datum,
+            end_datum,
+            verfuegbarkeit
+        });
+    } else {
+        Veranstalter.findById({_id: req.params.id}, function (err, veranstalter) {
+            let veranstalterEmail = veranstalter.email;
+
+            transport.sendMail({
+                from: veranstalterEmail,
+                to: '',
+                subject: `Anfrage von ${veranstalterEmail}`,
+                text: 'Folgende Anfrage:...'
+            })
+            res.send('Anfrage wurde erfolgreich abgeschickt!'); //sends mail once event is saved
+        })
+    }
+
+})
 
 module.exports = veranstalterController;

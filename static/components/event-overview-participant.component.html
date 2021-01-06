@@ -9,7 +9,7 @@
     <a href='#!/email-participant'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter : teilnehmerID :true | orderBy : 'titel'">
-    <li><button class="participateButton">Abmelden</button><h1>{{veranstaltung.titel}}</h1></li>
+    <li><button data-ng-click='abmelden(veranstaltung._id)' class="participateButton">Abmelden</button><h1>{{veranstaltung.titel}}</h1></li>
     <hr>
     <li>Veranstalter: <span id="searchText">{{veranstaltung.veranstalter}}</span></li>
     <hr>
