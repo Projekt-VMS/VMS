@@ -31,7 +31,7 @@ veranstalterController.get('/veranstalter/showOne/:id', function (req, res) {
             res.status(500).send(err.toString());
         })
         .then(dbres => {
-            console.log('aktiver User:'+ dbres);
+            console.log('aktiver Veranstalter:'+ dbres);
             res.send(dbres);
         });
 });

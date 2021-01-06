@@ -9,7 +9,7 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const authenticate = require('./authentication');
-let tokens = [];
+var tokens = [];
 
 
 //show all Teilnehmer
@@ -105,13 +105,13 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
 
 // login teilnehmer
 
-teilnehmerController.post('/teilnehmer/login', (req, res, next) =>{
+teilnehmerController.post('/teilnehmer/login', (req, res) =>{
 
     let fetchedUser;
     Teilnehmer.findOne({email:req.body.email}).then(function(teilnehmer){
 
         if(!teilnehmer){
-            return res.status(401).json({message: 'Login Failed, no such User!'})
+            return res.status(401).json({message: 'Login Failed, no such User!'});
         }
         fetchedUser=teilnehmer;
         return bcrypt.compare(req.body.password, teilnehmer.password);
@@ -196,8 +196,10 @@ teilnehmerController.delete('/teilnehmer/logout', function (req, res) {
 // teilnehmen
 let events;
 let result = true;
-teilnehmerController.put('/teilnehmer/participate/:id', function(req,res) {
-    Veranstaltungen.findById({_id: req.body.id}, 'teilnehmerzahl teilnehmer', function (err, event) {
+teilnehmerController.put('/teilnehmer/participate/:id/:veranstaltung', function(req,res) {
+    console.log('...')
+    console.log(req.params.veranstaltung)
+    Veranstaltungen.findById({_id: req.params.veranstaltung}, 'teilnehmerzahl teilnehmer', function (err, event) {
         events = event;
         if (event.teilnehmerzahl === event.teilnehmer.length) { // checks if max number of participants is already reached
             res.status(500).send("Veranstaltung ist bereits ausgebucht!") //err if max Teilnehmeranzahl is reached
@@ -211,7 +213,7 @@ teilnehmerController.put('/teilnehmer/participate/:id', function(req,res) {
                 })
 
             if (result === true) { //if result is true, user is not yet signed in for event
-                Veranstaltungen.findByIdAndUpdate({_id: req.body.id}, //pushes userID into Veranstaltung
+                Veranstaltungen.findByIdAndUpdate({_id: req.params.veranstaltung}, //pushes userID into Veranstaltung
                     {$push: {teilnehmer: req.params.id}}).exec();
                 res.send("sie wurden erfolgreich angemeldet!")
             }
@@ -265,7 +267,5 @@ teilnehmerController.put('/teilnehmer/deregisterevent/:id', function(req,res) {
 })
 
 
-
-
-
 module.exports = teilnehmerController;
+
