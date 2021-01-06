@@ -63,7 +63,13 @@ app.factory('registrierenService', ['$http', function ($http){
 			return $http.put('/teilnehmer/participate/' + userID + '/' + veranstaltung)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getTeilnehmer, participate};
+
+		function deleteTeilnehmer(userID){
+			return $http.delete('/teilnehmer/delete/'+userID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {getTeilnehmer, participate, deleteTeilnehmer};
+
 	}])
 
 	.factory('veranstalterService', ['$http', function ($http){
@@ -71,7 +77,11 @@ app.factory('registrierenService', ['$http', function ($http){
 			return $http.get('/veranstalter/showOne/'+ userID)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getVeranstalter};
+		function deleteVeranstalter(userID){
+			return $http.delete('/veranstalter/delete/'+userID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {getVeranstalter, deleteVeranstalter};
 	}])
 
 	.factory('managementService', ['$http', function ($http){
@@ -79,7 +89,11 @@ app.factory('registrierenService', ['$http', function ($http){
 			return $http.get('/management/showOne/'+ userID)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getManagement};
+		function deleteManagement(userID){
+			return $http.delete('/management/delete/'+userID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {getManagement, deleteManagement};
 	}])
 
 	.factory('adminService', ['$http', function ($http){
@@ -112,7 +126,12 @@ app.factory('registrierenService', ['$http', function ($http){
 				.catch(err=>console.log(err.toString()));
 
 		}
-		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung}
+
+		function deleteVeranstaltung(veranstaltungID){
+			return $http.delete('/veranstaltung/delete/'+veranstaltungID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, deleteVeranstaltung}
     
 	}])
 
@@ -135,7 +154,11 @@ app.factory('registrierenService', ['$http', function ($http){
 				.catch(err=>console.log(err.toString()));
 
 		}
-		return {createRaum, getRaeume, getRaum, editRaum}
+		function deleteRaum(raumID){
+			return $http.delete('/raum/delete/'+raumID)
+				.catch(err=>console.log(err.toString()));
+		}
+		return {createRaum, getRaeume, getRaum, editRaum, deleteRaum}
 	}])
 
 	.factory('tokenService', [ function (){
@@ -244,7 +267,9 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	.controller('teilnehmerController', ['$scope','tokenService','authService', 'teilnehmerService','veranstaltungService', function($scope, tokenService, authService, teilnehmerService, veranstaltungService){
 		console.log('Teilnehmer Controller');
-
+    
+    var paramID = $routeParams.id;
+    
 		//filter
 		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmerID = res.data._id);
 
@@ -253,14 +278,20 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
 
+
 		function teilnehmen(veranstaltung){
 			console.log('funktion läuft' + veranstaltung)
 			teilnehmerService.participate(tokenService.getID(), veranstaltung)
 		}
+    function loescheTeilnehmer(){
+			teilnehmerService.deleteTeilnehmer(paramID);
+		}
 		function loggeOut(){
 			localStorage.clear()
 		}
+
 		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
+    $scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
 
 		/*authService.checkToken(tokenService.getToken()).then(function (res){
@@ -272,20 +303,26 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		});*/
 	}])
 
-	.controller('veranstalterController', ['$scope', 'tokenService', 'veranstalterService', 'veranstaltungService', function ($scope, tokenService, veranstalterService, veranstaltungService){
+	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'veranstalterService', 'veranstaltungService', function ($scope, $routeParams, tokenService, veranstalterService, veranstaltungService){
 		console.log('Veranstalter Controller');
 
+		var paramID = $routeParams.id;
 
 		//filter
 		veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.emailVeranstalter = res.data.email);
-
 		veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.veranstalter = res.data);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 
 		function loggeOut(){
 			localStorage.clear()
 		}
+
+		function loescheVeranstalter(){
+			veranstalterService.deleteVeranstalter(paramID);
+		}
+
 		$scope.loggeOut = () => loggeOut();
+		$scope.loescheVeranstalter = () => loescheVeranstalter();
 	}])
 
 	.controller('managementController', ['$scope','$routeParams', 'tokenService', 'managementService', 'veranstaltungService', 'raumService', function($scope, $routeParams, tokenService, managementService, veranstaltungService, raumService){
@@ -317,18 +354,28 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung);
 		}
 
+		function loescheVeranstaltung(){
+			veranstaltungService.deleteVeranstaltung(paramID);
+		}
+
+		function loescheRaum(){
+			raumService.deleteRaum(paramID);
+		}
+
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 		$scope.veranstaltungen = [];
 		$scope.param1 = paramID;
 		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+		$scope.loescheVeranstaltung = () => loescheVeranstaltung();
 
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
 		raumService.getRaeume().then(res=>$scope.raeume = res.data);
 		$scope.raeume = [];
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
+		$scope.loescheRaum = () => loescheRaum();
 
 		function loggeOut(){
 			localStorage.clear()
@@ -347,6 +394,10 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		function erstelleManagement(management){
 			$scope.management={};
 			registrierenService.registrierenManagement(management)
+		}
+
+		function loescheManagement() {
+			managementService.deleteManagement(paramID);
 		}
 
 		function erstelleVeranstaltung(veranstaltung){
@@ -371,21 +422,31 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung);
 		}
 
+		function loescheVeranstaltung(){
+			veranstaltungService.deleteVeranstaltung(paramID);
+		}
+
+		function loescheRaum(){
+			raumService.deleteRaum(paramID);
+		}
 
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
+		$scope.loescheManagement = () => loescheManagement();
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 		$scope.veranstaltungen = [];
 		$scope.param1 = paramID;
 		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+		$scope.loescheVeranstaltung = () => loescheVeranstaltung();
 
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
 		raumService.getRaeume().then(res=>$scope.raeume = res.data);
 		$scope.raeume = [];
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
+		$scope.loescheRaum = () => loescheRaum();
 
 		function loggeOut(){
 			localStorage.clear()
@@ -477,7 +538,7 @@ app.config(function($routeProvider){
 			templateUrl: 'components/room-overview-admin.component.html',
 			controller: 'adminController'
 		})
-		.when('/room-modify-admin', {
+		.when('/room-modify-admin/:id', {
 			templateUrl: 'components/room-modify-admin.component.html',
 			controller: 'adminController'
 		})
@@ -497,7 +558,7 @@ app.config(function($routeProvider){
 			templateUrl: 'components/event-create-admin.component.html',
 			controller: 'adminController'
 		})
-		.when('/event-modify-admin', {
+		.when('/event-modify-admin/:id', {
 			templateUrl: 'components/event-modify-admin.component.html',
 			controller: 'adminController'
 		})
@@ -521,11 +582,11 @@ app.config(function($routeProvider){
 			templateUrl: 'components/profile-modify-admin.component.html',
 			controller: 'adminController'
 		})
-		.when('/profile-modify-host', {
+		.when('/profile-modify-host/:id', {
 			templateUrl: 'components/profile-modify-host.component.html',
 			controller: 'veranstalterController'
 		})
-		.when('/profile-modify-participant', {
+		.when('/profile-modify-participant/:id', {
 			templateUrl: 'components/profile-modify-participant.component.html',
 			controller: 'teilnehmerController'
 		})

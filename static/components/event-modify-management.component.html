@@ -10,7 +10,7 @@
     <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
 <div id="roomModify"  data-ng-submit='updateVeranstaltung(neueVeranstaltung)' >
-    <h2>Veranstaltung: {{veranstaltung.titel}}<i class="fa fa-fw fa-trash"></i></h2>
+    <h2>Veranstaltung: {{veranstaltung.titel}}<button class="deleteButton" data-ng-click="loescheVeranstaltung()"><i class="fa fa-fw fa-trash"></i></button></h2>
     <p>im Raum:  {{veranstaltung.raum}}</p>
     <p>mit dem Veranstalter:  {{veranstaltung.veranstalter}}</p>
     <hr>

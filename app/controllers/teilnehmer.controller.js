@@ -205,7 +205,6 @@ teilnehmerController.put('/teilnehmer/participate/:id/:veranstaltung', function(
             res.status(500).send("Veranstaltung ist bereits ausgebucht!") //err if max Teilnehmeranzahl is reached
         } else {
             events.teilnehmer.some(e => { //if room on list --> check if user already registered for event
-                   console.log(e)
                     if (e == req.params.id) { //if user matches with entry in list --> break
                         result = false; //if matching entries are found --> set result to false
                         return true; //= break
@@ -233,36 +232,45 @@ teilnehmerController.put('/teilnehmer/deregisterevent/:id', function(req,res) {
     let currentDate = moment();
     let resignPossible = true; // Abmeldung von Veranstaltung ist möglich
     let event02;
-    let result02 = false;
+    let result02 = true;
 
     Veranstaltungen.findById({_id: req.body.id}, function(err,event){ //checks if Rücktrittsfrist is over
         let newMomentObj = moment(event.start_datum)
-        if (newMomentObj.diff(currentDate, 'hours') < 24){  //if you want to resign closer then 1 day before start of the event
+        if (newMomentObj.diff(currentDate, 'days') < 1){  //if you want to resign closer then 1 day before start of the event
           resignPossible = false;
         }
-        console.log(newMomentObj.diff(currentDate,'hours'))
         if(resignPossible === false){
-            res.status(500).send('Die Rücktrittsfrist ist abgelaufen!')
+            res.status(500).send('Die Rücktrittsfrist ist abgelaufen')
         }
-    })
-
-    Veranstaltungen.findById({_id: req.body.id}, 'teilnehmerzahl teilnehmer', function (err, event) {
-        event02 = event;
-        event02.teilnehmer.some(e => { //if room on list --> check if user already registered for event
-            if (e == req.params.id) { //if user matches with entry in list --> break
-                    result02 = false; //if matching entries are found --> set result to false
-                    return true; //= break
+        else{Veranstaltungen.findById({_id: req.body.id}, 'teilnehmerzahl teilnehmer', function (err, event) {
+            event02 = event;
+            console.log(result02)
+            console.log(event02.teilnehmer)
+            event02.teilnehmer.some(e => { //if room on list --> check if user already registered for event
+                if (e == req.params.id) { //if user matches with entry in list --> break
+                    result02 = false//if matching entries are found --> set result to false
+                    return false;
+                    //= break
                 }
+
             })
+            console.log(result02)
             if (result02 === false) { //if result is true, user is not yet signed in for event
                 Veranstaltungen.findByIdAndUpdate({_id: req.body.id}, //pushes userID into Veranstaltung
                     {$pull: {teilnehmer: req.params.id}}).exec();
-                res.send("sie wurden erfolgreich abgemeldet!")
-            } else { //if result is not true, user already exists in list
-                res.send("Sie sind nicht für diese Veranstaltung angemeldet!")
-                result02 = true; //reset result variable
+                res.send("erfolgreich abgemeldet")
             }
-        })
+            else{ //if result is not true, user already exists in list
+                res.send("Sie sind nicht angemeldet!")
+                result = true; //reset result variable
+            }
+
+        })}
+
+    })
+
+
+
 
 })
 
