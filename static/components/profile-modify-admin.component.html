@@ -1,9 +1,9 @@
 <div class="sidenav">
     <h1>Admin</h1>
-    <a href='#!/profile-admin'><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{admin.name}}</b><p>{{admin.email}}</p></a>
+    <a href='#!/profile-admin'><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.email}}</p></a>
     <hr>
     <br>
-    <a href='#!/user-create-admin'><i class="fa fa-fw fa-users"></i> User erstellen</a>
+    <a href='#!/user-overview-admin'><i class="fa fa-fw fa-users"></i> Management-User</a>
     <a href='#!/room-overview-admin'><i class="fa fa-fw fa-list"></i> Räume</a>
     <a href='#!/event-create-admin'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
     <a href='#!/event-overview-admin'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
@@ -11,7 +11,7 @@
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
 <div id="roomModify" data-ng-submit="updateAdmin(admin)">
-    <h2>Profil bearbeiten<i class="fa fa-fw fa-trash"></i></h2>
+    <h2>Profil bearbeiten</h2>
     <h3>E-Mail-Adresse ändern</h3>
     <p>aktuelle E-Mail-Adresse:  {{admin.email}}</p>
     <p>neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" data-ng-model="admin.email"></p>
@@ -25,6 +25,6 @@
     <br>
     <br>
     <div>
-        <button class="loginButton" data-ng-click="updateAdmin(admin)">Änderung bestätigen</button>
+        <a href="#!/profile-admin"><button class="loginButton" data-ng-click="updateAdmin(admin)">Änderung bestätigen</button></a>
     </div>
 </div>

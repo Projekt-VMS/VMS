@@ -15,17 +15,17 @@
         <th>Von</th>
         <th>Bis</th>
         <th><i class="fa fa fa-fw fa-user"></i></th>
-        <th>Preis in €</th>
+        <th>Preis</th>
         <th>Art</th>
         <th>Status</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum}}</td>
         <td>{{veranstaltung.end_datum}}</td>
         <td>{{veranstaltung.teilnehmerzahl}}</td>
-        <td>{{veranstaltung.teilnehmer_preis}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
     </tr>
