@@ -7,12 +7,12 @@
     <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
     <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
-<div id="request">
+<div id="request" data-ng-submit='anfragen(daten)'>
     <p class="requestText">Meetings, Seminare, Kurse aller Art, nutze unser großes Angebot an Räumlichkeiten.</p>
     <label>Welche Veranstaltung planst du?</label>
     <br>
     <br>
-    <input type="text" placeholder="Titel der Veranstaltung">
+    <input type="text" placeholder="Titel der Veranstaltung"  data-ng-model='daten.titel'>
     <br>
     <hr>
     <br>
@@ -20,7 +20,7 @@
     <label>Wie viel Platz brauchst du?</label>
     <br>
     <br>
-    <input type="number" placeholder="max. 100" max="100">
+    <input type="number" placeholder="max. 100" max="100" data-ng-model='daten.kapazitaet'>
     <br>
     <hr>
     <br>
@@ -28,8 +28,8 @@
     <label>Wann soll deine Veranstaltung stattfinden?</label>
     <br>
     <br>
-    <input type="date" placeholder="von">
-    <input type="date" placeholder="bis">
+    <input type="date" placeholder="von" data-ng-model='daten.start_datum'>
+    <input type="date" placeholder="bis"data-ng-model='daten.end_datum'>
     <br>
     <hr>
     <br>
@@ -37,11 +37,12 @@
     <label>Für wen soll deine Veranstaltung sichtbar sein?</label>
     <br>
     <br>
-    <input type="radio" name="visibility">öffentlich<input type="radio" name="visibility">geschlossen
+    <p>Öffentlich: <input type="checkbox" data-ng-model='daten.angebotsstatus' data-ng-true-value="'Öffentlich'"></p>
+    <p>Privat: <input type="checkbox" data-ng-model='daten.angebotsstatus' data-ng-true-value="'Privat'"></p>
     <br>
     <br>
     <div>
-        <button class="loginButton">Anfragen</button>
+        <button data-ng-click='anfragen(daten)' class="loginButton">Anfragen</button>
     </div>
 </div>
 
