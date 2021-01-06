@@ -269,10 +269,10 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 }])
 
-	.controller('teilnehmerController', ['$scope','tokenService','authService', 'teilnehmerService','veranstaltungService', function($scope, tokenService, authService, teilnehmerService, veranstaltungService){
+	.controller('teilnehmerController', ['$scope', '$routeParams', 'tokenService','authService', 'teilnehmerService','veranstaltungService', function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService){
 		console.log('Teilnehmer Controller');
     
-    var paramID = $routeParams.id;
+    	var paramID = $routeParams.id;
     
 		//filter
 		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmerID = res.data._id);
@@ -287,7 +287,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			console.log('funktion läuft' + veranstaltung)
 			teilnehmerService.participate(tokenService.getID(), veranstaltung)
 		}
-    function loescheTeilnehmer(){
+    	function loescheTeilnehmer(){
 			teilnehmerService.deleteTeilnehmer(paramID);
 		}
 		function loggeOut(){
@@ -295,7 +295,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		}
 
 		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
-    $scope.loescheTeilnehmer = () => loescheTeilnehmer();
+    	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
 
 		/*authService.checkToken(tokenService.getToken()).then(function (res){
