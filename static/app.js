@@ -438,6 +438,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
 		$scope.loescheManagement = () => loescheManagement();
+		managementService.getManagement(paramID).then(res=> $scope.management = res.data)
 		managementService.getManagements().then(res=>$scope.managements = res.data);
 		$scope.managements = [];
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);

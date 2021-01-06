@@ -24,7 +24,7 @@ h4 {
 
 .sidenav {
 	height: 100%;
-	width: 265px; /* Set the width of the sidebar */
+	width: 269px; /* Set the width of the sidebar */
 	position: fixed; /* Fixed Sidebar (stay in place on scroll) */
 	z-index: 1; /* Stay on top */
 	top: 0; /* Stay at the top */
@@ -39,7 +39,7 @@ h4 {
 /* The navigation menu links */
 .sidenav a {
 	padding: 2%;
-	margin: 6%;
+	margin: 4%;
 	text-decoration: none;
 	font-size: 20px;
 	color: #000000;
@@ -212,6 +212,7 @@ b {
 	float: left;
 	font-size: 45px;
 	padding-top: 3%;
+	margin-right: 1%;
 }
 
 [id="profile"] {
@@ -254,6 +255,10 @@ b {
 	float: right;
 	font-size: xx-large;
 	margin-right: 2%;
+}
+
+[id="emailSidebar"] {
+	font-size: small;
 }
 
 li {
