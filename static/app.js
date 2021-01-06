@@ -269,7 +269,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 }])
 
-	.controller('teilnehmerController', ['$scope','tokenService','authService', 'teilnehmerService','veranstaltungService', function($scope, tokenService, authService, teilnehmerService, veranstaltungService){
+	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService','authService', 'teilnehmerService','veranstaltungService', function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService){
 		console.log('Teilnehmer Controller');
     
     var paramID = $routeParams.id;
