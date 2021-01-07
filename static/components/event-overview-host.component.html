@@ -8,6 +8,12 @@
     <a href='#!/event-overview-host' class="currentPage"><i class="fa fa-fw fa-calendar"></i>Meine Veranstaltungen</a>
     <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
 </div>
+<div class="filter">
+    <label>Status:</label>
+    <input type="checkbox" data-ng-model="state1" >Angebot offen
+    <input type="checkbox" data-ng-model="state2">Angebot bestätigt
+    <input type="checkbox" data-ng-model="state3">in Abrechnnung
+</div>
 <table id="table">
     <tr>
         <th>Titel</th>
@@ -19,7 +25,37 @@
         <th>Art</th>
         <th>Status</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot offen' && state1">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}€</td>
+        <td>{{veranstaltung.sichtbarkeit}}</td>
+        <td>{{veranstaltung.angebotsstatus}}</td>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot akzeptiert' && state2">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}€</td>
+        <td>{{veranstaltung.sichtbarkeit}}</td>
+        <td>{{veranstaltung.angebotsstatus}}</td>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'in Abrechnung' && state3">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum}}</td>
+        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.teilnehmer_preis}}€</td>
+        <td>{{veranstaltung.sichtbarkeit}}</td>
+        <td>{{veranstaltung.angebotsstatus}}</td>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="!state1 && !state2 && !state3">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum}}</td>

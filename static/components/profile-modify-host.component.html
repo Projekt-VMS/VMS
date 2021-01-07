@@ -7,25 +7,25 @@
     <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
     <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
-<div id="roomModify" data-ng-submit="updateVeranstalter(veranstalter)">
+<div id="roomModify" data-ng-submit="updateVeranstalter(neuerVeranstalter)">
     <h2>Profil bearbeiten<a href="#!/login"><button class="deleteButton" data-ng-click="loescheVeranstalter()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <h3>Nachname ändern</h3>
     <p>aktueller Nachname:  {{veranstalter.name}}</p>
-    <p>neuer Nachname:  <input type="text" placeholder="neuer Nachname" data-ng-model="veranstalter.name"></p>
+    <p>neuer Nachname:  <input type="text" placeholder="neuer Nachname" data-ng-model="neuerVeranstalter.name"></p>
     <hr>
     <h3>E-Mail-Adresse ändern</h3>
     <p>aktuelle E-Mail-Adresse:  {{veranstalter.email}}</p>
-    <p>neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" data-ng-model="veranstalter.email"></p>
+    <p>neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" data-ng-model="neuerVeranstalter.email"></p>
     <hr>
     <h3>Passwort ändern</h3>
     <p>aktuelles Passwort:  {{veranstalter.password}}</p>
-    <p>neues Passwort:  <input type="text" placeholder="neues Passwort" data-ng-model="veranstalter.password"></p>
+    <p>neues Passwort:  <input type="text" placeholder="neues Passwort" data-ng-model="neuerVeranstalter.password"></p>
     <hr>
     <h3>Passwort wiederholen</h3>
-    <input type="text" placeholder="Passwort wiederholen" data-ng-model="veranstalter.password2">
+    <input type="text" placeholder="Passwort wiederholen" data-ng-model="neuerVeranstalter.password2">
     <br>
     <br>
     <div>
-        <a href="#!/profile-host"><button class="loginButton" data-ng-click="updateVeranstalter(veranstalter)">Änderung bestätigen</button></a>
+        <a href="#!/profile-host"><button class="loginButton" data-ng-click="updateVeranstalter(neuerVeranstalter)">Änderung bestätigen</button></a>
     </div>
 </div>
