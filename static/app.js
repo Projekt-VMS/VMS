@@ -253,6 +253,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		loginService.loginVeranstalter(daten).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
+
+			location.href = '/#!/event-overview-host'
 		}).catch(
 			error => alert(error.message)
 		);
@@ -263,6 +265,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		loginService.loginManagement(daten).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
+
+			location.href = '/#!/event-overview-management'
 		}).catch(
 			error => alert(error.message)
 		);
@@ -273,6 +277,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		loginService.loginAdmin(daten).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
+
+			location.href = '/#!/profile-admin'
 		}).catch(
 			error => alert(error.message)
 		);
@@ -545,7 +551,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 						location.href = '/#!/login'
 				}
 			});
-			}, 50);
+			}, 500);
 	}])
 
 
