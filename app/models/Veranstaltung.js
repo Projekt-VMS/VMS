@@ -16,7 +16,7 @@ var veranstaltungSchema = new Schema({
     },
     teilnehmer: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Teilnehmer'
+        ref: 'Teilnehmer',
 
     }],
 
@@ -31,7 +31,7 @@ var veranstaltungSchema = new Schema({
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
 const Veranstaltung = mongoose.model('Veranstaltung', veranstaltungSchema, 'veranstaltungen');
 module.exports = Veranstaltung;
-return veranstaltungSchema;
+
 
 
 

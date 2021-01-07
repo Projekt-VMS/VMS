@@ -5,11 +5,11 @@ Content-Type: application/json
 
 {
   "titel": "BugCheck",
-  "raum": "44",
+  "raum": "1",
   "veranstalter": "frank2@meier2.de",
   "teilnehmerzahl": 8,
-  "start_datum":"2021-01-04",
-  "end_datum": "2021-01-07",
+  "start_datum":"2021-01-09",
+  "end_datum": "2021-01-10",
   "veranstalter_preis": 400,
   "teilnehmer_preis": 25,
   "sichtbarkeit": true,
