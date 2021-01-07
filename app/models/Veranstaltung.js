@@ -19,7 +19,7 @@ var veranstaltungSchema = new Schema({
         ref: 'Teilnehmer',
 
     }],
-
+    veranstalter_preis:{type: Number},
     start_datum: {type: Date, min: today},
     end_datum:{type: Date},
     teilnehmerzahl: {type: Number},

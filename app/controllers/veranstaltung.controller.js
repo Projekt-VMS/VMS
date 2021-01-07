@@ -68,17 +68,18 @@ veranstaltungsController.get('/veranstaltung/showOne/:id', function (req, res) {
 });
 
 //create
+let foundevents;
+let range1;
+let range2;
+let result2;
+let veranstalterExists;
+let raumExists;
+result2 = false;
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let veranstaltungInstance = new Veranstaltung(req.body);
-    let foundevents;
-    let range1;
-    let range2;
-    let result2;
-    let veranstalterExists = false;
-    let raumExists = false;
-    result2 = false;
 
-    const { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus } = req.body;
+
+    let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl,veranstalter_preis, teilnehmer_preis, sichtbarkeit, angebotsstatus } = req.body;
     let errors = [];
 
     if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus) {
@@ -92,7 +93,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     if (errors.length > 0) {
         console.log('fail');
         res.send({
-            errors, titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus
+            errors,veranstalter_preis, titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus
         });
     } else {
         const veranstaltungInstance = new Veranstaltung({
@@ -101,22 +102,20 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
             raum,
             start_datum,
             end_datum,
+            veranstalter_preis,
             teilnehmerzahl,
             teilnehmer_preis,
             sichtbarkeit,
             angebotsstatus
         })
 
-        Veranstalter.find({email:req.body.veranstalter},function(err, veranstalter){ //check if Veranstalter exists
-            if(!err) {
-                veranstalterExists = true;
+        Veranstalter.find({email:req.body.veranstalter},function(err, veranstalter) { //check if Veranstalter exists
+            veranstalterExists = veranstalter.length > 0;
+        })
+        console.log(veranstalter.length)
 
-            }});
-
-        Raum.find({raumNR:req.body.raum}, function(err, raum){ //check if Raum exists
-            if(!err) {
-                raumExists = true;
-         }
+        Raum.find({raum:req.body.raumNr}, function(err, raum){ //check if Raum exists
+            raumExists = raum.length > 0;
         });
 
         Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) { //this is the check for availability function
@@ -167,14 +166,14 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
 
                   } else  //error if room is not available at requested date
                       res.status(500).send('Leider ist dieser Raum zu dieser Zeit blockiert. Bitte versuchen Sie eine andere Kombination aus Datum und Raum!')
+              } else {
+                  res.status(500).send('Dieser Raum existiert nicht')
               }
-              else{res.status(500).send('Dieser Raum exisitiert nicht')
-              console.log("raum existiert nicht")}
-              }
+          }
 
-          else{res.status(500).send("Dieser User existiert nicht")
-          console.log('User exisitert nicht')}
-    });
+          else{res.status(500).send("Dieser Veranstalter existiert nicht")
+         }
+    })
 }})
 
 
