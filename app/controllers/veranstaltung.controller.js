@@ -2,12 +2,13 @@
 const Moment = require('moment');
 const MomentRange = require('moment-range');
 const moment = MomentRange.extendMoment(Moment);
-moment().format();
-moment.locale('de',{week:{dow : 1}})
+moment().utc();
+moment.locale('us',{week:{dow : 1}})
 const express = require('express'),
     veranstaltungsController = express();
 const nodemailer = require('nodemailer');
 const Veranstalter = require('../models/Veranstalter');
+const Raum = require('../models/Raum');
 let Veranstaltung = require('../models/Veranstaltung');
 var date = new Date();
 let  transport = nodemailer.createTransport({
@@ -73,6 +74,8 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let range1;
     let range2;
     let result2;
+    let veranstalterExists = false;
+    let raumExists = false;
     result2 = false;
 
     const { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus } = req.body;
@@ -104,6 +107,18 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
             angebotsstatus
         })
 
+        Veranstalter.find({email:req.body.veranstalter},function(err, veranstalter){ //check if Veranstalter exists
+            if(!err) {
+                veranstalterExists = true;
+
+            }});
+
+        Raum.find({raumNR:req.body.raum}, function(err, raum){ //check if Raum exists
+            if(!err) {
+                raumExists = true;
+         }
+        });
+
         Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) { //this is the check for availability function
 
         if (!err) {
@@ -113,8 +128,6 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                     range1 = moment.range(req.body.start_datum, req.body.end_datum) //dates to check are passed in
                     range2 = moment.range(event.start_datum, event.end_datum) //these are the dates of the exisiting event
                     result2 = range1.overlaps(range2) //ranges are checked for overlap; result 2 is updated
-                    console.log(foundevents.start_datum)
-                    console.log(req.body.start_datum)
                     if (result2 !== false) {return false;}
                     if (result2 === undefined){return false;}
                     return true;
@@ -124,36 +137,43 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
 
 
         }
+          if(veranstalterExists === true) {
+              if (raumExists === true) {
+                  if (result2 === false || result2 === undefined) {
+                      if ((moment(req.body.start_datum).isSame(req.body.end_datum, 'week'))) { // checks if event ends in same week --> no event longer than sunday
 
-        //if room is available at requested date
-        console.log(result2)
-        if (result2 === false || result2 === undefined) {
-            if ((moment(req.body.start_datum).isSame(req.body.end_datum, 'week'))) { // checks if event ends in same week --> no event longer than sunday
+                          veranstaltungInstance.save((err, doc) => { //saves event
+                              if (!err) {
+                                  console.log("success!")
 
-                veranstaltungInstance.save((err, doc) => { //saves event
-                    if (!err) {
-                        console.log(doc._id);
+                                  res.send('Veranstaltung wurde erfolgreich erstellt!'); //sends mail once event is saved
+                                  transport.sendMail({
+                                      from: 'test@vms.de',
+                                      to: req.body.veranstalter,
+                                      subject: 'Ihr Angebot ',
+                                      text: 'Vielen Dank für Ihre Anfrage. Anbei erhalten sie ihr Angebot auf Basis Ihrer eingegebenen Daten: '
+                                          + doc
+                                  })
+                              } else { //error if event can't be safed
+                                  console.log(err.toString());
+                                  res.status(500).send("Fehler!");
+                              }
 
-                        res.send('Veranstaltung wurde erfolgreich erstellt!'); //sends mail once event is saved
-                        transport.sendMail({
-                            from: 'test@vms.de',
-                            to: 'test@kunde.de',
-                            subject: 'Test Mail 1',
-                            text: 'Ihre Veranstaltung wurde erfolgreich erstellt'
-                        })
-                    } else { //error if event can't be safed
-                        console.log(err.toString());
-                        res.status(500).send(err.toString());
-                    }
+                          })
+                      } else { //error if event ends after sunday
+                          console.log('Fehler! (Sonntag')
+                          res.status(500).send('Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!');
+                      }
 
-                })
-            } else { //error if event ends after sunday
-                console.log('Fehler!')
-                res.status(500).send('Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!');
-            }
+                  } else  //error if room is not available at requested date
+                      res.status(500).send('Leider ist dieser Raum zu dieser Zeit blockiert. Bitte versuchen Sie eine andere Kombination aus Datum und Raum!')
+              }
+              else{res.status(500).send('Dieser Raum exisitiert nicht')
+              console.log("raum existiert nicht")}
+              }
 
-        } else  //error if room is not available at requested date
-            res.status(500).send('Leider ist dieser Raum zu dieser Zeit blockiert. Bitte versuchen Sie eine andere Kombination aus Datum und Raum!')
+          else{res.status(500).send("Dieser User existiert nicht")
+          console.log('User exisitert nicht')}
     });
 }})
 
