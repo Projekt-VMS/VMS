@@ -255,7 +255,7 @@ teilnehmerController.put('/teilnehmer/deregisterEvent/:id/:veranstaltung', funct
                 }
 
             })
-            console.log(result02)
+
             if (result02 === false) { //if result is true, user is not yet signed in for event
                 Veranstaltungen.findByIdAndUpdate({_id: req.params.veranstaltung}, //pushes userID into Veranstaltung
                     {$pull: {teilnehmer: req.params.id}}).exec();
