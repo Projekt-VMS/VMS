@@ -19,6 +19,7 @@ const tokenArray = require ('./teilnehmer.controller');
 authController.get('/auth/check/:token', function (req, res){
     let token = req.params.token
 
+
     const wahr = {
         "boolean": "true"
     }

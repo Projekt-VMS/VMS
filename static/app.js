@@ -238,9 +238,9 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			function (res) {
 				localStorage.setItem('user_id', res.data.userID);
 				localStorage.setItem('token_id', res.data.token);
-				setTimeout(function () {
+				//setTimeout(function () {
 					location.href = '/#!/event-search-participant'
-				}, 500);
+				//}, 500);
 			}, function (err) {
 
 				console.log('error1:' + err)
@@ -332,16 +332,18 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
     	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
 
-		/*authService.checkToken(tokenService.getToken()).then(function (res){
-			let bool = res.data;
-			console.log(bool.boolean)
-			if( bool.boolean === 'false') {
+		setTimeout(function () {
+			authService.checkToken(tokenService.getToken()).then(function (res){
+				let bool = res.data;
+				console.log(bool.boolean)
+				if( bool.boolean === 'false') {
 				location.href = '/#!/login'
 			}
-		});*/
+			});
+		}, 50);
 	}])
 
-	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'veranstalterService', 'veranstaltungService', function ($scope, $routeParams, tokenService, veranstalterService, veranstaltungService){
+	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'authService', 'veranstalterService', 'veranstaltungService', function ($scope, $routeParams, tokenService, authService, veranstalterService, veranstaltungService){
 		console.log('Veranstalter Controller');
 
 		var paramID = $routeParams.id;
@@ -374,9 +376,19 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.loggeOut = () => loggeOut();
 		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
+
+		setTimeout(function () {
+			authService.checkToken(tokenService.getToken()).then(function (res){
+				let bool = res.data;
+				console.log(bool.boolean)
+				if( bool.boolean === 'false') {
+					location.href = '/#!/login'
+				}
+			});
+		}, 50);
 	}])
 
-	.controller('managementController', ['$scope','$routeParams', 'tokenService', 'managementService', 'veranstaltungService', 'raumService', function($scope, $routeParams, tokenService, managementService, veranstaltungService, raumService){
+	.controller('managementController', ['$scope','$routeParams', 'tokenService','authService', 'managementService', 'veranstaltungService', 'raumService', function($scope, $routeParams, tokenService, authService, managementService, veranstaltungService, raumService){
 		console.log('Management Controller');
 
 		var paramID = $routeParams.id;
@@ -432,9 +444,19 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			localStorage.clear()
 		}
 		$scope.loggeOut = () => loggeOut();
+
+		setTimeout(function () {
+			authService.checkToken(tokenService.getToken()).then(function (res){
+				let bool = res.data;
+				console.log(bool.boolean)
+				if( bool.boolean === 'false') {
+					location.href = '/#!/login'
+				}
+			});
+		}, 50);
 	}])
 
-		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, tokenService, adminService, managementService, veranstaltungService, raumService, registrierenService){
+		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'authService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, tokenService, authService,adminService, managementService, veranstaltungService, raumService, registrierenService){
 		console.log('Admin Controller');
 
 		var paramID = $routeParams.id;
@@ -514,6 +536,16 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			localStorage.clear()
 		}
 		$scope.loggeOut = () => loggeOut();
+
+		setTimeout(function () {
+			authService.checkToken(tokenService.getToken()).then(function (res){
+				let bool = res.data;
+				console.log(bool.boolean)
+				if( bool.boolean === 'false') {
+						location.href = '/#!/login'
+				}
+			});
+			}, 50);
 	}])
 
 
