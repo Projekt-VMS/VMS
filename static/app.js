@@ -70,17 +70,26 @@ app.factory('registrierenService', ['$http', function ($http){
 				.catch(err=>console.log(err.toString()));
 		}
 
+		function editTeilnehmer(userID, user){
+			return	$http.put('/teilnehmer/edit/'+userID, user)
+				.catch(err=>console.log(err.toString()));
+		}
+
 		function deleteTeilnehmer(userID){
 			return $http.delete('/teilnehmer/delete/'+userID)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getTeilnehmer, participate, deregisterEvent, deleteTeilnehmer};
+		return {getTeilnehmer, participate, deregisterEvent, editTeilnehmer, deleteTeilnehmer};
 
 	}])
 
 	.factory('veranstalterService', ['$http', function ($http){
 		function getVeranstalter(userID){
 			return $http.get('/veranstalter/showOne/'+ userID)
+				.catch(err=>console.log(err.toString()));
+		}
+		function editVeranstalter(userID, user){
+			return	$http.put('/veranstalter/edit/'+userID, user)
 				.catch(err=>console.log(err.toString()));
 		}
 		function deleteVeranstalter(userID){
@@ -91,7 +100,7 @@ app.factory('registrierenService', ['$http', function ($http){
 			return $http.post('/veranstalter/request/'+ userID, daten)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getVeranstalter, deleteVeranstalter, request};
+		return {getVeranstalter, editVeranstalter, deleteVeranstalter, request};
 	}])
 
 	.factory('managementService', ['$http', function ($http){
@@ -103,11 +112,15 @@ app.factory('registrierenService', ['$http', function ($http){
 			return $http.get('/management/show')
 				.catch(err=>console.log(err.toString()));
 		}
+		function editManagement(userID, user){
+			return	$http.put('/management/edit/'+userID, user)
+				.catch(err=>console.log(err.toString()));
+		}
 		function deleteManagement(userID){
 			return $http.delete('/management/delete/'+userID)
 				.catch(err=>console.log(err.toString()));
 		}
-		return {getManagement, getManagements, deleteManagement};
+		return {getManagement, getManagements, editManagement, deleteManagement};
 	}])
 
 	.factory('adminService', ['$http', function ($http){
@@ -301,6 +314,11 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			console.log('funktion läuft' + veranstaltung)
 			teilnehmerService.deregisterEvent(tokenService.getID(), veranstaltung)
 		}
+		function updateTeilnehmer(neuerTeilnehmer){
+			$scope.neuerTeilnehmer = {};
+			console.log(neuerTeilnehmer);
+			teilnehmerService.editTeilnehmer(paramID ,neuerTeilnehmer);
+		}
     	function loescheTeilnehmer(){
 			teilnehmerService.deleteTeilnehmer(paramID);
 		}
@@ -310,6 +328,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
 		$scope.abmelden = (veranstaltung) => abmelden(veranstaltung);
+		$scope.updateTeilnehmer = (neuerTeilnehmer) => updateTeilnehmer(neuerTeilnehmer);
     	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
 
@@ -343,12 +362,19 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			localStorage.clear()
 		}
 
+		function updateVeranstalter(neuerVeranstalter){
+		$scope.neuerVeranstalter = {};
+		console.log(neuerVeranstalter);
+		veranstalterService.editVeranstalter(paramID ,neuerVeranstalter);
+		}
+
 		function loescheVeranstalter(){
 			veranstalterService.deleteVeranstalter(paramID);
 		}
 
 		$scope.anfragen = (daten) => anfragen(daten);
 		$scope.loggeOut = () => loggeOut();
+		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
 
 		setTimeout(function () {
@@ -443,6 +469,12 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			registrierenService.registrierenManagement(management)
 		}
 
+		function updateManagement(neuerManagement){
+			$scope.neuerManagement = {};
+			console.log(neuerManagement);
+			managementService.editManagement(paramID ,neuerManagement);
+		}
+
 		function loescheManagement() {
 			managementService.deleteManagement(paramID);
 		}
@@ -479,10 +511,12 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
+		$scope.updateManagement = (neuerManagement) => updateManagement(neuerManagement)
 		$scope.loescheManagement = () => loescheManagement();
 		managementService.getManagement(paramID).then(res=> $scope.management = res.data)
 		managementService.getManagements().then(res=>$scope.managements = res.data);
 		$scope.managements = [];
+
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 		$scope.veranstaltungen = [];
@@ -632,14 +666,6 @@ app.config(function($routeProvider){
 		})
 		.when('/user-create-admin', {
 			templateUrl: 'components/user-create-admin.component.html',
-			controller: 'adminController'
-		})
-		.when('/profile-modify-management', {
-			templateUrl: 'components/profile-modify-management.component.html',
-			controller: 'managementController'
-		})
-		.when('/profile-modify-admin', {
-			templateUrl: 'components/profile-modify-admin.component.html',
 			controller: 'adminController'
 		})
 		.when('/profile-modify-host/:id', {

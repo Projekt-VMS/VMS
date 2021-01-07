@@ -21,7 +21,7 @@
     <tr data-ng-repeat="raum in raeume | orderBy : 'raumNr'">
         <td>{{raum.raumNr}}</td>
         <td>{{raum.kapazitaet}}</td>
-        <td>{{raum.raumpreis}}</td>
+        <td>{{raum.raumpreis}}€</td>
         <td><a href="#!/room-modify-admin/{{raum._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/room-modify-admin"></i></a></td>
     </tr>
     <tr>

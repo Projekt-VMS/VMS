@@ -1,3 +1,4 @@
+<h1 id="roomText">Veranstaltungssuche</h1>
 <div class="sidenav">
     <h1>Teilnehmer</h1>
     <a href='#!/profile-participant'><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{teilnehmer.vorname + ' ' + teilnehmer.name}}</b><p id="emailSidebar">{{teilnehmer.email}}</p></a>
@@ -9,11 +10,11 @@
 </div>
 <div class="filter">
     <input type="text" id="searchField" placeholder="Suche in den Veranstaltungen" data-ng-model="search">
-    <label>Preis in €:</label>
-    <input type="checkbox" data-ng-model="price1">0-24
-    <input type="checkbox" data-ng-model="price2">25-49
-    <input type="checkbox" data-ng-model="price3">50-99
-    <input type="checkbox" data-ng-model="price4">100+
+    <label>Preis:</label>
+    <input type="checkbox" data-ng-model="price1">0-24€
+    <input type="checkbox" data-ng-model="price2">25-49€
+    <input type="checkbox" data-ng-model="price3">50-99€
+    <input type="checkbox" data-ng-model="price4">100+€
     <br>
     <label>Teilnehmerzahl:</label>
     <input type="checkbox" data-ng-model="attendence1">5-9
@@ -113,6 +114,19 @@
     <li>Preis in €: <span id="searchText">{{veranstaltung.teilnehmer_preis}}</span></li>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmerzahl' | filter : search" data-ng-if="(veranstaltung.teilnehmerzahl >= 50) && (attendence4)">
+    <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton">Teilnehmen</button><h1>{{veranstaltung.titel}}</h1></li>
+    <hr>
+    <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
+    <hr>
+    <li>Von: <span id="searchText">{{veranstaltung.start_datum}}</span></li>
+    <hr>
+    <li>Bis: <span id="searchText">{{veranstaltung.end_datum}}</span></li>
+    <hr>
+    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
+    <hr>
+    <li>Preis in €: <span id="searchText">{{veranstaltung.teilnehmer_preis}}</span></li>
+</ul>
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmer_preis' | filter : search" data-ng-if="(!price1)&&(!price2)&&(!price3)&&(!price4)&&(!attendence1)&&(!attendence2)&&(!attendence3)&&(!attendence4)">
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton">Teilnehmen</button><h1>{{veranstaltung.titel}}</h1></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
