@@ -16,8 +16,7 @@ var veranstaltungSchema = new Schema({
     },
     teilnehmer: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Teilnehmer',
-        unique: true
+        ref: 'Teilnehmer'
 
     }],
 

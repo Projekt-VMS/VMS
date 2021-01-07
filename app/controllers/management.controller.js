@@ -76,11 +76,17 @@ managementController.post('/management/registration/add', function (req, res) {
                 newManagement.password = hash;
                 newManagement
                     .save((err, doc) => {
-                        const token = newManagement.generateJwt();
+                        const token = jwt.sign(
+                            {email: newManagement.email, userID: newManagement._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                            {expiresIn: "1h"})
                         if (!err){
-                            res.json({
-                                "token": token
-                            })
+                            res.status(200).json({
+                                token: token,
+                                expiresIn: 3600,
+                                userID: newManagement._id
+                            });
+                            tokens.push(token);
+                            console.log(tokens);
                         }
                         else  {console.log(err.toString());
                             res.status(500).send(err.toString()); }
@@ -92,6 +98,44 @@ managementController.post('/management/registration/add', function (req, res) {
         });
     }
 });
+
+//login
+managementController.post('/management/login', (req, res, next) =>{
+
+    let fetchedUser;
+
+    Management.findOne({email:req.body.email}).then(function(manager){
+        if(!manager){
+            return res.status(401).json({message: 'Login Failed, no such User!'})
+        }
+        fetchedUser=manager;
+        return bcrypt.compare(req.body.password, manager.password);
+    }).then (result => {
+        console.log(fetchedUser)
+        if (!result) {
+            return res.status(401).json({message: 'Login failed: wrong password!'})
+        }
+        else {
+
+            const token = jwt.sign(
+                {email: fetchedUser.email, userID: fetchedUser._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                {expiresIn: "1h"}
+            );
+            res.status(200).json({
+                token: token,
+                expiresIn: 3600,
+                userID: fetchedUser._id
+            });
+            tokens.push(token);
+            console.log(tokens);
+            console.log('logged in!')
+        }
+
+    })
+        .catch(e=>{
+            console.log(e)
+        })
+})
 
 //delete
 managementController.delete('/management/delete/:id', function (req, res, next) {
@@ -122,43 +166,5 @@ managementController.put('/management/edit/:id',function (req, res, next) {
         });
 });
 
-//login
-
-managementController.post('/management/login', (req, res, next) =>{
-
-    let fetchedUser;
-
-    Management.findOne({email:req.body.email}).then(function(manager){
-        if(!manager){
-            return res.status(401).json({message: 'Login Failed, no such User!'})
-        }
-        fetchedUser=manager;
-        return bcrypt.compare(req.body.password, manager.password);
-    }).then (result => {
-        console.log(fetchedUser)
-        if (!result) {
-            return res.status(401).json({message: 'Login failed: wrong password!'})
-        }
-        else {
-
-            const token = jwt.sign(
-                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
-                {expiresIn: "1h"}
-            );
-            res.status(200).json({
-                token: token,
-                expiresIn: 3600,
-                userID: fetchedUser._id
-            });
-            tokens.push(token);
-            console.log(tokens);
-            console.log('logged in!')
-        }
-
-    })
-        .catch(e=>{
-            console.log(e)
-        })
-})
 
 module.exports = managementController;

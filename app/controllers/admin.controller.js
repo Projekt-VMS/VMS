@@ -53,11 +53,17 @@ adminController.post('/admin/registration/add', function (req, res) {
                 newAdmin.password = hash;
                 newAdmin
                     .save((err, doc) => {
-                        const token = newAdmin.generateJwt();
+                        const token = jwt.sign(
+                            {email: newAdmin.email, userID: newAdmin._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                            {expiresIn: "1h"})
                         if (!err){
-                            res.json({
-                                "token": token
-                            })
+                            res.status(200).json({
+                                token: token,
+                                expiresIn: 3600,
+                                userID: newAdmin._id
+                            });
+                            tokens.push(token);
+                            console.log(tokens);
                         }
                         else  {console.log(err.toString());
                             res.status(500).send(err.toString()); }
@@ -69,7 +75,6 @@ adminController.post('/admin/registration/add', function (req, res) {
         });
     }
 });
-
 
 //login
 adminController.post('/admin/login', (req, res, next) =>{
@@ -88,9 +93,8 @@ adminController.post('/admin/login', (req, res, next) =>{
             return res.status(401).json({message: 'Login failed: wrong password!'})
         }
         else {
-
             const token = jwt.sign(
-                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
+                {email: fetchedUser.email, userID: fetchedUser._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
                 {expiresIn: "1h"}
             );
             res.status(200).json({
@@ -108,5 +112,4 @@ adminController.post('/admin/login', (req, res, next) =>{
             console.log(e)
         })
 })
-
 module.exports = adminController;

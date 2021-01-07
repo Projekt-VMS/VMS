@@ -85,11 +85,17 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
                 newVeranstalter.password = hash;
                 newVeranstalter
                     .save((err, doc) => {
-                        const token = newVeranstalter.generateJwt();
+                        const token = jwt.sign(
+                            {email: newVeranstalter.email, userID: newVeranstalter._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                            {expiresIn: "1h"})
                         if (!err){
-                            res.json({
-                                "token": token
-                            })
+                            res.status(200).json({
+                                token: token,
+                                expiresIn: 3600,
+                                userID: newVeranstalter._id
+                            });
+                            tokens.push(token);
+                            console.log(tokens);
                         }
                         else  {console.log(err.toString());
                             res.status(500).send(err.toString()); }
@@ -121,7 +127,7 @@ veranstalterController.post('/veranstalter/login', (req, res, next) =>{
         else {
 
             const token = jwt.sign(
-                {email: fetchedUser.email, userID: fetchedUser._id}, "private_key",
+                {email: fetchedUser.email, userID: fetchedUser._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
                 {expiresIn: "1h"}
             );
             res.status(200).json({
