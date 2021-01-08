@@ -1,26 +1,32 @@
 <div class="sidenav">
-    <h1>Teilnehmer</h1>
-    <a href='#!/profile-participant' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{teilnehmer.vorname + ' ' + teilnehmer.name}}</b><p id="emailSidebar">{{teilnehmer.email}}</p></a>
+    <h5>Teilnehmer</h5>
+    <a href='#!/profile-participant' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{teilnehmer.vorname + ' ' + teilnehmer.name}}<br><c>{{teilnehmer.email}}</c></p></a>
     <hr>
     <br>
     <a href='#!/event-search-participant'><i class="fa fa-fw fa-search"></i> Veranstaltungssuche</a>
+    <br>
     <a href='#!/event-overview-participant'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <br>
     <a href='#!/email-participant'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
+
 <div id="profile">
     <button class="profileButton"><a href="#!/profile-modify-participant/{{teilnehmer._id}}">Profil bearbeiten</a></button>
     <h2>Mein Profil</h2>
     <h3>Aktuelle Daten</h3>
+    <br>
     <p>Vorname:  {{teilnehmer.vorname}}</p>
-    <hr>
+    <hr><br>
     <p>Nachname:  {{teilnehmer.name}}</p>
-    <hr>
+    <hr><br>
     <p>E-Mail-Adresse:  {{teilnehmer.email}}</p>
-    <hr>
+    <hr><br>
     <p>Passwort: *************</p>
-    <hr>
+    <hr><br>
     <p>Nutzertyp:  Teilnehmer</p>
-    <div id="logoutButton">
-        <button data-ng-click='loggeOut()' class="loginButton"><a href="#!/login">Abmelden</a></button>
+    <hr><br>
+    <div>
+        <button data-ng-click='loggeOut()' id="logoutButton"><a href="#!/login">Abmelden</a></button>
     </div>
+    <br><br>
 </div>

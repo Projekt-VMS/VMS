@@ -1,31 +1,34 @@
 <div class="sidenav">
-    <h1>Veranstalter</h1>
-    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{veranstalter.vorname + ' ' + veranstalter.name}}</b><p id="emailSidebar">{{veranstalter.email}}</p></a>
+    <h5>Veranstalter</h5>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{veranstalter.vorname + ' ' + veranstalter.name}}<br><c>{{veranstalter.email}}</c></p></a>
     <hr>
     <br>
     <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <br>
     <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <br>
     <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
+
 <div id="roomModify" data-ng-submit="updateVeranstalter(neuerVeranstalter)">
-    <h2>Profil bearbeiten<a href="#!/login"><button class="deleteButton" data-ng-click="loescheVeranstalter()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
+    <h2>Profil bearbeiten<a href="#!/login"><button class="deleteButton" id="trashIcon" data-ng-click="loescheVeranstalter()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <h3>Nachname ändern</h3>
-    <p>aktueller Nachname:  {{veranstalter.name}}</p>
-    <p>neuer Nachname:  <input type="text" placeholder="neuer Nachname" data-ng-model="neuerVeranstalter.name"></p>
+    <p class="modifyText">aktueller Nachname:  {{veranstalter.name}}</p>
+    <p class="modifyText">neuer Nachname:  <input type="text" placeholder="neuer Nachname" class="fieldChange" data-ng-model="neuerVeranstalter.name"></p>
     <hr>
     <h3>E-Mail-Adresse ändern</h3>
-    <p>aktuelle E-Mail-Adresse:  {{veranstalter.email}}</p>
-    <p>neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" data-ng-model="neuerVeranstalter.email"></p>
+    <p class="modifyText">aktuelle E-Mail-Adresse:  {{veranstalter.email}}</p>
+    <p class="modifyText">neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" class="fieldChange" data-ng-model="neuerVeranstalter.email"></p>
     <hr>
     <h3>Passwort ändern</h3>
-    <p>aktuelles Passwort:  {{veranstalter.password}}</p>
-    <p>neues Passwort:  <input type="text" placeholder="neues Passwort" data-ng-model="neuerVeranstalter.password"></p>
+    <p class="modifyText">aktuelles Passwort:  {{veranstalter.password}}</p>
+    <p class="modifyText">neues Passwort:  <input type="text" placeholder="neues Passwort" class="fieldChange" data-ng-model="neuerVeranstalter.password"></p>
     <hr>
     <h3>Passwort wiederholen</h3>
-    <input type="text" placeholder="Passwort wiederholen" data-ng-model="neuerVeranstalter.password2">
-    <br>
-    <br>
+    <p class="modifyText">neues Passwort: <input type="text" placeholder="Passwort wiederholen" class="fieldChange" data-ng-model="neuerVeranstalter.password2"></p>
+    <hr><br>
     <div>
-        <a href="#!/profile-host"><button class="loginButton" data-ng-click="updateVeranstalter(neuerVeranstalter)">Änderung bestätigen</button></a>
+        <a href="#!/profile-host"><button id="logoutButton" data-ng-click="updateVeranstalter(neuerVeranstalter)">Änderung bestätigen</button></a>
     </div>
+    <br><br>
 </div>

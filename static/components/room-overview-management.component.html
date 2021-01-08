@@ -1,15 +1,21 @@
 <h1 id="roomText">Alle Räume</h1>
+
 <div class="sidenav">
-    <h1>Management</h1>
-    <a href='#!/profile-management'><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{management.vorname + ' ' + management.name}}</b><p id="emailSidebar">{{management.email}}</p></a>
+    <h5>Management</h5>
+    <a href='#!/profile-management' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{management.vorname + ' ' + management.name}}<br><c>{{management.email}}</c></p></a>
     <hr>
     <br>
-    <a href='#!/room-overview-management' class="currentPage"><i class="fa fa-fw fa-list"></i> Räume</a>
+    <a href='#!/room-overview-management'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <br>
     <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <br>
     <a href='#!/event-overview-management'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <br>
     <a href='#!/email-management'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <br>
     <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
+
 <table id="table">
     <tr>
         <th>Raum-Nr.</th>

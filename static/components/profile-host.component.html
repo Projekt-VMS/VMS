@@ -1,28 +1,34 @@
 <div class="sidenav">
-    <h1>Veranstalter</h1>
-    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{veranstalter.vorname + ' ' + veranstalter.name}}</b><p id="emailSidebar">{{veranstalter.email}}</p></a>
+    <h5>Veranstalter</h5>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{veranstalter.vorname + ' ' + veranstalter.name}}<br><c>{{veranstalter.email}}</c></p></a>
     <hr>
     <br>
     <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <br>
     <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <br>
     <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
+
 <div id="profile">
     <button class="profileButton"><a href="#!/profile-modify-host/{{veranstalter._id}}">Profil bearbeiten</a></button>
     <h2>Mein Profil</h2>
     <h3>Aktuelle Daten</h3>
+    <br>
     <p>Vorname: {{veranstalter.vorname}}</p>
-    <hr>
+    <hr><br>
     <p>Nachname: {{veranstalter.name}}</p>
-    <hr>
+    <hr><br>
     <p>E-Mail-Adresse: {{veranstalter.email}}</p>
-    <hr>
+    <hr><br>
     <p>Unternehmen: {{veranstalter.unternehmen}}</p>
-    <hr>
+    <hr><br>
     <p>Passwort: *************</p>
-    <hr>
+    <hr><br>
     <p>Nutzertyp:  Veranstalter</p>
+    <hr><br>
     <div id="logoutButton">
         <button data-ng-click='loggeOut()' class="loginButton"><a href="#!/login">Abmelden</a></button>
     </div>
+    <br><br>
 </div>
