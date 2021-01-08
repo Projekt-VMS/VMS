@@ -27,6 +27,7 @@
         <th>Preis</th>
         <th>Art</th>
         <th>Status</th>
+        <th>Stornieren</th>
     </tr>
     <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot offen' && state1">
         <td>{{veranstaltung.titel}}</td>
@@ -37,6 +38,7 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
+        <td><button><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
     <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot akzeptiert' && state2">
         <td>{{veranstaltung.titel}}</td>
@@ -47,6 +49,7 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
+        <td><button><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
     <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'in Abrechnung' && state3">
         <td>{{veranstaltung.titel}}</td>
@@ -57,6 +60,7 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
+        <td><button><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
     <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="!state1 && !state2 && !state3">
         <td>{{veranstaltung.titel}}</td>
@@ -67,5 +71,6 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
+        <td><button><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
 </table>
