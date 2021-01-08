@@ -1,13 +1,17 @@
 <div class="sidenav">
-    <h1>Veranstalter</h1>
-    <a href='#!/profile-host'><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{veranstalter.vorname + ' ' + veranstalter.name}}</b><p id="emailSidebar">{{veranstalter.email}}</p></a>
+    <h5>Veranstalter</h5>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{veranstalter.vorname + ' ' + veranstalter.name}}<br><c>{{veranstalter.email}}</c></p></a>
     <hr>
     <br>
-    <a href='#!/request-host' class="currentPage"><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <br>
     <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <br>
     <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
+
 <div id="request" data-ng-submit='anfragen(daten)'>
+    <br>
     <p class="requestText">Meetings, Seminare, Kurse aller Art, nutze unser großes Angebot an Räumlichkeiten.</p>
     <label>Welche Veranstaltung planst du?</label>
     <br>
@@ -37,12 +41,13 @@
     <label>Für wen soll deine Veranstaltung sichtbar sein?</label>
     <br>
     <br>
-    <p>Öffentlich: <input type="checkbox" data-ng-model='daten.angebotsstatus' data-ng-true-value="'Öffentlich'"></p>
-    <p>Privat: <input type="checkbox" data-ng-model='daten.angebotsstatus' data-ng-true-value="'Privat'"></p>
+    <input type="checkbox" data-ng-model='daten.angebotsstatus' data-ng-true-value="'Öffentlich'">öffentlich&nbsp;<input type="checkbox" data-ng-model='daten.angebotsstatus' data-ng-true-value="'Privat'">geschlossen
     <br>
+    <hr>
     <br>
     <div>
-        <button data-ng-click='anfragen(daten)' class="loginButton">Anfragen</button>
+        <button data-ng-click='anfragen(daten)' id="logoutButton">Anfragen</button>
     </div>
+    <br><br>
 </div>
 

@@ -1,9 +1,27 @@
 <div class="sidenav">
-    <h1>Veranstalter</h1>
-    <a href='#!/profile-host'><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{veranstalter.vorname + ' ' + veranstalter.name}}</b><p id="emailSidebar">{{veranstalter.email}}</p></a>
+    <h5>Veranstalter</h5>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{veranstalter.vorname + ' ' + veranstalter.name}}<br><c>{{veranstalter.email}}</c></p></a>
     <hr>
     <br>
     <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <br>
     <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
-    <a href='#!/email-host' class="currentPage"><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <br>
+    <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
+
+<table id="table">
+    <tr>
+        <th>Betreff</th>
+        <th>Absender <i class="fa fa fa-fw fa-user"></i></th>
+        <th>Datum</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><i class="fa fa-fw fa-trash"></i></td>
+
+    </tr>
+</table>

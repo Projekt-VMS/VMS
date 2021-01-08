@@ -1,15 +1,17 @@
-<h1 id="roomText">Meine Veranstaltungen</h1>
 <div class="sidenav">
-    <h1>Teilnehmer</h1>
-    <a href='#!/profile-participant'><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{teilnehmer.vorname + ' ' + teilnehmer.name}}</b><p id="emailSidebar">{{teilnehmer.email}}</p></a>
+    <h5>Teilnehmer</h5>
+    <a href='#!/profile-participant' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{teilnehmer.vorname + ' ' + teilnehmer.name}}<br><c>{{teilnehmer.email}}</c></p></a>
     <hr>
     <br>
     <a href='#!/event-search-participant'><i class="fa fa-fw fa-search"></i> Veranstaltungssuche</a>
-    <a href='#!/event-overview-participant'  class="currentPage"><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <br>
+    <a href='#!/event-overview-participant'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <br>
     <a href='#!/email-participant'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
+
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter : teilnehmerID :true | orderBy : 'titel'">
-    <li><button data-ng-click='abmelden(veranstaltung._id)' class="participateButton">Abmelden</button><h1>{{veranstaltung.titel}}</h1></li>
+    <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Veranstalter: <span id="searchText">{{veranstaltung.veranstalter}}</span></li>
     <hr>
@@ -22,4 +24,7 @@
     <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
+    <hr>
+    <li><button data-ng-click='abmelden(veranstaltung._id)' class="participateButton">Abmelden</button></li>
+    <br><br>
 </ul>

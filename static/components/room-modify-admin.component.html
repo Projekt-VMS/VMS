@@ -1,29 +1,37 @@
 <div class="sidenav">
-    <h1>Admin</h1>
-    <a href='#!/profile-admin'><i class="fa fa-fw fa-user" id="userIcon"></i><p id="emailSidebar">{{admin.email}}</p></a>
+    <h5>Admin</h5>
+    <a href='#!/profile-admin' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.email}}</p></a>
     <hr>
     <br>
     <a href='#!/user-overview-admin'><i class="fa fa-fw fa-users"></i> Management-User</a>
+    <br>
     <a href='#!/room-overview-admin'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <br>
     <a href='#!/event-create-admin'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <br>
     <a href='#!/event-overview-admin'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <br>
     <a href='#!/email-admin'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+    <br>
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
+
 <div id="roomModify">
-    <h2>Raum {{raum.raumNr}}<button class="deleteButton" data-ng-click="loescheRaum()"><i class="fa fa-fw fa-trash"></i></button></h2>
+    <h2>Raum {{raum.raumNr}}<button class="deleteButton" id="trashIcon" data-ng-click="loescheRaum()"><i class="fa fa-fw fa-trash"></i></button></h2>
     <h3>Verfügbarkeit prüfen</h3>
-    <p>von:  <input type="date"></p>
-    <p>bis:  <input type="date"></p>
+    <p class="modifyText">von:  <input type="date" class="fieldDate"></p>
+    <p class="modifyText">bis:  <input type="date" class="fieldDate"></p>
     <hr>
     <h3>Neuen Preis festlegen</h3>
-    <p>aktueller Preis:  {{raum.raumpreis}}€</p>
-    <p>neuer Preis:  <input type="number" placeholder="neuer Preis" data-ng-model='neuerRaum.raumpreis'>€</p>
+    <p class="modifyText">aktueller Preis:  {{raum.raumpreis}}€</p>
+    <p class="modifyText">neuer Preis:  <input type="number" placeholder="neuer Preis" class="fieldNumber" data-ng-model='neuerRaum.raumpreis'></p>
     <hr>
     <h3>Kapazität ändern</h3>
-    <p>aktuelle Kapazität:  {{raum.kapazitaet}}</p>
-    <p>neue Kapazität:  <input type="number" placeholder="max. 100" max="100" data-ng-model='neuerRaum.kapazitaet'></p>
+    <p class="modifyText">aktuelle Kapazität:  {{raum.kapazitaet}}</p>
+    <p class="modifyText">neue Kapazität:  <input type="number" placeholder="max. 100" max="100" class="fieldNumber" data-ng-model='neuerRaum.kapazitaet'></p>
+    <hr><br>
     <div>
-        <a href="#!/room-overview-admin"><button data-ng-click="updateRaum(neuerRaum)" class="loginButton">Änderung bestätigen</button></a>
+        <a href="#!/room-overview-admin"><button data-ng-click="updateRaum(neuerRaum)" id="logoutButton">Änderung bestätigen</button></a>
     </div>
+    <br><br>
 </div>

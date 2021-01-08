@@ -1,19 +1,22 @@
-<h1 id="roomText">Meine Veranstaltungen</h1>
 <div class="sidenav">
-    <h1>Veranstalter</h1>
-    <a href='#!/profile-host'><i class="fa fa-fw fa-user" id="userIcon"></i><b>{{veranstalter.vorname + ' ' + veranstalter.name}}</b><p id="emailSidebar">{{veranstalter.email}}</p></a>
+    <h5>Veranstalter</h5>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{veranstalter.vorname + ' ' + veranstalter.name}}<br><c>{{veranstalter.email}}</c></p></a>
     <hr>
     <br>
-    <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i>Anfrage erstellen</a>
-    <a href='#!/event-overview-host' class="currentPage"><i class="fa fa-fw fa-calendar"></i>Meine Veranstaltungen</a>
-    <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+    <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <br>
+    <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <br>
+    <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
+
 <div class="filter">
     <label>Status:</label>
     <input type="checkbox" data-ng-model="state1" >Angebot offen
     <input type="checkbox" data-ng-model="state2">Angebot bestätigt
     <input type="checkbox" data-ng-model="state3">in Abrechnnung
 </div>
+
 <table id="table">
     <tr>
         <th>Titel</th>
