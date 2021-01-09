@@ -38,8 +38,8 @@ app.factory('registrierenService', ['$http', function ($http){
 		function logoutTeilnehmer(token){
 			return $http.delete('/teilnehmer/logout/'+ token)
 		}
-		function logoutVeranstalter(daten){
-			return $http.delete('/veranstalter/login', daten)
+		function logoutVeranstalter(token){
+			return $http.delete('/veranstalter/logout/' + token)
 		}
 		function logoutManagement(daten){
 			return $http.delete('/management/login', daten)
@@ -204,11 +204,11 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
 			location.href = '/#!/event-overview-host'
+
 		},
 			function(err) {
 				console.log(err.data.message);
-				alert(err.data.message);
-				//$scope.message = res.data.message
+				err.data.errors.forEach(error => alert(error.message))
 			})
 	}
 
@@ -230,11 +230,12 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	function loggeVeranstalter(daten){
 		$scope.daten={};
-		loginService.loginVeranstalter(daten).then(function (res){
-			localStorage.setItem('user_id', res.data.userID);
-			localStorage.setItem('token_id', res.data.token);
-			location.href = '/#!/event-overview-host'
-		},
+		loginService.loginVeranstalter(daten).then(
+			function (res){
+				localStorage.setItem('user_id', res.data.userID);
+				localStorage.setItem('token_id', res.data.token);
+				location.href = '/#!/event-overview-host'
+			},
 			function(err) {
 				console.log(err.data.message);
 				alert(err.data.message);
@@ -281,7 +282,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 }])
 
 	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService','authService', 'teilnehmerService','veranstaltungService','logoutService', function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService, logoutService){
-
+		console.log('Teilnehmer Controller');
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
 				let bool = res.data;
@@ -291,7 +292,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			}
 			});
 		}, 50);
-		console.log('Teilnehmer Controller');
 
     	var paramID = $routeParams.id;
 
@@ -366,8 +366,17 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	}])
 
-	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'authService', 'veranstalterService', 'veranstaltungService', function ($scope, $routeParams, tokenService, authService, veranstalterService, veranstaltungService){
+	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'authService', 'veranstalterService', 'veranstaltungService', 'logoutService', function ($scope, $routeParams, tokenService, authService, veranstalterService, veranstaltungService, logoutService){
 		console.log('Veranstalter Controller');
+		setTimeout(function () {
+			authService.checkToken(tokenService.getToken()).then(function (res){
+				let bool = res.data;
+				console.log(bool.boolean)
+				if( bool.boolean === 'false') {
+					location.href = '/#!/login'
+				}
+			});
+		}, 50);
 
 		var paramID = $routeParams.id;
 
@@ -378,37 +387,53 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 
 		function anfragen(daten){
-			veranstalterService.request(tokenService.getID(), daten)
+			veranstalterService.request(tokenService.getID(), daten).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					err.data.errors.forEach(error => alert(error.message))
+				}
+			);
 		}
-
-		function loggeOut(){
-			localStorage.clear()
-		}
-
 		function updateVeranstalter(neuerVeranstalter){
-		$scope.neuerVeranstalter = {};
-		console.log(neuerVeranstalter);
-		veranstalterService.editVeranstalter(paramID ,neuerVeranstalter);
+			$scope.neuerVeranstalter = {};
+			veranstalterService.editVeranstalter(paramID ,neuerVeranstalter).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
-
 		function loescheVeranstalter(){
-			veranstalterService.deleteVeranstalter(paramID);
+			veranstalterService.deleteVeranstalter(paramID).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+		function loggeOut(){
+			logoutService.logoutVeranstalter(tokenService.getToken()).then(
+				function(res){
+					localStorage.clear()
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
 
 		$scope.anfragen = (daten) => anfragen(daten);
-		$scope.loggeOut = () => loggeOut();
 		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
+		$scope.loggeOut = () => loggeOut();
 
-		setTimeout(function () {
-			authService.checkToken(tokenService.getToken()).then(function (res){
-				let bool = res.data;
-				console.log(bool.boolean)
-				if( bool.boolean === 'false') {
-					location.href = '/#!/login'
-				}
-			});
-		}, 50);
 	}])
 
 	.controller('managementController', ['$scope','$routeParams', 'tokenService','authService', 'managementService', 'veranstaltungService', 'raumService', function($scope, $routeParams, tokenService, authService, managementService, veranstaltungService, raumService){

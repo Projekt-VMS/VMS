@@ -15,30 +15,14 @@ let  transport = nodemailer.createTransport({
 });
 const Moment = require('moment');
 const MomentRange = require('moment-range');
+const {validateEmail} = require("./validation");
 const moment = MomentRange.extendMoment(Moment);
 
 let tokens = [];
 
-//list all
-
-veranstalterController.get('/veranstalter/show', function(req, res){
-    Veranstalter.find()
-        .populate('veranstaltungen', 'titel', 'Veranstaltung')
-        .exec(function (err, veranstalter){
-            if(err){
-        console.log(err.toString()); res.status(500).send(err.toString());
-    }
-    else {
-        console.log(veranstalter);
-        res.send(veranstalter);
-    }
-})});
-
 //show one
-
-veranstalterController.get('/veranstalter/showOne', function (req, res) {
-    Veranstalter.find({email: req.body.email})
-
+veranstalterController.get('/veranstalter/showOne/:id', function (req, res) {
+    Veranstalter.findOne({_id: req.params.id})
         .catch(err => {
             console.log(err.toString());
             res.status(500).send(err.toString());
@@ -50,7 +34,6 @@ veranstalterController.get('/veranstalter/showOne', function (req, res) {
 });
 
 //Registration
-
 veranstalterController.post('/veranstalter/registration/add', function (req, res) {
     const { name, vorname, unternehmen, email, password, password2 } = req.body;
     let errors = [];
@@ -58,11 +41,21 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
     if (!name || !vorname || !unternehmen|| !email || !password || !password2) {
         errors.push({ msg: 'Please enter all fields' });
     }
-
+    if (validateEmail(email) !== true){
+        errors.push({message: 'Gültige Email eingeben.'})
+    }
+    Veranstalter.find({email: email}, function(err, veranstalter){
+        let emailExists = veranstalter.length > 0;
+        if (emailExists === true){
+            errors.push({ message: 'Die Email ist bereits vergeben.'});
+        }
+    })
+    if (password.length < 5){
+        errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
+    }
     if (password !== password2) {
         errors.push({ msg: 'Passwords do not match' });
     }
-
     if (errors.length > 0) {
         res.send({
             errors,
@@ -81,8 +74,6 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
             email,
             password
         });
-
-
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newVeranstalter.password, salt, (err, hash) => {
                 if (err) throw err;
@@ -96,7 +87,8 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
                             res.status(200).json({
                                 token: token,
                                 expiresIn: 3600,
-                                userID: newVeranstalter._id
+                                userID: newVeranstalter._id,
+                                message: 'Du hast dich erfolgreich registriert.'
                             });
                             tokens.push(token);
                             console.log(tokens);
@@ -104,32 +96,27 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
                         else  {console.log(err.toString());
                             res.status(500).send(err.toString()); }
                     })
-
-                req.flash('success_msg', 'Du bist nun registriert')
                 console.log(newVeranstalter);
             });
         });
     }
 });
 
-//login
-veranstalterController.post('/veranstalter/login', (req, res, next) =>{
-
+//login veranstalter
+veranstalterController.post('/veranstalter/login', (req, res) =>{
     let fetchedUser;
-
     Veranstalter.findOne({email:req.body.email}).then(function(veranstalter){
         if(!veranstalter){
-            return res.status(401).json({message: 'Login Failed, no such User!'})
+            return res.status(401).json({message: 'Login fehlgeschlagen! Userdaten konnten nicht gefunden werden'});
         }
         fetchedUser=veranstalter;
         return bcrypt.compare(req.body.password, veranstalter.password);
     }).then (result => {
         console.log(fetchedUser)
         if (!result) {
-            return res.status(401).json({message: 'Login failed: wrong password!'})
+            return res.status(401).json({message: 'Login fehlgeschlagen! Passwort inkorrekt!'});
         }
         else {
-
             const token = jwt.sign(
                 {email: fetchedUser.email, userID: fetchedUser._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
                 {expiresIn: "1h"}
@@ -137,14 +124,13 @@ veranstalterController.post('/veranstalter/login', (req, res, next) =>{
             res.status(200).json({
                 token: token,
                 expiresIn: 3600,
-                userID: fetchedUser._id
+                userID: fetchedUser._id,
+                message: 'Du bist erfolgreich angemeldet.'
             });
-
             tokens.push(token);
             console.log(tokens);
             console.log('logged in!')
         }
-
     })
         .catch(e=>{
             console.log(e)
@@ -155,11 +141,11 @@ veranstalterController.post('/veranstalter/login', (req, res, next) =>{
 veranstalterController.delete('/veranstalter/delete/:id', function (req, res, next) {
 
     Veranstalter.findByIdAndRemove({_id: req.params.id},function(err, id){
-
-        if (err){
-            return next (new Error('user not found'))}
+        if (err) {
+            res.status(401).json({message: 'User konnte nicht gelöscht werden'});
+        }
         else {
-            res.send('User ' + id.email + ' wurde gelöscht' );
+            res.status(200).json({message:'User wurde erfolgreich gelöscht'});
         }
     });
 });
@@ -167,34 +153,38 @@ veranstalterController.delete('/veranstalter/delete/:id', function (req, res, ne
 //Update
 veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
 
-    //if(req.body.name != null) { array.push("name",req.body.name)}
-
     Veranstalter.findByIdAndUpdate(
         {_id: req.params.id},
         {$set: req.body
         },
-        function (err, user) {
-            if (!user)
-                return next(new Error('user not found'));
-            else {
-                res.send(user);
+        function (err, veranstalter) {
+            if (err || veranstalter){
+                res.status(401).json({message: 'Es hat nicht geklappt!'});
             }
-        });
+            else {
+                res.status(200).json({message: 'Userdaten wurden erfolgreich überschrieben.'});
+            }
+        })
+});
+
+//logout
+veranstalterController.delete('/veranstalter/logout/:token', function (req, res) {
+    tokens = tokens.filter(token => token !== req.params.token)
+    res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
+    console.log(tokens);
 });
 
 //anfragen
 veranstalterController.post('/veranstalter/request/:id', function (req, res){
-    console.log(req.params.id)
 
     const {titel, kapazitaet, start_datum, end_datum, verfuegbarkeit} = req.body
-
     let errors = [];
 
     if (!titel || !kapazitaet || !start_datum|| !end_datum || !verfuegbarkeit ) {
-        errors.push({ msg: 'Please enter all fields' });
+        errors.push({ message: 'Fülle bitte alle Felder aus.' });
     }
     if (errors.length > 0) {
-        res.send({
+        res.status(400).json({
             errors,
             titel,
             kapazitaet,
@@ -212,19 +202,15 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
                 subject: `Anfrage von ${veranstalterEmail}`,
                 text: 'Folgende Anfrage:...'
             })
-            res.send('Anfrage wurde erfolgreich abgeschickt!'); //sends mail once event is saved
+            res.status(200).json({message: 'Anfrage wurde erfolgreich abgeschickt!'});
         })
     }
-
 })
 
 // Stornierung
-
 let currentDate = moment();
 let stornoPossible;
-
-veranstalterController.delete('/veranstalter/storno/:id', function (req, res, next) {
-
+veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
 
     Veranstaltung.findById({_id: req.params.id}, function (err, event) {
         if(event !== null) {
@@ -234,15 +220,17 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res, ne
                 console.log(newMomentObj.diff(currentDate, 'days'))
             }
         }
-        else{res.status(500).send('Event not found!')}
+        else{
+            res.status(400).json({message: 'Veranstaltung existiert nicht!'})
+        }
         if (stornoPossible === false) {
-            res.status(500).send('Die Stornofrist ist abgelaufen, ihre Veranstaltung kann nicht storniert werden!')
+            res.status(400).json('Die Stornofrist ist abgelaufen, ihre Veranstaltung kann nicht storniert werden!')
         } else {
             Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, event) {
                 if (err) {
-                    return next(new Error('user not found'))
+                    res.status(400).json({message: 'Veranstaltung konnte nicht storniert werden!'})
                 } else {
-                    res.send('Veranstaltung ' + event.titel + ' wurde storniert');
+                    res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde storniert'})
                 }
             })
         }

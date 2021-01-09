@@ -12,21 +12,9 @@ const moment = MomentRange.extendMoment(Moment);
 var tokens = [];
 
 
-//show all Teilnehmer
-teilnehmerController.get('/teilnehmer/show', function(req, res){ Teilnehmer.find()
-    .catch(err=>{
-        console.log(err.toString()); res.status(500).send(err.toString());
-    })
-    .then(dbres=>{
-        console.log(dbres);
-        res.send(dbres);
-    });
-});
-
 //Show one Teilnehmer
 teilnehmerController.get('/teilnehmer/showOne/:id', function (req, res) {
     Teilnehmer.findOne({_id: req.params.id})
-
         .catch(err => {
             console.log(err.toString());
             res.status(500).send(err.toString());
@@ -39,7 +27,6 @@ teilnehmerController.get('/teilnehmer/showOne/:id', function (req, res) {
 
 //Registration Teilnehmer
 teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
-
     const { name, vorname, email, password, password2 } = req.body;
     let errors = [];
 
@@ -62,7 +49,6 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
         errors.push({ message: 'Die Passwörter stimmen nicht überein.' });
     }
     if (errors.length > 0) {
-        console.log('fail');
         res.status(400).json({
             errors,
             name,
@@ -93,7 +79,6 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
                                 expiresIn: 3600,
                                 userID: newTeilnehmer._id,
                                 message: 'Du hast dich erfolgreich registriert.'
-
                             });
                             tokens.push(token);
                             console.log(tokens);
@@ -102,7 +87,6 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
                             res.status(500).send(err.toString());
                         }
                     })
-
                 console.log(newTeilnehmer);
             });
         });
@@ -111,10 +95,8 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
 
 // login teilnehmer
 teilnehmerController.post('/teilnehmer/login', (req, res) =>{
-
     let fetchedUser;
     Teilnehmer.findOne({email:req.body.email}).then(function(teilnehmer){
-
         if(!teilnehmer){
             return res.status(401).json({message: 'Login fehlgeschlagen! Userdaten konnten nicht gefunden werden'});
         }
@@ -130,17 +112,16 @@ teilnehmerController.post('/teilnehmer/login', (req, res) =>{
                 {email: fetchedUser.email, userID: fetchedUser._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
                 {expiresIn: "1h"}
                 );
-        res.status(200).json({
-            token: token,
-            expiresIn: 3600,
-            userID: fetchedUser._id,
-            message: 'Du bist erfolgreich angemeldet.'
-        });
-        tokens.push(token);
-        console.log(tokens);
-        console.log('logged in!')
+            res.status(200).json({
+                token: token,
+                expiresIn: 3600,
+                userID: fetchedUser._id,
+                message: 'Du bist erfolgreich angemeldet.'
+            });
+            tokens.push(token);
+            console.log(tokens);
+            console.log('logged in!')
         }
-
     })
         .catch(e=>{
             console.log(e)
@@ -179,13 +160,11 @@ teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
 });
 
 //logout
-
 teilnehmerController.delete('/teilnehmer/logout/:token', function (req, res) {
     tokens = tokens.filter(token => token !== req.params.token)
     res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
     console.log(tokens);
 });
-
 
 // teilnehmen
 let events;
