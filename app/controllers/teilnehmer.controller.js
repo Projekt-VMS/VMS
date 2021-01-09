@@ -222,8 +222,6 @@ teilnehmerController.put('/teilnehmer/participate/:id/:veranstaltung', function(
 teilnehmerController.put('/teilnehmer/deregisterEvent/:id/:veranstaltung', function(req,res) {
     let currentDate = moment();
     let resignPossible = true; // Abmeldung von Veranstaltung ist möglich
-    let event02;
-    let result02 = true;
 
     Veranstaltungen.findById({_id: req.params.veranstaltung}, function(err,event) { //checks if Rücktrittsfrist is over
         let newMomentObj = moment(event.start_datum)
