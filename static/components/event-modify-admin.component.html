@@ -15,8 +15,8 @@
     <br>
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
-
-<div id="roomModify"><h2>Veranstaltung: {{veranstaltung.titel}}<button class="deleteButton" id="trashIcon" data-ng-click="loescheVeranstaltung()"><i class="fa fa-fw fa-trash"></i></button></h2>
+<div id="roomModify">
+    <h2>Veranstaltung: {{veranstaltung.titel}}<a href="#!/event-overview-admin"><button class="deleteButton" id="trashIcon" data-ng-click="loescheVeranstaltung()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <br>
     <p class="modifyText">im Raum:  {{veranstaltung.raum}}</p>
     <p class="modifyText">mit dem Veranstalter:  {{veranstaltung.veranstalter}}</p>
