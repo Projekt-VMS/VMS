@@ -1,6 +1,7 @@
 const express = require('express');
 const veranstalterController = express();
 const Veranstalter = require('../models/Veranstalter');
+const Veranstaltung = require('../models/Veranstaltung');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
@@ -12,6 +13,9 @@ let  transport = nodemailer.createTransport({
         pass: "e0703dbc730281"
     }
 });
+const Moment = require('moment');
+const MomentRange = require('moment-range');
+const moment = MomentRange.extendMoment(Moment);
 
 let tokens = [];
 
@@ -32,8 +36,8 @@ veranstalterController.get('/veranstalter/show', function(req, res){
 
 //show one
 
-veranstalterController.get('/veranstalter/showOne/:id', function (req, res) {
-    Veranstalter.findOne({_id: req.params.id})
+veranstalterController.get('/veranstalter/showOne', function (req, res) {
+    Veranstalter.find({email: req.body.email})
 
         .catch(err => {
             console.log(err.toString());
@@ -212,6 +216,37 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
         })
     }
 
+})
+
+// Stornierung
+
+let currentDate = moment();
+let stornoPossible;
+
+veranstalterController.delete('/veranstalter/storno/:id', function (req, res, next) {
+
+
+    Veranstaltung.findById({_id: req.params.id}, function (err, event) {
+        if(event !== null) {
+            let newMomentObj = moment(event.start_datum)
+            if (newMomentObj.diff(currentDate, 'days') < 3) {  //if you want to resign closer then 1 day before start of the event
+                stornoPossible = false;
+                console.log(newMomentObj.diff(currentDate, 'days'))
+            }
+        }
+        else{res.status(500).send('Event not found!')}
+        if (stornoPossible === false) {
+            res.status(500).send('Die Stornofrist ist abgelaufen, ihre Veranstaltung kann nicht storniert werden!')
+        } else {
+            Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, event) {
+                if (err) {
+                    return next(new Error('user not found'))
+                } else {
+                    res.send('Veranstaltung ' + event.titel + ' wurde storniert');
+                }
+            })
+        }
+    })
 })
 
 module.exports = veranstalterController;
