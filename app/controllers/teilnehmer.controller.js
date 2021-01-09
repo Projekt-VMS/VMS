@@ -1,20 +1,18 @@
-const Moment = require('moment');
-const MomentRange = require('moment-range');
-const moment = MomentRange.extendMoment(Moment);
 const express = require('express');
 const teilnehmerController = express();
 const Teilnehmer = require('../models/Teilnehmer');
 const Veranstaltungen = require('../models/Veranstaltung');
-const passport = require('passport');
+const {validateEmail} = require("./validation");
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
-const authenticate = require('./authentication');
+const Moment = require('moment');
+const MomentRange = require('moment-range');
+const moment = MomentRange.extendMoment(Moment);
+
 var tokens = [];
 
 
 //show all Teilnehmer
-
-
 teilnehmerController.get('/teilnehmer/show', function(req, res){ Teilnehmer.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
@@ -26,7 +24,6 @@ teilnehmerController.get('/teilnehmer/show', function(req, res){ Teilnehmer.find
 });
 
 //Show one Teilnehmer
-
 teilnehmerController.get('/teilnehmer/showOne/:id', function (req, res) {
     Teilnehmer.findOne({_id: req.params.id})
 
@@ -41,24 +38,32 @@ teilnehmerController.get('/teilnehmer/showOne/:id', function (req, res) {
 });
 
 //Registration Teilnehmer
-
 teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
-    console.log(req.body);
 
     const { name, vorname, email, password, password2 } = req.body;
     let errors = [];
 
     if (!name || !vorname || !email || !password || !password2) {
-        errors.push({ msg: 'Please enter all fields' });
+        errors.push({ message: 'Fülle bitte alle Felder aus.' });
     }
-
+    if (validateEmail(email) !== true){
+        errors.push({message: 'Gültige Email eingeben.'})
+    }
+    Teilnehmer.find({email: email}, function(err, teilnehmer){
+        let emailExists = teilnehmer.length > 0;
+        if (emailExists === true){
+            errors.push({ message: 'Die Email ist bereits vergeben.'});
+        }
+    })
+    if (password.length < 5){
+        errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
+    }
     if (password !== password2) {
-        errors.push({ msg: 'Passwords do not match' });
+        errors.push({ message: 'Die Passwörter stimmen nicht überein.' });
     }
-
     if (errors.length > 0) {
         console.log('fail');
-        res.send({
+        res.status(400).json({
             errors,
             name,
             vorname,
@@ -73,7 +78,6 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
             email,
             password
         });
-
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newTeilnehmer.password, salt, (err, hash) => {
                 if (err) throw err;
@@ -87,16 +91,18 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
                             res.status(200).json({
                                 token: token,
                                 expiresIn: 3600,
-                                userID: newTeilnehmer._id
+                                userID: newTeilnehmer._id,
+                                message: 'Du hast dich erfolgreich registriert.'
+
                             });
                             tokens.push(token);
                             console.log(tokens);
                         }
                         else  {console.log(err.toString());
-                            res.status(500).send(err.toString()); }
+                            res.status(500).send(err.toString());
+                        }
                     })
 
-                req.flash('success_msg', 'Du bist nun registriert')
                 console.log(newTeilnehmer);
             });
         });
@@ -104,21 +110,20 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
 });
 
 // login teilnehmer
-
 teilnehmerController.post('/teilnehmer/login', (req, res) =>{
 
     let fetchedUser;
     Teilnehmer.findOne({email:req.body.email}).then(function(teilnehmer){
 
         if(!teilnehmer){
-            return res.status(401).json({message: 'Login Failed, no such User!'});
+            return res.status(401).json({message: 'Login fehlgeschlagen! Userdaten konnten nicht gefunden werden'});
         }
         fetchedUser=teilnehmer;
         return bcrypt.compare(req.body.password, teilnehmer.password);
     }).then (result => {
         console.log(fetchedUser)
         if (!result) {
-            return res.status(401).json({message: 'Login failed: wrong password!'})
+            return res.status(401).json({message: 'Login fehlgeschlagen! Passwort inkorrekt!'});
         }
         else {
             const token = jwt.sign(
@@ -128,7 +133,8 @@ teilnehmerController.post('/teilnehmer/login', (req, res) =>{
         res.status(200).json({
             token: token,
             expiresIn: 3600,
-            userID: fetchedUser._id
+            userID: fetchedUser._id,
+            message: 'Du bist erfolgreich angemeldet.'
         });
         tokens.push(token);
         console.log(tokens);
@@ -141,54 +147,42 @@ teilnehmerController.post('/teilnehmer/login', (req, res) =>{
         })
 })
 
-
-/*teilnehmerController.post('/teilnehmer/login', function (req, res, next) {
-        const dataJson = req.body.email;
-        passport.authenticate('local', {
-            successRedirect: '/',
-            failureRedirect: '/error/login',
-            failureFlash: true
-        })(req, res, next);
-        console.log(req.body.email);
-});
-*/
-
 //delete Teilnehmer
+teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res) {
 
-teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res, next) {
-
-    Teilnehmer.findOneAndRemove({_id: req.params.id},function(err, id){
-
-        if (err){
-            return next (new Error('user not found'))}
+    Teilnehmer.findOneAndRemove({_id: req.params.id},function(err){
+        if (err) {
+            res.status(401).json({message: 'User konnte nicht gelöscht werden'});
+        }
         else {
-            res.send('User ' + id.email + ' wurde gelöscht' );
+            res.status(200).json({message:'User wurde erfolgreich gelöscht'});
         }
     });
 });
 
 
 //Update Teilnehmer
-teilnehmerController.put('/teilnehmer/edit/:id',function (req, res, next) {
+teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
 
     Teilnehmer.findByIdAndUpdate(
         {_id: req.params.id},
         {$set: req.body
         },
         function (err, teilnehmer) {
-            if (!teilnehmer)
-                return next(new Error('user not found'));
+            if (err || !teilnehmer){
+                res.status(401).json({message: 'Es hat nicht geklappt!'});
+            }
             else {
-                res.send(teilnehmer);
+                res.status(200).json({message: 'Userdaten wurden erfolgreich überschrieben.'});
             }
         })
 });
 
 //logout
 
-teilnehmerController.delete('/teilnehmer/logout', function (req, res) {
-    tokens = tokens.filter(token => token !== req.body.token)
-    res.send("Logout successful");
+teilnehmerController.delete('/teilnehmer/logout/:token', function (req, res) {
+    tokens = tokens.filter(token => token !== req.params.token)
+    res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
     console.log(tokens);
 });
 
@@ -202,7 +196,7 @@ teilnehmerController.put('/teilnehmer/participate/:id/:veranstaltung', function(
     Veranstaltungen.findById({_id: req.params.veranstaltung}, 'teilnehmerzahl teilnehmer', function (err, event) {
         events = event;
         if (event.teilnehmerzahl === event.teilnehmer.length) { // checks if max number of participants is already reached
-            res.status(500).send("Veranstaltung ist bereits ausgebucht!") //err if max Teilnehmeranzahl is reached
+            res.status(500).json({message: 'Veranstaltung ist bereits ausgebucht!'}) //err if max Teilnehmeranzahl is reached
         } else {
             events.teilnehmer.some(e => { //if room on list --> check if user already registered for event
                     if (e == req.params.id) { //if user matches with entry in list --> break
@@ -214,18 +208,15 @@ teilnehmerController.put('/teilnehmer/participate/:id/:veranstaltung', function(
             if (result === true) { //if result is true, user is not yet signed in for event
                 Veranstaltungen.findByIdAndUpdate({_id: req.params.veranstaltung}, //pushes userID into Veranstaltung
                     {$push: {teilnehmer: req.params.id}}).exec();
-                res.send("sie wurden erfolgreich angemeldet!")
+                res.status(200).json({message: 'Du bist erfolgreich angemeldet'})
             }
             else{ //if result is not true, user already exists in list
-                res.send("Sie sind bereits angemeldet!")
+                res.status(400).json({message: 'Du bist bereits angemeldet!'})
                 result = true; //reset result variable
             }
         }
     })
 })
-
-
-
 
 //abmelden
 teilnehmerController.put('/teilnehmer/deregisterEvent/:id/:veranstaltung', function(req,res) {
@@ -240,10 +231,10 @@ teilnehmerController.put('/teilnehmer/deregisterEvent/:id/:veranstaltung', funct
           resignPossible = false;
           console.log(newMomentObj.diff(currentDate, 'days'))
         }
-        if(resignPossible === false){
-            res.status(500).send('Die Rücktrittsfrist ist abgelaufen')
+        if (resignPossible === false){
+            res.status(400).json({message: 'Die Rücktrittsfrist ist abgelaufen'});
         }
-        else{Veranstaltungen.findById({_id: req.params.veranstaltung}, 'teilnehmerzahl teilnehmer', function (err, event) {
+        else {Veranstaltungen.findById({_id: req.params.veranstaltung}, 'teilnehmerzahl teilnehmer', function (err, event) {
             event02 = event;
             console.log(result02)
             console.log(event02.teilnehmer)
@@ -259,34 +250,15 @@ teilnehmerController.put('/teilnehmer/deregisterEvent/:id/:veranstaltung', funct
             if (result02 === false) { //if result is true, user is not yet signed in for event
                 Veranstaltungen.findByIdAndUpdate({_id: req.params.veranstaltung}, //pushes userID into Veranstaltung
                     {$pull: {teilnehmer: req.params.id}}).exec();
-                res.send("erfolgreich abgemeldet")
+                res.status(200).json({message: 'Du hast dich erfolgreich abgemeldet.'})
             }
             else{ //if result is not true, user already exists in list
-                res.send("Sie sind nicht angemeldet!")
+                res.status(500).json({message: 'Deine Abmeldung hat nicht geklappt.'})
                 result = true; //reset result variable
             }
-
         })}
-
     })
-
-
-
-
 })
-
-
-//all events for specific user
-
-teilnehmerController.get('/teilnehmer/show/:id', function(req, res){
-    Veranstaltungen.find({teilnehmer : [req.params.id]},"titel veranstalter raum start_datum end_datum teilnehmer_preis teilnehmerzahl" )
-        .then(dbres => {
-            console.log(dbres);
-            res.send(dbres);
-    })
-
-});
-
 
 module.exports = teilnehmerController;
 

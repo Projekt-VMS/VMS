@@ -8,7 +8,6 @@ var app = angular.module('app', ['ngRoute']);
 app.factory('registrierenService', ['$http', function ($http){
 		function registrierenTeilnehmer(teilnehmer){
 			return $http.post('/teilnehmer/registration/add', teilnehmer)
-
 		}
 		function registrierenVeranstalter(veranstalter){
 			return $http.post('/veranstalter/registration/add', veranstalter)
@@ -22,7 +21,6 @@ app.factory('registrierenService', ['$http', function ($http){
 	.factory('loginService', ['$http', function ($http){
 		function loginTeilnehmer(daten){
 			return $http.post('/teilnehmer/login', daten)
-				.catch(err=>console.log(err.toString()));
 		}
 		function loginVeranstalter(daten){
 			return $http.post('/veranstalter/login', daten)
@@ -37,17 +35,17 @@ app.factory('registrierenService', ['$http', function ($http){
 	}])
 
 	.factory('logoutService', ['$http', function ($http){
-		function logoutTeilnehmer(){
-			return $http.post('/teilnehmer/logout')
+		function logoutTeilnehmer(token){
+			return $http.delete('/teilnehmer/logout/'+ token)
 		}
 		function logoutVeranstalter(daten){
-			return $http.post('/veranstalter/login', daten)
+			return $http.delete('/veranstalter/login', daten)
 		}
 		function logoutManagement(daten){
-			return $http.post('/management/login', daten)
+			return $http.delete('/management/login', daten)
 		}
 		function logoutAdmin(daten){
-			return $http.post('/admin/login', daten)
+			return $http.delete('/admin/login', daten)
 		}
 		return {logoutTeilnehmer, logoutVeranstalter, logoutManagement, logoutAdmin};
 	}])
@@ -55,29 +53,22 @@ app.factory('registrierenService', ['$http', function ($http){
 	.factory('teilnehmerService', ['$http', function ($http){
 		function getTeilnehmer(userID){
 			return $http.get('/teilnehmer/showOne/'+ userID)
-				.catch(err=>console.log(err.toString()));
 		}
 
 		function participate(userID, veranstaltung){
-
 			return $http.put('/teilnehmer/participate/' + userID + '/' + veranstaltung)
-				.catch(err=>console.log(err.toString()));
 		}
 
 		function deregisterEvent(userID, veranstaltung){
-
 			return $http.put('/teilnehmer/deregisterEvent/' + userID + '/' + veranstaltung)
-				.catch(err=>console.log(err.toString()));
 		}
 
 		function editTeilnehmer(userID, user){
 			return	$http.put('/teilnehmer/edit/'+userID, user)
-				.catch(err=>console.log(err.toString()));
 		}
 
 		function deleteTeilnehmer(userID){
 			return $http.delete('/teilnehmer/delete/'+userID)
-				.catch(err=>console.log(err.toString()));
 		}
 		return {getTeilnehmer, participate, deregisterEvent, editTeilnehmer, deleteTeilnehmer};
 
@@ -86,19 +77,15 @@ app.factory('registrierenService', ['$http', function ($http){
 	.factory('veranstalterService', ['$http', function ($http){
 		function getVeranstalter(userID){
 			return $http.get('/veranstalter/showOne/'+ userID)
-				.catch(err=>console.log(err.toString()));
 		}
 		function editVeranstalter(userID, user){
 			return	$http.put('/veranstalter/edit/'+userID, user)
-				.catch(err=>console.log(err.toString()));
 		}
 		function deleteVeranstalter(userID){
 			return $http.delete('/veranstalter/delete/'+ userID)
-				.catch(err=>console.log(err.toString()));
 		}
 		function request(userID, daten){
 			return $http.post('/veranstalter/request/'+ userID, daten)
-				.catch(err=>console.log(err.toString()));
 		}
 		return {getVeranstalter, editVeranstalter, deleteVeranstalter, request};
 	}])
@@ -106,19 +93,15 @@ app.factory('registrierenService', ['$http', function ($http){
 	.factory('managementService', ['$http', function ($http){
 		function getManagement(userID){
 			return $http.get('/management/showOne/'+ userID)
-				.catch(err=>console.log(err.toString()));
 		}
 		function getManagements(){
 			return $http.get('/management/show')
-				.catch(err=>console.log(err.toString()));
 		}
 		function editManagement(userID, user){
 			return	$http.put('/management/edit/'+userID, user)
-				.catch(err=>console.log(err.toString()));
 		}
 		function deleteManagement(userID){
 			return $http.delete('/management/delete/'+userID)
-				.catch(err=>console.log(err.toString()));
 		}
 		return {getManagement, getManagements, editManagement, deleteManagement};
 	}])
@@ -126,7 +109,6 @@ app.factory('registrierenService', ['$http', function ($http){
 	.factory('adminService', ['$http', function ($http){
 		function getAdmin(userID){
 			return $http.get('/admin/showOne/'+ userID)
-				.catch(err=>console.log(err.toString()));
 		}
 		return {getAdmin};
 	}])
@@ -134,29 +116,21 @@ app.factory('registrierenService', ['$http', function ($http){
 	.factory('veranstaltungService', ['$http', function ($http){
 		function createVeranstaltung(veranstaltung){
 			return $http.post('/veranstaltung/add', veranstaltung)
-
 		}
 		function getVeranstaltungen(){
 			return $http.get('/veranstaltung/show')
-				.catch(err=>console.log(err.toString()));
-
 		}
 
 		function getVeranstaltung(veranstaltungID){
 			return $http.get('/veranstaltung/showOne/'+veranstaltungID)
-				.catch(err=>console.log(err.toString()));
-
 		}
 
 		function editVeranstaltung(veranstaltungID, veranstaltung){
 			return	$http.put('/veranstaltung/edit/'+veranstaltungID, veranstaltung)
-				.catch(err=>console.log(err.toString()));
-
 		}
 
 		function deleteVeranstaltung(veranstaltungID){
 			return $http.delete('/veranstaltung/delete/'+veranstaltungID)
-				.catch(err=>console.log(err.toString()));
 		}
 		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, deleteVeranstaltung}
     
@@ -178,12 +152,10 @@ app.factory('registrierenService', ['$http', function ($http){
 
 		function editRaum(raumID, raum){
 			return	$http.put('/raum/edit/'+raumID, raum)
-				.catch(err=>console.log(err.toString()));
-
 		}
+
 		function deleteRaum(raumID){
 			return $http.delete('/raum/delete/'+raumID)
-				.catch(err=>console.log(err.toString()));
 		}
 		return {createRaum, getRaeume, getRaum, editRaum, deleteRaum}
 	}])
@@ -202,7 +174,6 @@ app.factory('registrierenService', ['$http', function ($http){
 	.factory('authService',['$http', function($http){
 		function checkToken(token){
 			return $http.get('/auth/check/' +token)
-				.catch(err=>console.log(err.toString()));
 		}
 		return {checkToken}
 	}])
@@ -217,9 +188,14 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		registrierenService.registrierenTeilnehmer(teilnehmer).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
-		}).catch(
-			error => alert(error.message)
-		);
+			location.href = '/#!/event-search-participant'
+			alert(res.data.message);
+		},
+			function(err) {
+				console.log(err.data.message);
+				err.data.errors.forEach(error => alert(error.message))
+				//$scope.message = res.data.message
+			})
 	}
 
 	function erstelleVeranstalter(veranstalter){
@@ -227,9 +203,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		registrierenService.registrierenVeranstalter(veranstalter).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
-		}).catch(
-			error => alert(error.message)
-		);
+			location.href = '/#!/event-overview-host'
+		},
+			function(err) {
+				console.log(err.data.message);
+				alert(err.data.message);
+				//$scope.message = res.data.message
+			})
 	}
 
 	function loggeTeilnehmer(daten){
@@ -238,14 +218,14 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			function (res) {
 				localStorage.setItem('user_id', res.data.userID);
 				localStorage.setItem('token_id', res.data.token);
-				//setTimeout(function () {
-					location.href = '/#!/event-search-participant'
-				//}, 500);
-			}, function (err) {
-
-				console.log('error1:' + err)
-				alert(err.message)
-		})
+				location.href = '/#!/event-search-participant'
+				alert(res.data.message);
+			},
+			function(err) {
+				console.log(err.data.message);
+				alert(err.data.message);
+				//$scope.message = res.data.message
+			})
 	}
 
 	function loggeVeranstalter(daten){
@@ -253,11 +233,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		loginService.loginVeranstalter(daten).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
-
 			location.href = '/#!/event-overview-host'
-		}).catch(
-			error => alert(error.message)
-		);
+		},
+			function(err) {
+				console.log(err.data.message);
+				alert(err.data.message);
+				//$scope.message = res.data.message
+			})
 	}
 
 	function loggeManagement(daten){
@@ -265,11 +247,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		loginService.loginManagement(daten).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
-
 			location.href = '/#!/event-overview-management'
-		}).catch(
-			error => alert(error.message)
-		);
+		},
+			function(err) {
+				console.log(err.data.message);
+				alert(err.data.message);
+				//$scope.message = res.data.message
+			})
 	}
 
 	function loggeAdmin(daten){
@@ -277,15 +261,14 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		loginService.loginAdmin(daten).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
-
 			location.href = '/#!/profile-admin'
-		}).catch(
-			error => alert(error.message)
-		);
+		},
+			function(err) {
+				console.log(err.data.message);
+				alert(err.data.message);
+				//$scope.message = res.data.message
+			})
 	}
-
-
-
 
 	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
@@ -295,48 +278,9 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	$scope.loggeManagement = (daten) => loggeManagement(daten);
 	$scope.loggeAdmin = (daten) => loggeAdmin(daten);
 
-
 }])
 
-	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService','authService', 'teilnehmerService','veranstaltungService', function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService){
-
-		console.log('Teilnehmer Controller');
-    
-    	var paramID = $routeParams.id;
-    
-		//filter
-		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmerID = res.data._id);
-
-
-		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-
-		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
-
-
-		function teilnehmen(veranstaltung){
-			teilnehmerService.participate(tokenService.getID(), veranstaltung)
-		}
-		function abmelden(veranstaltung){
-			console.log('funktion läuft' + veranstaltung)
-			teilnehmerService.deregisterEvent(tokenService.getID(), veranstaltung)
-		}
-		function updateTeilnehmer(neuerTeilnehmer){
-			$scope.neuerTeilnehmer = {};
-			console.log(neuerTeilnehmer);
-			teilnehmerService.editTeilnehmer(paramID ,neuerTeilnehmer);
-		}
-    	function loescheTeilnehmer(){
-			teilnehmerService.deleteTeilnehmer(paramID);
-		}
-		function loggeOut(){
-			localStorage.clear()
-		}
-
-		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
-		$scope.abmelden = (veranstaltung) => abmelden(veranstaltung);
-		$scope.updateTeilnehmer = (neuerTeilnehmer) => updateTeilnehmer(neuerTeilnehmer);
-    	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
-		$scope.loggeOut = () => loggeOut();
+	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService','authService', 'teilnehmerService','veranstaltungService','logoutService', function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService, logoutService){
 
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
@@ -347,6 +291,79 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			}
 			});
 		}, 50);
+		console.log('Teilnehmer Controller');
+
+    	var paramID = $routeParams.id;
+
+		//filter
+		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmerID = res.data._id);
+
+
+		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+
+		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
+
+
+		function teilnehmen(veranstaltung){
+			teilnehmerService.participate(tokenService.getID(), veranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+		function abmelden(veranstaltung){
+			teilnehmerService.deregisterEvent(tokenService.getID(), veranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+		function updateTeilnehmer(neuerTeilnehmer){
+			$scope.neuerTeilnehmer = {};
+			console.log(neuerTeilnehmer);
+			teilnehmerService.editTeilnehmer(paramID ,neuerTeilnehmer).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+    	function loescheTeilnehmer(){
+			teilnehmerService.deleteTeilnehmer(paramID).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+		function loggeOut(){
+			logoutService.logoutTeilnehmer(tokenService.getToken()).then(
+				function(res){
+					localStorage.clear()
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+
+		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
+		$scope.abmelden = (veranstaltung) => abmelden(veranstaltung);
+		$scope.updateTeilnehmer = (neuerTeilnehmer) => updateTeilnehmer(neuerTeilnehmer);
+    	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
+		$scope.loggeOut = () => loggeOut();
+
 	}])
 
 	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'authService', 'veranstalterService', 'veranstaltungService', function ($scope, $routeParams, tokenService, authService, veranstalterService, veranstaltungService){
