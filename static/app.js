@@ -376,7 +376,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 					location.href = '/#!/login'
 				}
 			});
-		}, 50);
+		}, 500);
 
 		var paramID = $routeParams.id;
 
