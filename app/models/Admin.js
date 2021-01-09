@@ -3,6 +3,8 @@ var Schema = mongoose.Schema;
 var jwt = require('jsonwebtoken');
 
 var adminSchema = new Schema({
+    name: {type: String, required: 'name can\'t be empty '},
+    vorname:{type:String, required: 'vorname can\'t be empty'},
     email:{type:String,
         required: 'email can\'t be empty',
         unique: true,

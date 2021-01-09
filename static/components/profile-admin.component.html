@@ -1,6 +1,6 @@
 <div class="sidenav">
     <h5>Admin</h5>
-    <a href='#!/profile-admin' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.email}}</p></a>
+    <a href='#!/profile-admin' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.vorname + ' ' + admin.name}}<br><c>{{admin.email}}</c></p></a>
     <hr>
     <br>
     <a href='#!/user-overview-admin'><i class="fa fa-fw fa-users"></i> Management-User</a>
@@ -19,13 +19,16 @@
     <h2>Mein Profil</h2>
     <h3>Aktuelle Daten</h3>
     <br>
+    <p>Vorname:  {{admin.vorname}}</p>
+    <hr><br>
+    <p>Nachname:  {{admin.name}}</p>
+    <hr><br>
     <p>E-Mail-Adresse:  {{admin.email}}</p>
     <hr><br>
     <p>Passwort: *************</p>
     <hr><br>
     <p>Nutzertyp:  Admin</p>
-    <div id="logoutButton">
-        <button data-ng-click='loggeOut()' class="loginButton"><a href="#!/login">Abmelden</a></button>
-    </div>
+    <hr><br>
+    <button data-ng-click='loggeOut()' id="logoutButton"><a href="#!/login">Abmelden</a></button>
     <br><br>
 </div>
