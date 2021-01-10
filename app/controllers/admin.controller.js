@@ -22,10 +22,10 @@ adminController.get('/admin/showOne/:id', function (req, res) {
 //Registration
 
 adminController.post('/admin/registration/add', function (req, res) {
-    const { email, password, password2 } = req.body;
+    const { name, vorname, email, password, password2 } = req.body;
     let errors = [];
 
-    if (!email || !password || !password2) {
+    if (!name || !vorname || !email || !password || !password2) {
         errors.push({ msg: 'Please enter all fields' });
     }
 
@@ -43,6 +43,8 @@ adminController.post('/admin/registration/add', function (req, res) {
         console.log(errors)
     } else {
         const newAdmin = new Admin({
+            name,
+            vorname,
             email,
             password
         });

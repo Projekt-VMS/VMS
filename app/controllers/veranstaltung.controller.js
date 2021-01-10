@@ -56,18 +56,7 @@ let raumExists;
 result2 = false;
 
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
-    let {
-        titel,
-        veranstalter,
-        raum,
-        start_datum,
-        end_datum,
-        teilnehmerzahl,
-        veranstalter_preis,
-        teilnehmer_preis,
-        sichtbarkeit,
-        angebotsstatus
-    } = req.body;
+    let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, veranstalter_preis, teilnehmer_preis, sichtbarkeit, angebotsstatus } = req.body;
     let errors = [];
 
     if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus) {
