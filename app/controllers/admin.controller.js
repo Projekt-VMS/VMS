@@ -9,7 +9,6 @@ let tokens=[];
 //show one
 adminController.get('/admin/showOne/:id', function (req, res) {
     Admin.findOne({_id: req.params.id})
-
         .catch(err => {
             console.log(err.toString());
             res.status(500).send(err.toString());
@@ -41,6 +40,7 @@ adminController.post('/admin/registration/add', function (req, res) {
             password,
             password2
         });
+        console.log(errors)
     } else {
         const newAdmin = new Admin({
             email,
@@ -68,8 +68,6 @@ adminController.post('/admin/registration/add', function (req, res) {
                         else  {console.log(err.toString());
                             res.status(500).send(err.toString()); }
                     })
-
-                req.flash('success_msg', 'Du bist nun registriert')
                 console.log(newAdmin);
             });
         });
@@ -83,14 +81,14 @@ adminController.post('/admin/login', (req, res, next) =>{
 
     Admin.findOne({email:req.body.email}).then(function(admin){
         if(!admin){
-            return res.status(401).json({message: 'Login Failed, no such User!'})
+            return res.status(401).json({message: 'Login fehlgeschlagen! Userdaten konnten nicht gefunden werden'});
         }
         fetchedUser=admin;
         return bcrypt.compare(req.body.password, admin.password);
     }).then (result => {
         console.log(fetchedUser)
         if (!result) {
-            return res.status(401).json({message: 'Login failed: wrong password!'})
+            return res.status(401).json({message: 'Login fehlgeschlagen! Passwort inkorrekt!'});
         }
         else {
             const token = jwt.sign(
@@ -100,16 +98,23 @@ adminController.post('/admin/login', (req, res, next) =>{
             res.status(200).json({
                 token: token,
                 expiresIn: 3600,
-                userID: fetchedUser._id
+                userID: fetchedUser._id,
+                message: 'Du bist erfolgreich angemeldet.'
             });
             tokens.push(token);
             console.log(tokens);
             console.log('logged in!')
         }
-
     })
         .catch(e=>{
             console.log(e)
         })
 })
+
+//logout
+adminController.delete('/admin/logout/:token', function (req, res) {
+    tokens = tokens.filter(token => token !== req.params.token)
+    res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
+    console.log(tokens);
+});
 module.exports = adminController;

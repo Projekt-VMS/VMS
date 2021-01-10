@@ -1,7 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-let Raum = require('../models/Raum');
-let Veranstalter = require('../models/Veranstalter');
 let today = new Date();
 
 var veranstaltungSchema = new Schema({

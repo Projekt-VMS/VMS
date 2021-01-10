@@ -36,61 +36,63 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
     if (validateEmail(email) !== true){
         errors.push({message: 'Gültige Email eingeben.'})
     }
-    Teilnehmer.find({email: email}, function(err, teilnehmer){
-        let emailExists = teilnehmer.length > 0;
-        if (emailExists === true){
-            errors.push({ message: 'Die Email ist bereits vergeben.'});
-        }
-    })
     if (password.length < 5){
         errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
     }
     if (password !== password2) {
         errors.push({ message: 'Die Passwörter stimmen nicht überein.' });
     }
-    if (errors.length > 0) {
-        res.status(400).json({
-            errors,
-            name,
-            vorname,
-            email,
-            password,
-            password2
-        });
-    } else {
-        const newTeilnehmer = new Teilnehmer({
-            name,
-            vorname,
-            email,
-            password
-        });
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newTeilnehmer.password, salt, (err, hash) => {
-                if (err) throw err;
-                newTeilnehmer.password = hash;
-                newTeilnehmer
-                    .save((err, doc) => {
-                        const token = jwt.sign(
-                            {email: newTeilnehmer.email, userID: newTeilnehmer._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
-                            {expiresIn: "1h"})
-                        if (!err){
-                            res.status(200).json({
-                                token: token,
-                                expiresIn: 3600,
-                                userID: newTeilnehmer._id,
-                                message: 'Du hast dich erfolgreich registriert.'
-                            });
-                            tokens.push(token);
-                            console.log(tokens);
-                        }
-                        else  {console.log(err.toString());
-                            res.status(500).send(err.toString());
-                        }
-                    })
-                console.log(newTeilnehmer);
+    Teilnehmer.find({email: email}, function(err, teilnehmer){
+        let emailExists = teilnehmer.length > 0;
+        if (emailExists === true){
+            errors.push({ message: 'Die Email ist bereits vergeben.'});
+        }
+        if (errors.length > 0) {
+            res.status(400).json({
+                errors,
+                name,
+                vorname,
+                email,
+                password,
+                password2
             });
-        });
-    }
+        } else {
+            const newTeilnehmer = new Teilnehmer({
+                name,
+                vorname,
+                email,
+                password
+            });
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newTeilnehmer.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newTeilnehmer.password = hash;
+                    newTeilnehmer
+                        .save((err, doc) => {
+                            const token = jwt.sign(
+                                {email: newTeilnehmer.email, userID: newTeilnehmer._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                                {expiresIn: "1h"})
+                            if (!err){
+                                res.status(200).json({
+                                    token: token,
+                                    expiresIn: 3600,
+                                    userID: newTeilnehmer._id,
+                                    message: 'Du hast dich erfolgreich registriert.'
+                                });
+                                tokens.push(token);
+                                console.log(tokens);
+                            }
+                            else  {console.log(err.toString());
+                                res.status(500).send(err.toString());
+                            }
+                        })
+                    console.log(newTeilnehmer);
+                });
+            });
+        }
+
+    })
+
 });
 
 // login teilnehmer
@@ -131,12 +133,12 @@ teilnehmerController.post('/teilnehmer/login', (req, res) =>{
 //delete Teilnehmer
 teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res) {
 
-    Teilnehmer.findOneAndRemove({_id: req.params.id},function(err){
+    Teilnehmer.findOneAndRemove({_id: req.params.id},function(err, id){
         if (err) {
             res.status(401).json({message: 'User konnte nicht gelöscht werden'});
         }
         else {
-            res.status(200).json({message:'User wurde erfolgreich gelöscht'});
+            res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
         }
     });
 });
@@ -150,11 +152,11 @@ teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
         {$set: req.body
         },
         function (err, teilnehmer) {
-            if (err || !teilnehmer){
+            if (err){
                 res.status(401).json({message: 'Es hat nicht geklappt!'});
             }
             else {
-                res.status(200).json({message: 'Userdaten wurden erfolgreich überschrieben.'});
+                res.status(200).json({message: 'User ' + teilnehmer.email + ' wurde erfolgreich überschrieben'});
             }
         })
 });
