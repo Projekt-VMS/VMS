@@ -41,11 +41,11 @@ app.factory('registrierenService', ['$http', function ($http){
 		function logoutVeranstalter(token){
 			return $http.delete('/veranstalter/logout/' + token)
 		}
-		function logoutManagement(daten){
-			return $http.delete('/management/login', daten)
+		function logoutManagement(token){
+			return $http.delete('/management/logout/' + token)
 		}
-		function logoutAdmin(daten){
-			return $http.delete('/admin/login', daten)
+		function logoutAdmin(token){
+			return $http.delete('/admin/logout/' + token)
 		}
 		return {logoutTeilnehmer, logoutVeranstalter, logoutManagement, logoutAdmin};
 	}])
@@ -436,8 +436,18 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	}])
 
-	.controller('managementController', ['$scope','$routeParams', 'tokenService','authService', 'managementService', 'veranstaltungService', 'raumService', function($scope, $routeParams, tokenService, authService, managementService, veranstaltungService, raumService){
+	.controller('managementController', ['$scope','$routeParams', 'tokenService','authService', 'managementService', 'veranstaltungService', 'raumService', 'logoutService', function($scope, $routeParams, tokenService, authService, managementService, veranstaltungService, raumService, logoutService){
 		console.log('Management Controller');
+
+		setTimeout(function () {
+			authService.checkToken(tokenService.getToken()).then(function (res){
+				let bool = res.data;
+				console.log(bool.boolean)
+				if( bool.boolean === 'false') {
+					location.href = '/#!/login'
+				}
+			});
+		}, 500);
 
 		var paramID = $routeParams.id;
 
@@ -446,31 +456,79 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		function erstelleVeranstaltung(veranstaltung){
 			$scope.daten={};
-			veranstaltungService.createVeranstaltung(veranstaltung);
+			veranstaltungService.createVeranstaltung(veranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					err.data.errors.forEach(error => alert(error.message))
+				}
+			);
 		}
-
 		function erstelleRaum(raum){
 			$scope.raum={};
-			raumService.createRaum(raum);
+			raumService.createRaum(raum).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
-
 		function updateRaum(neuerRaum){
 			$scope.neuerRaum = {};
 			console.log(neuerRaum);
-			raumService.editRaum(paramID ,neuerRaum);
+			raumService.editRaum(paramID ,neuerRaum).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
-
 		function updateVeranstaltung(neueVeranstaltung){
 			$scope.neueVeranstaltung={};
-			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung);
+			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
-
 		function loescheVeranstaltung(){
-			veranstaltungService.deleteVeranstaltung(paramID);
+			veranstaltungService.deleteVeranstaltung(paramID).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
-
 		function loescheRaum(){
-			raumService.deleteRaum(paramID);
+			raumService.deleteRaum(paramID).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+		function loggeOut(){
+			logoutService.logoutManagement(tokenService.getToken()).then(
+				function(res){
+					localStorage.clear()
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
 
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
@@ -488,24 +546,22 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
 
-		function loggeOut(){
-			localStorage.clear()
-		}
 		$scope.loggeOut = () => loggeOut();
+
+	}])
+
+		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'authService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService','logoutService', function($scope, $routeParams, tokenService, authService,adminService, managementService, veranstaltungService, raumService, registrierenService, logoutService){
+		console.log('Admin Controller');
 
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
 				let bool = res.data;
 				console.log(bool.boolean)
 				if( bool.boolean === 'false') {
-					location.href = '/#!/login'
+						location.href = '/#!/login'
 				}
 			});
-		}, 50);
-	}])
-
-		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'authService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService', function($scope, $routeParams, tokenService, authService,adminService, managementService, veranstaltungService, raumService, registrierenService){
-		console.log('Admin Controller');
+			}, 500);
 
 		var paramID = $routeParams.id;
 
@@ -529,32 +585,85 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		function erstelleVeranstaltung(veranstaltung){
 			$scope.daten={};
-			veranstaltungService.createVeranstaltung(veranstaltung);
+			veranstaltungService.createVeranstaltung(veranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					err.data.errors.forEach(error => alert(error.message))
+				}
+			);
 		}
 
 		function erstelleRaum(raum){
 			$scope.raum={};
-			raumService.createRaum(raum);
+			raumService.createRaum(raum).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
 
 		function updateRaum(neuerRaum){
 			$scope.neuerRaum = {};
 			console.log(neuerRaum);
-			raumService.editRaum(paramID ,neuerRaum);
+			raumService.editRaum(paramID ,neuerRaum).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 
 		}
 
 		function updateVeranstaltung(neueVeranstaltung){
 			$scope.neueVeranstaltung={};
-			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung);
+			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
 
 		function loescheVeranstaltung(){
-			veranstaltungService.deleteVeranstaltung(paramID);
+			veranstaltungService.deleteVeranstaltung(paramID).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
 
 		function loescheRaum(){
-			raumService.deleteRaum(paramID);
+			raumService.deleteRaum(paramID).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+
+		function loggeOut(){
+			logoutService.logoutAdmin(tokenService.getToken()).then(
+				function(res){
+					localStorage.clear()
+					alert(res.data.message);
+					},
+				function(err){
+						alert(err.data.message);
+				});
 		}
 
 
@@ -580,20 +689,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
 
-		function loggeOut(){
-			localStorage.clear()
-		}
 		$scope.loggeOut = () => loggeOut();
 
-		setTimeout(function () {
-			authService.checkToken(tokenService.getToken()).then(function (res){
-				let bool = res.data;
-				console.log(bool.boolean)
-				if( bool.boolean === 'false') {
-						location.href = '/#!/login'
-				}
-			});
-			}, 500);
 	}])
 
 

@@ -1,15 +1,14 @@
-
-const Moment = require('moment');
-const MomentRange = require('moment-range');
-const moment = MomentRange.extendMoment(Moment);
-moment().utc();
-moment.locale('us',{week:{dow : 1}})
 const express = require('express'),
     veranstaltungsController = express();
 const nodemailer = require('nodemailer');
 const Veranstalter = require('../models/Veranstalter');
 const Raum = require('../models/Raum');
 let Veranstaltung = require('../models/Veranstaltung');
+const Moment = require('moment');
+const MomentRange = require('moment-range');
+const moment = MomentRange.extendMoment(Moment);
+moment().utc();
+moment.locale('us',{week:{dow : 1}})
 var date = new Date();
 let  transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
@@ -22,21 +21,8 @@ let  transport = nodemailer.createTransport({
 
 date.setDate(date.getDate() + 7)
 
-// get with Veranstalter
-
-function getVeranstaltungWithVeranstalter (veranstaltung_ID){
-    console.log(veranstaltung_ID);
-    return Veranstaltung.findOne({ veranstaltung_id: veranstaltung_ID })
-        .populate('veranstalter').exec((err, veranstalter) => {
-            console.log("Populated Veranstaltung " + veranstalter);
-        })
-}
-
-
 //show all
-
 veranstaltungsController.get('/veranstaltung/show', function (req, res) {
-
     Veranstaltung.find()
             .catch(err => {
                 console.log(err.toString());
@@ -48,14 +34,8 @@ veranstaltungsController.get('/veranstaltung/show', function (req, res) {
 });
 
 //show one
-
 veranstaltungsController.get('/veranstaltung/showOne/:id', function (req, res) {
-        //getVeranstaltungWithVeranstalter(req.params.id);
-
     Veranstaltung.findOne({_id: req.params.id})
-     //   .populate('raum')
-     //   .populate('veranstalter')
-     //   .exec()
             .catch(err => {
                 console.log(err.toString());
                 res.status(500).send(err.toString());
@@ -64,7 +44,6 @@ veranstaltungsController.get('/veranstaltung/showOne/:id', function (req, res) {
                 console.log(dbres);
                 res.send(dbres);
             });
-
 });
 
 //create
@@ -75,21 +54,108 @@ let result2;
 let veranstalterExists;
 let raumExists;
 result2 = false;
+
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
-    let veranstaltungInstance = new Veranstaltung(req.body);
-
-
-    let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl,veranstalter_preis, teilnehmer_preis, sichtbarkeit, angebotsstatus } = req.body;
+    let {
+        titel,
+        veranstalter,
+        raum,
+        start_datum,
+        end_datum,
+        teilnehmerzahl,
+        veranstalter_preis,
+        teilnehmer_preis,
+        sichtbarkeit,
+        angebotsstatus
+    } = req.body;
     let errors = [];
 
     if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus) {
-        errors.push({ msg: 'Please enter all fields' });
+        errors.push({message: 'Fülle bitte alle Felder aus.'});
+    }
+
+    Veranstalter.find({email: req.body.veranstalter}, function (err, veranstalter) { //check if Veranstalter exists
+        veranstalterExists = veranstalter.length > 0;
+        if (veranstalterExists === false) {
+            console.log('endlich')
+            errors.push({message: 'Der Veranstalter existiert nicht.'});
+            console.log(errors)
+        }
+
+        Raum.find({raumNr: req.body.raum}, function (err, raum) { //check if Raum exists
+            console.log(req.body.raum)
+            raumExists = raum.length > 0;
+            console.log(raumExists)
+            if (raumExists === false) {
+                console.log('raum existiert nicht')
+                errors.push({message: 'Der Raum existiert nicht'})
+            }
+
+            Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) {
+                foundevents = veranstaltung //saves all found events as arrays to foundevents
+                //foundevents.forEach(event => { //as long as result is false there is no overlap; complete array of matching rooms is searched until overlap is found or end of array is reached
+                foundevents.every(event => {
+                    range1 = moment.range(req.body.start_datum, req.body.end_datum) //dates to check are passed in
+                    range2 = moment.range(event.start_datum, event.end_datum) //these are the dates of the exisiting event
+                    result2 = range1.overlaps(range2) //ranges are checked for overlap; result 2 is updated
+                    if (result2 === true) {
+                        errors.push({message: 'Leider ist dieser Raum zu dieser Zeit blockiert. Bitte versuchen Sie eine andere Kombination aus Datum und Raum!'})
+                        return false;
+                    }
+                    return true;
+                })
+                    if (!((moment(req.body.start_datum).isSame(req.body.end_datum, 'week')))) {
+                        errors.push({message: 'Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!'})
+                    }
+                if (errors.length > 0) {
+                    res.status(400).json({
+                        errors,
+                        veranstalter_preis, titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus
+                    });
+                } else {
+                    const veranstaltungInstance = new Veranstaltung({
+                        titel,
+                        veranstalter,
+                        raum,
+                        start_datum,
+                        end_datum,
+                        veranstalter_preis,
+                        teilnehmerzahl,
+                        teilnehmer_preis,
+                        sichtbarkeit,
+                        angebotsstatus
+                    })
+
+                    veranstaltungInstance.save((err, doc) => { //saves event
+                        if (!err) {
+                            console.log("success!")
+                            res.status(200).json({message: 'Veranstaltung wurde erfolgreich erstellt!'}); //sends mail once event is saved
+                            transport.sendMail({
+                                from: 'test@vms.de',
+                                to: req.body.veranstalter,
+                                subject: 'Ihr Angebot ',
+                                text: 'Vielen Dank für Ihre Anfrage. Anbei erhalten sie ihr Angebot auf Basis Ihrer eingegebenen Daten: '
+                                    + doc
+                            })
+                        } else { //error if event can't be safed
+                            console.log(err.toString());
+                            res.status(500).json({message: 'Veranstaltung erstellen ist fehlgeschlagen'});
+                        }
+                    })
+                }
+            })
+        })
+    })
+})
+
+   /* if (!((moment(req.body.start_datum).isSame(req.body.end_datum, 'week')))) {
+       errors.push({message: 'Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!'})
     }
 
     if (errors.length > 0) {
-        console.log('fail');
-        res.send({
-            errors,veranstalter_preis, titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus
+        res.status(400).json({
+            errors,
+            veranstalter_preis, titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus
         });
     } else {
         const veranstaltungInstance = new Veranstaltung({
@@ -105,7 +171,25 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
             angebotsstatus
         })
 
-        Veranstalter.find({email:req.body.veranstalter},function(err, veranstalter) { //check if Veranstalter exists
+        veranstaltungInstance.save((err, doc) => { //saves event
+            if (!err) {
+                console.log("success!")
+                res.status(200).json({message: 'Veranstaltung wurde erfolgreich erstellt!'}); //sends mail once event is saved
+                transport.sendMail({
+                    from: 'test@vms.de',
+                    to: req.body.veranstalter,
+                    subject: 'Ihr Angebot ',
+                    text: 'Vielen Dank für Ihre Anfrage. Anbei erhalten sie ihr Angebot auf Basis Ihrer eingegebenen Daten: '
+                        + doc
+                })
+            } else { //error if event can't be safed
+                console.log(err.toString());
+                res.status(500).json({message: 'Veranstaltung erstellen ist fehlgeschlagen'});
+            }
+        })*/
+
+
+        /*Veranstalter.find({email:req.body.veranstalter},function(err, veranstalter) { //check if Veranstalter exists
             veranstalterExists = veranstalter.length > 0;
         })
         console.log(veranstalter.length)
@@ -126,11 +210,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                     if (result2 !== false) {return false;}
                     if (result2 === undefined){return false;}
                     return true;
-
-
                 })
-
-
         }
           if(veranstalterExists === true) {
               if (raumExists === true) {
@@ -141,7 +221,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                               if (!err) {
                                   console.log("success!")
 
-                                  res.send('Veranstaltung wurde erfolgreich erstellt!'); //sends mail once event is saved
+                                  res.status(200).json({message: 'Veranstaltung wurde erfolgreich erstellt!'}); //sends mail once event is saved
                                   transport.sendMail({
                                       from: 'test@vms.de',
                                       to: req.body.veranstalter,
@@ -151,9 +231,8 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                                   })
                               } else { //error if event can't be safed
                                   console.log(err.toString());
-                                  res.status(500).send("Fehler!");
+                                  res.status(500).json({message: 'Veranstaltung erstellen ist fehlgeschlagen'});
                               }
-
                           })
                       } else { //error if event ends after sunday
                           console.log('Fehler! (Sonntag')
@@ -170,7 +249,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
           else{res.status(500).send("Dieser Veranstalter existiert nicht")
          }
     })
-}})
+}})*/
 
 
 

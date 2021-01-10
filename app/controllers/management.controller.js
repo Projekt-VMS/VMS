@@ -3,30 +3,25 @@ const managementController = express();
 const Management = require('../models/Management');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const {validateEmail} = require("./validation");
 
 let tokens =[];
 
 //list all
-
 managementController.get('/management/show', function(req, res){
     Management.find()
     .catch(err=>{
         console.log(err.toString()); res.status(500).send(err.toString());
     })
     .then(dbres=>{
-
         console.log(dbres);
         res.send(dbres);
     });
 });
 
 //show one
-
 managementController.get('/management/showOne/:id', function (req, res) {
     Management.findOne({_id: req.params.id})
-        //let raum = Raum["customer" + req.params.id];
-        //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
-
         .catch(err => {
             console.log(err.toString());
             res.status(500).send(err.toString());
@@ -38,8 +33,6 @@ managementController.get('/management/showOne/:id', function (req, res) {
 });
 
 // Registration Management
-
-
 managementController.post('/management/registration/add', function (req, res) {
 
     const { name, vorname, email, password, password2 } = req.body;
@@ -48,75 +41,81 @@ managementController.post('/management/registration/add', function (req, res) {
     if (!name || !vorname || !email || !password || !password2) {
         errors.push({ msg: 'Please enter all fields' });
     }
-
+    if (validateEmail(email) !== true){
+        errors.push({message: 'Gültige Email eingeben.'})
+    }
+    if (password.length < 5){
+        errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
+    }
     if (password !== password2) {
         errors.push({ msg: 'Passwords do not match' });
     }
-
-    if (errors.length > 0) {
-        res.send({
-            errors,
-            name,
-            vorname,
-            email,
-            password,
-            password2
-        });
-    } else {
-        const newManagement = new Management({
-            name,
-            vorname,
-            email,
-            password
-        });
-
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newManagement.password, salt, (err, hash) => {
-                if (err) throw err;
-                newManagement.password = hash;
-                newManagement
-                    .save((err, doc) => {
-                        const token = jwt.sign(
-                            {email: newManagement.email, userID: newManagement._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
-                            {expiresIn: "1h"})
-                        if (!err){
-                            res.status(200).json({
-                                token: token,
-                                expiresIn: 3600,
-                                userID: newManagement._id
-                            });
-                            tokens.push(token);
-                            console.log(tokens);
-                        }
-                        else  {console.log(err.toString());
-                            res.status(500).send(err.toString()); }
-                    })
-
-                req.flash('success_msg', 'Du bist nun registriert')
-                console.log(newManagement);
+    Management.find({email: email}, function (err, management){
+        let emailExists = management.length > 0;
+        if (emailExists === true){
+            errors.push({ message: 'Die Email ist bereits vergeben.'});
+        }
+        if (errors.length > 0) {
+            res.status(400).json({
+                errors,
+                name,
+                vorname,
+                email,
+                password,
+                password2
             });
-        });
-    }
+        } else {
+            const newManagement = new Management({
+                name,
+                vorname,
+                email,
+                password
+            });
+
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newManagement.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newManagement.password = hash;
+                    newManagement
+                        .save((err, doc) => {
+                            const token = jwt.sign(
+                                {email: newManagement.email, userID: newManagement._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                                {expiresIn: "1h"})
+                            if (!err){
+                                res.status(200).json({
+                                    token: token,
+                                    expiresIn: 3600,
+                                    userID: newManagement._id,
+                                    message: 'Der Mitarbeiter wurde erfolgreich erstellt'
+                                });
+                                tokens.push(token);
+                                console.log(tokens);
+                            }
+                            else  {console.log(err.toString());
+                                res.status(500).send(err.toString()); }
+                        })
+                    console.log(newManagement);
+                });
+            });
+        }
+    })
 });
 
 //login
-managementController.post('/management/login', (req, res, next) =>{
-
+managementController.post('/management/login', (req, res) =>{
     let fetchedUser;
-
-    Management.findOne({email:req.body.email}).then(function(manager){
-        if(!manager){
-            return res.status(401).json({message: 'Login Failed, no such User!'})
+    Management.findOne({email:req.body.email}).then(function(management){
+        if(!management){
+            return res.status(401).json({message: 'Login fehlgeschlagen! Userdaten konnten nicht gefunden werden'});
         }
-        fetchedUser=manager;
-        return bcrypt.compare(req.body.password, manager.password);
+        fetchedUser=management;
+        return bcrypt.compare(req.body.password, management.password);
     }).then (result => {
         console.log(fetchedUser)
         if (!result) {
-            return res.status(401).json({message: 'Login failed: wrong password!'})
+            return res.status(401).json({message: 'Login fehlgeschlagen! Passwort inkorrekt!'});
         }
         else {
-
             const token = jwt.sign(
                 {email: fetchedUser.email, userID: fetchedUser._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
                 {expiresIn: "1h"}
@@ -124,13 +123,13 @@ managementController.post('/management/login', (req, res, next) =>{
             res.status(200).json({
                 token: token,
                 expiresIn: 3600,
-                userID: fetchedUser._id
+                userID: fetchedUser._id,
+                message: 'Du bist erfolgreich angemeldet.'
             });
             tokens.push(token);
             console.log(tokens);
             console.log('logged in!')
         }
-
     })
         .catch(e=>{
             console.log(e)
@@ -141,11 +140,11 @@ managementController.post('/management/login', (req, res, next) =>{
 managementController.delete('/management/delete/:id', function (req, res, next) {
 
     Management.findByIdAndRemove({_id: req.params.id},function(err, id){
-
         if (err){
-            return next (new Error('user not found'))}
+            res.status(401).json({message: 'User konnte nicht gelöscht werden'});
+        }
         else {
-            res.send('User ' + id.email + ' wurde gelöscht' );
+            res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
         }
     });
 });
@@ -157,14 +156,14 @@ managementController.put('/management/edit/:id',function (req, res, next) {
         {_id: req.params.id},
         {$set:req.body
         },
-        function (err, managementuser) {
-            if (!managementuser)
-                return next(new Error('user not found'));
-            else {
-                res.send(managementuser);
+        function (err, management) {
+            if (err){
+                res.status(401).json({message: 'Es hat nicht geklappt!'});
             }
-        });
+            else {
+                res.status(200).json({message: 'User ' + management.email + ' wurde erfolgreich überschrieben'});
+            }
+        })
 });
-
 
 module.exports = managementController;

@@ -44,62 +44,62 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
     if (validateEmail(email) !== true){
         errors.push({message: 'Gültige Email eingeben.'})
     }
-    Veranstalter.find({email: email}, function(err, veranstalter){
-        let emailExists = veranstalter.length > 0;
-        if (emailExists === true){
-            errors.push({ message: 'Die Email ist bereits vergeben.'});
-        }
-    })
     if (password.length < 5){
         errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
     }
     if (password !== password2) {
         errors.push({ msg: 'Passwords do not match' });
     }
-    if (errors.length > 0) {
-        res.send({
-            errors,
-            name,
-            vorname,
-            unternehmen,
-            email,
-            password,
-            password2
-        });
-    } else {
-        let newVeranstalter = new Veranstalter({
-            name,
-            vorname,
-            unternehmen,
-            email,
-            password
-        });
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newVeranstalter.password, salt, (err, hash) => {
-                if (err) throw err;
-                newVeranstalter.password = hash;
-                newVeranstalter
-                    .save((err, doc) => {
-                        const token = jwt.sign(
-                            {email: newVeranstalter.email, userID: newVeranstalter._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
-                            {expiresIn: "1h"})
-                        if (!err){
-                            res.status(200).json({
-                                token: token,
-                                expiresIn: 3600,
-                                userID: newVeranstalter._id,
-                                message: 'Du hast dich erfolgreich registriert.'
-                            });
-                            tokens.push(token);
-                            console.log(tokens);
-                        }
-                        else  {console.log(err.toString());
-                            res.status(500).send(err.toString()); }
-                    })
-                console.log(newVeranstalter);
+    Veranstalter.find({email: email}, function(err, veranstalter){
+        let emailExists = veranstalter.length > 0;
+        if (emailExists === true){
+            errors.push({ message: 'Die Email ist bereits vergeben.'});
+        }
+        if (errors.length > 0) {
+            res.send({
+                errors,
+                name,
+                vorname,
+                unternehmen,
+                email,
+                password,
+                password2
             });
-        });
-    }
+        } else {
+            let newVeranstalter = new Veranstalter({
+                name,
+                vorname,
+                unternehmen,
+                email,
+                password
+            });
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newVeranstalter.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newVeranstalter.password = hash;
+                    newVeranstalter
+                        .save((err, doc) => {
+                            const token = jwt.sign(
+                                {email: newVeranstalter.email, userID: newVeranstalter._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                                {expiresIn: "1h"})
+                            if (!err){
+                                res.status(200).json({
+                                    token: token,
+                                    expiresIn: 3600,
+                                    userID: newVeranstalter._id,
+                                    message: 'Du hast dich erfolgreich registriert.'
+                                });
+                                tokens.push(token);
+                                console.log(tokens);
+                            }
+                            else  {console.log(err.toString());
+                                res.status(500).send(err.toString()); }
+                        })
+                    console.log(newVeranstalter);
+                });
+            });
+        }
+    })
 });
 
 //login veranstalter
@@ -145,7 +145,7 @@ veranstalterController.delete('/veranstalter/delete/:id', function (req, res, ne
             res.status(401).json({message: 'User konnte nicht gelöscht werden'});
         }
         else {
-            res.status(200).json({message:'User wurde erfolgreich gelöscht'});
+            res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
         }
     });
 });
@@ -158,11 +158,11 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
         {$set: req.body
         },
         function (err, veranstalter) {
-            if (err || veranstalter){
+            if (err){
                 res.status(401).json({message: 'Es hat nicht geklappt!'});
             }
             else {
-                res.status(200).json({message: 'Userdaten wurden erfolgreich überschrieben.'});
+                res.status(200).json({message: 'User ' + veranstalter.email + ' wurde erfolgreich überschrieben'});
             }
         })
 });

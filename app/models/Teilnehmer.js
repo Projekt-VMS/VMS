@@ -7,9 +7,9 @@ var teilnehmerSchema = new Schema({
     vorname:{type:String,
             required: 'vorname can\'t be empty'},
     email:{type:String,
-            required: 'email can\'t be empty',},
+            required: 'email can\'t be empty'},
     password:{type:String,
-            required: 'password can\'t be empty',}
+            required: 'password can\'t be empty'}
 });
 
 const Teilnehmer = mongoose.model('Teilnehmer', teilnehmerSchema, 'teilnehmer');
