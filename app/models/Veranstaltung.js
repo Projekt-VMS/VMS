@@ -23,7 +23,8 @@ var veranstaltungSchema = new Schema({
     teilnehmerzahl: {type: Number},
     teilnehmer_preis: {type: Number},
     sichtbarkeit: {type: String},
-    angebotsstatus: {type: String}
+    angebotsstatus: {type: String},
+    leistung: {type: String, default: 'keine Zusatzleistungen'}
 });
 
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
