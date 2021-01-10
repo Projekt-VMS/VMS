@@ -30,6 +30,7 @@
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.5",
     "mongoose-auto-increment": "^5.0.1",
+    "mongoose-dateonly": "^1.0.6",
     "mongoose-deep-populate": "^3.2.0",
     "mongoose-unique-validator": "^2.0.3",
     "nodemailer": "^6.4.17",

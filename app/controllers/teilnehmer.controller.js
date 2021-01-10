@@ -131,17 +131,27 @@ teilnehmerController.post('/teilnehmer/login', (req, res) =>{
 })
 
 //delete Teilnehmer
+let currentDate = moment();
+let resignPossible = true; // Abmeldung von Veranstaltung ist möglich
 teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res) {
 
     Teilnehmer.findOneAndRemove({_id: req.params.id},function(err, id){
-        if (err) {
+        if (err || resignPossible === false) {
             res.status(401).json({message: 'User konnte nicht gelöscht werden'});
         }
         else {
+            Veranstaltungen.findOneAndUpdate({teilnehmer: req.params.id},
+                {$pull: {teilnehmer: req.params.id}}).exec();
+
             res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
-        }
-    });
-});
+            Veranstaltungen.findOneAndUpdate({teilnehmer: req.params.id},
+                    {$pull: {teilnehmer: req.params.id}}).exec();
+
+            ;
+
+        }});
+})
+
 
 
 //Update Teilnehmer
