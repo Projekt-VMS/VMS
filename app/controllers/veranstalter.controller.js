@@ -177,7 +177,7 @@ veranstalterController.delete('/veranstalter/logout/:token', function (req, res)
 //anfragen
 veranstalterController.post('/veranstalter/request/:id', function (req, res){
 
-    const {titel, kapazitaet, start_datum, end_datum, verfuegbarkeit} = req.body
+    const {titel, kapazitaet, start_datum, end_datum, verfuegbarkeit, zusatzleistungen} = req.body
     let errors = [];
 
     if (!titel || !kapazitaet || !start_datum|| !end_datum || !verfuegbarkeit ) {
@@ -190,7 +190,8 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
             kapazitaet,
             start_datum,
             end_datum,
-            verfuegbarkeit
+            verfuegbarkeit,
+            zusatzleistungen
         });
     } else {
         Veranstalter.findById({_id: req.params.id}, function (err, veranstalter) {
@@ -198,7 +199,7 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
 
             transport.sendMail({
                 from: veranstalterEmail,
-                to: '',
+                to: 'management@vms.de',
                 subject: `Anfrage von ${veranstalterEmail}`,
                 text: 'Folgende Anfrage:...'
             })
