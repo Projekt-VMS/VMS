@@ -56,24 +56,23 @@ let raumExists;
 result2 = false;
 
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
-    let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, veranstalter_preis, teilnehmer_preis, sichtbarkeit, angebotsstatus } = req.body;
+    let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus, leistung } = req.body;
     let errors = [];
 
-    if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus) {
+    if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus ) {
         errors.push({message: 'Fülle bitte alle Felder aus.'});
     }
 
-    Veranstalter.find({email: req.body.veranstalter}, function (err, veranstalter) { //check if Veranstalter exists
-        veranstalterExists = veranstalter.length > 0;
+    Veranstalter.find({email: req.body.veranstalter}, function (err, doc) { //check if Veranstalter exists
+        veranstalterExists = doc.length > 0;
         if (veranstalterExists === false) {
             console.log('endlich')
             errors.push({message: 'Der Veranstalter existiert nicht.'});
             console.log(errors)
         }
 
-        Raum.find({raumNr: req.body.raum}, function (err, raum) { //check if Raum exists
-            console.log(req.body.raum)
-            raumExists = raum.length > 0;
+        Raum.find({raumNr: req.body.raum}, function (err, doc) { //check if Raum exists
+            raumExists = doc.length > 0;
             console.log(raumExists)
             if (raumExists === false) {
                 console.log('raum existiert nicht')
@@ -93,28 +92,30 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                     }
                     return true;
                 })
-                    if (!((moment(req.body.start_datum).isSame(req.body.end_datum, 'week')))) {
-                        errors.push({message: 'Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!'})
-                    }
+                if (!((moment(req.body.start_datum).isSame(req.body.end_datum, 'week')))) {
+                   // errors.push({message: 'Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!'})
+                }
+                console.log('hier auch ' )
                 if (errors.length > 0) {
                     res.status(400).json({
                         errors,
-                        veranstalter_preis, titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus
+                        titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus, leistung
                     });
                 } else {
+
                     const veranstaltungInstance = new Veranstaltung({
                         titel,
                         veranstalter,
                         raum,
                         start_datum,
                         end_datum,
-                        veranstalter_preis,
+                        //veranstalterPreis,
                         teilnehmerzahl,
                         teilnehmer_preis,
                         sichtbarkeit,
-                        angebotsstatus
+                        angebotsstatus,
+                        leistung
                     })
-
                     veranstaltungInstance.save((err, doc) => { //saves event
                         if (!err) {
                             console.log("success!")

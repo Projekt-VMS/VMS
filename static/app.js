@@ -470,6 +470,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		function erstelleVeranstaltung(veranstaltung){
 			$scope.daten={};
+			console.log(veranstaltung)
 			veranstaltungService.createVeranstaltung(veranstaltung).then(
 				function(res){
 					alert(res.data.message);
