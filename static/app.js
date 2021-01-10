@@ -87,7 +87,10 @@ app.factory('registrierenService', ['$http', function ($http){
 		function request(userID, daten){
 			return $http.post('/veranstalter/request/'+ userID, daten)
 		}
-		return {getVeranstalter, editVeranstalter, deleteVeranstalter, request};
+		function stornoVeranstaltung(veranstaltungID){
+			return $http.delete('/veranstalter/storno/'+veranstaltungID)
+		}
+		return {getVeranstalter, editVeranstalter, deleteVeranstalter, request, stornoVeranstaltung};
 	}])
 
 	.factory('managementService', ['$http', function ($http){
@@ -417,6 +420,16 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+		function storniereVeranstaltung(veranstaltung){
+			veranstalterService.stornoVeranstaltung(veranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
 		function loggeOut(){
 			logoutService.logoutVeranstalter(tokenService.getToken()).then(
 				function(res){
@@ -432,6 +445,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.anfragen = (daten) => anfragen(daten);
 		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
+		$scope.storniereVeranstaltung = (veranstaltung) => storniereVeranstaltung(veranstaltung);
 		$scope.loggeOut = () => loggeOut();
 
 	}])

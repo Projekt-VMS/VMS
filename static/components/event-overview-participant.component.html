@@ -28,3 +28,6 @@
     <li><button data-ng-click='abmelden(veranstaltung._id)' class="participateButton">Abmelden</button></li>
     <br><br>
 </ul>
+<div id="noEvent" data-ng-if="(veranstaltungen | filter: teilnehmerID :true).length === 0">
+    <p>Du bist aktuell noch zu keiner Veranstaltung angemeldet ---> <a href="#!/event-search-participant"><button class="loginButton">Angebot ansehen</button></a></p>
+</div>

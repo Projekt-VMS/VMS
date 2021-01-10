@@ -27,6 +27,7 @@
         <th>Preis</th>
         <th>Art</th>
         <th>Status</th>
+        <th>Zusatzleistungen</th>
         <th> </th>
     </tr>
     <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'">
@@ -39,10 +40,11 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
+        <td>{{veranstaltung.zusatzleistungen}}</td>
         <td><a href="#!/event-modify-admin/{{veranstaltung._id}}"><i class="fa fa-fw fa-pencil" ></i></a></td>
     </tr>
     <tr>
-        <td colspan="10"><a href="#!/event-create-admin"><button class="addRoomButton">+ neue Veranstaltung erstellen ...</button></a></td>
+        <td colspan="11"><a href="#!/event-create-admin"><button class="addRoomButton">+ neue Veranstaltung erstellen ...</button></a></td>
     </tr>
 </table>
 <div id="priceText">
