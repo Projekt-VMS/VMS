@@ -365,6 +365,14 @@ c {
 	margin-right: 2%;
 }
 
+[id="noEvent"] {
+	color: gray;
+	margin-left: 30%;
+	margin-top: 10%;
+	width: 80%;
+	font-size: x-large;
+}
+
 li {
 	padding-bottom: 1%;
 	list-style: none;

@@ -28,8 +28,9 @@
         <th>Art</th>
         <th>Status</th>
         <th>Stornieren</th>
+        <th>Zusatzleistungen</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot offen' && state1">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot offen' && state1">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum}}</td>
@@ -38,9 +39,10 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
-        <td><button><i class="fa fa-fw fa-close"></i></button></td>
+        <td>{{veranstaltung.zusatzleistungen}}</td>
+        <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot akzeptiert' && state2">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot akzeptiert' && state2">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum}}</td>
@@ -49,9 +51,10 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
-        <td><button><i class="fa fa-fw fa-close"></i></button></td>
+        <td>{{veranstaltung.zusatzleistungen}}</td>
+        <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'in Abrechnung' && state3">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'in Abrechnung' && state3">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum}}</td>
@@ -60,9 +63,10 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
-        <td><button><i class="fa fa-fw fa-close"></i></button></td>
+        <td>{{veranstaltung.zusatzleistungen}}</td>
+        <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: veranstalterID :true | orderBy : 'titel'" data-ng-if="!state1 && !state2 && !state3">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="!state1 && !state2 && !state3">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum}}</td>
@@ -71,6 +75,7 @@
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
-        <td><button><i class="fa fa-fw fa-close"></i></button></td>
+        <td>{{veranstaltung.zusatzleistungen}}</td>
+        <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
 </table>
