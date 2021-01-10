@@ -179,8 +179,10 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
 
     const {titel, kapazitaet, start_datum, end_datum, verfuegbarkeit, zusatzleistungen} = req.body
     let errors = [];
+    let anfrageInstance = req.body
+    console.log (anfrageInstance)
 
-    if (!titel || !kapazitaet || !start_datum|| !end_datum || !verfuegbarkeit ) {
+    if (!titel || !kapazitaet || !start_datum|| !end_datum /*|| !verfuegbarkeit*/ ) {
         errors.push({ message: 'Fülle bitte alle Felder aus.' });
     }
     if (errors.length > 0) {
@@ -201,7 +203,13 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
                 from: veranstalterEmail,
                 to: 'management@vms.de',
                 subject: `Anfrage von ${veranstalterEmail}`,
-                text: 'Es wurde eine neue Anfrage im VMS erstellt: ' + req.body
+                text: 'Es wurde eine neue Anfrage im VMS erstellt: \n Titel: ' + anfrageInstance.titel + '\n Maximal benötigte Kapazität: ' + anfrageInstance.kapazitaet
+                + '\n Zeitraum: ' + anfrageInstance.start_datum + ' bis '+ anfrageInstance.end_datum + '\n Sichtbarkeit' + anfrageInstance.angebotsstatus
+                + '\n Zusatzleistungen: '+ anfrageInstance.zusatzleistungen
+                + '\n Veranstalter: ' + veranstalterEmail
+                + '\n \n Bitte erstellen Sie im System ein entsprechende Angebot!'
+
+
             })
             res.status(200).json({message: 'Anfrage wurde erfolgreich abgeschickt!'});
         })
