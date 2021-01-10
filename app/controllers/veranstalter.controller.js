@@ -191,7 +191,7 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
             start_datum,
             end_datum,
             verfuegbarkeit,
-            zusatzleistungen
+
         });
     } else {
         Veranstalter.findById({_id: req.params.id}, function (err, veranstalter) {
@@ -201,7 +201,7 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
                 from: veranstalterEmail,
                 to: 'management@vms.de',
                 subject: `Anfrage von ${veranstalterEmail}`,
-                text: 'Folgende Anfrage:...'
+                text: 'Es wurde eine neue Anfrage im VMS erstellt: ' + req.body
             })
             res.status(200).json({message: 'Anfrage wurde erfolgreich abgeschickt!'});
         })
