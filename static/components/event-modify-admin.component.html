@@ -26,9 +26,9 @@
     <p class="modifyText">neuer Titel:  <input type="text" placeholder="neuer Titel" class="fieldChange" data-ng-model='neueVeranstaltung.titel'></p>
     <hr>
     <h3>Zeitraum ändern</h3>
-    <p class="modifyText">aktuelles Startdatum:  {{veranstaltung.start_datum}}</p>
+    <p class="modifyText">aktuelles Startdatum:  {{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</p>
     <p class="modifyText">neues Startdatum:  <input type="date" class="fieldDate" data-ng-model='neueVeranstaltung.start_datum'></p>
-    <p class="modifyText">aktuelles Enddatum:  {{veranstaltung.end_datum}}</p>
+    <p class="modifyText">aktuelles Enddatum:  {{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</p>
     <p class="modifyText">neues Enddatum:  <input type="date" class="fieldDate" data-ng-model='neueVeranstaltung.end_datum'></p>
     <hr>
     <h3>Teilnehmerzahl ändern</h3>
@@ -53,6 +53,10 @@
         <p class="modifyText">In Abrechnung:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'in Abrechnung'"></p>
         <p class="modifyText">Abgerechnet:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'abgerechnet'"></p>
     </div></div>
+    <hr>
+    <h3>Zusatzleistungen ändern</h3>
+    <p class="modifyText">aktuelle Zusatzleistungen: {{veranstaltung.leistung}}</p>
+    <p class="modifyText">neue Zusatzleistungen:  <input type="text" placeholder="neue Zusatzleistungen" class="fieldChange" data-ng-model='neueVeranstaltung.leistung'></p>
     <hr><br>
     <div>
         <a href="#!/event-overview-admin"><button data-ng-click='updateVeranstaltung(neueVeranstaltung)' id="logoutButton">Änderung bestätigen</button></a>

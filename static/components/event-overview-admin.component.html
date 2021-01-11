@@ -34,13 +34,13 @@
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.veranstalter}}</td>
         <td>{{veranstaltung.raum}}</td>
-        <td>{{veranstaltung.start_datum}}</td>
-        <td>{{veranstaltung.end_datum}}</td>
+        <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
+        <td>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</td>
         <td>{{veranstaltung.teilnehmerzahl}}</td>
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
-        <td>{{veranstaltung.zusatzleistungen}}</td>
+        <td>{{veranstaltung.leistung}}</td>
         <td><a href="#!/event-modify-admin/{{veranstaltung._id}}"><i class="fa fa-fw fa-pencil" ></i></a></td>
     </tr>
     <tr>

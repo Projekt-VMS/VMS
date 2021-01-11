@@ -17,9 +17,9 @@
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
     <hr>
-    <li>Von: <span id="searchText">{{veranstaltung.start_datum}}</span></li>
+    <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
-    <li>Bis: <span id="searchText">{{veranstaltung.end_datum}}</span></li>
+    <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
