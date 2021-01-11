@@ -13,11 +13,11 @@
 <div class="filter">
     <label>Status:</label>
     <input type="checkbox" data-ng-model="state1" >Angebot offen
-    <input type="checkbox" data-ng-model="state2">Angebot bestätigt
+    <input type="checkbox" data-ng-model="state2">Angebot akzeptiert
     <input type="checkbox" data-ng-model="state3">in Abrechnnung
 </div>
 
-<table id="tableVA">
+<table id="tableVA" data-ng-hide="(veranstaltungen | filter: emailVeranstalter :true).length === 0">
     <tr>
         <th>Titel</th>
         <th>Raum</th>
@@ -66,7 +66,7 @@
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="!state1 && !state2 && !state3">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'angebotsstatus'" data-ng-if="!state1 && !state2 && !state3">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -79,3 +79,6 @@
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
 </table>
+<div id="noEvent" data-ng-if="(veranstaltungen | filter: emailVeranstalter :true).length === 0">
+    <p>Du hast aktuell noch keine eigenen Veranstaltungen. <br><br> <a href="#!/request-host"><button class="loginButton">Anfrage erstellen</button></a></p>
+</div>

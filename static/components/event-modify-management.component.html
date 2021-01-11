@@ -40,18 +40,18 @@
     <hr>
     <h3>Verfügbarkeit ändern</h3>
     <p class="modifyText">aktuell:  {{veranstaltung.sichtbarkeit}}</p>
-    <p class="modifyText">neu: <input type="checkbox" data-ng-model='neueVeranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" >Öffentlich&nbsp;
+    <p class="modifyText">neu:
+        <input type="checkbox" data-ng-model='neueVeranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" >Öffentlich&nbsp;
         <input type="checkbox" data-ng-model='neueVeranstaltung.sichtbarkeit' data-ng-true-value="'Privat'" >Privat</p>
-    <hr>
-    <h3>Status bei externen Veranstaltungen ändern</h3>
-    <p class="modifyText">aktueller Status:  {{veranstaltung.angebotsstatus}}</p>
-    <div data-ng-if="veranstaltung.angebotsstatus !='Intern'"><div>
-        <p class="modifyText">neuer Status:</p>
+    <div data-ng-hide="veranstaltung.angebotsstatus === 'Intern'">
+        <hr>
+        <h3>Status bei externen Veranstaltungen ändern</h3><p class="modifyText">aktueller Status:  {{veranstaltung.angebotsstatus}}</p>
+        <p class="modifyText">neuer Status:
         <p class="modifyText">Angebot offen:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"></p>
         <p class="modifyText">Angebot akzeptiert:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot akzeptiert'"></p>
         <p class="modifyText">In Abrechnung:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'in Abrechnung'"></p>
         <p class="modifyText">Abgerechnet:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'abgerechnet'"></p>
-    </div></div>
+    </div>
     <hr>
     <h3>Zusatzleistungen ändern</h3>
     <p class="modifyText">aktuelle Zusatzleistungen: {{veranstaltung.leistung}}</p>
@@ -62,6 +62,3 @@
     </div>
     <br><br><br>
 </div>
-
-
-
