@@ -247,12 +247,11 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
 //delete one
     veranstaltungsController.delete('/veranstaltung/delete/:id', function (req, res, next) {
 
-        Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, id) {
-
+        Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, event) {
             if (err) {
-                return next(new Error('user not found'))
+                res.status(401).json({message: 'Es hat nicht geklappt!'});
             } else {
-                res.send('Veranstaltung ' + id.titel + ' wurde gelöscht');
+                res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde gelöscht'});
             }
         });
     });
@@ -266,10 +265,10 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                 $set: req.body
             },
             function (err, event) {
-                if (!event)
-                    return next(new Error('Event not found'));
+                if (err)
+                    res.status(401).json({message: 'Es hat nicht geklappt!'});
                 else {
-                    res.send(event);
+                    res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde erfolgreich überschrieben'});
                 }
             });
 
