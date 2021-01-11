@@ -257,6 +257,10 @@ d {
 	font-size: 17px;
 }
 
+e {
+	color: #29b2d9;
+}
+
 [id="request"]{ /*Anfrageformular*/
 	margin-left: 330px;
 	margin-top: 90px;
