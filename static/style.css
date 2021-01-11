@@ -253,6 +253,10 @@ c {
 	color: #737373;
 }
 
+d {
+	font-size: 17px;
+}
+
 [id="request"]{ /*Anfrageformular*/
 	margin-left: 330px;
 	margin-top: 90px;
@@ -277,6 +281,10 @@ c {
 
 [class="fa fa-fw fa-close"] {
 	color: #b00f0f;
+	border: none;
+}
+.deleteIcon {
+	border: none;
 }
 
 [class="currentPage"] {
@@ -388,10 +396,11 @@ c {
 
 [id="noEvent"] {
 	color: gray;
-	margin-left: 30%;
-	margin-top: 10%;
+	margin-left: 16%;
+	margin-top: 20%;
 	width: 80%;
 	font-size: x-large;
+	text-align: center;
 }
 
 li {
