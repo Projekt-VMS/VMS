@@ -63,6 +63,21 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
         errors.push({message: 'Fülle bitte alle Felder aus.'});
     }
 
+    let raum_preis;
+    let veranstalter_preis =0;
+    let preis;
+    Raum.find({raumNr: req.body.raum} ,function (err, doc){ //berechnet Preis des Veranstalters aus Raumpreis und Dauer
+        preis = doc
+        preis.every(e =>{
+           raum_preis = e.raumpreis
+        })
+        let start = moment(req.body.start_datum)
+        let end = moment(req.body.end_datum);
+        let diff = end.diff(start, 'days')
+        let dauer = diff + 1 //add+1 to account for missing day that comes with duration
+        veranstalter_preis = dauer * raum_preis
+    })
+
     Veranstalter.find({email: req.body.veranstalter}, function (err, doc) { //check if Veranstalter exists
         veranstalterExists = doc.length > 0;
         if (veranstalterExists === false) {
@@ -109,15 +124,17 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                         raum,
                         start_datum,
                         end_datum,
-                        //veranstalterPreis,
+                        veranstalter_preis,
                         teilnehmerzahl,
                         teilnehmer_preis,
                         sichtbarkeit,
                         angebotsstatus,
                         leistung
                     })
+                    console.log(veranstaltungInstance)
                     veranstaltungInstance.save((err, doc) => { //saves event
                         if (!err) {
+                            console.log(veranstalter_preis)
                             console.log("success!")
                             res.status(200).json({message: 'Veranstaltung wurde erfolgreich erstellt!'}); //sends mail once event is saved
                             transport.sendMail({
@@ -127,6 +144,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                                 text: 'Vielen Dank für Ihre Anfrage. Anbei erhalten sie ihr Angebot auf Basis Ihrer eingegebenen Daten: '
                                     + doc
                             })
+
                         } else { //error if event can't be safed
                             console.log(err.toString());
                             res.status(500).json({message: 'Veranstaltung erstellen ist fehlgeschlagen'});
@@ -290,6 +308,44 @@ veranstaltungsController.get('/veranstaltung/showOne/list/:id', function (req, r
         .then(dbres => {
             console.log(dbres);
             res.send(dbres);
+        });
+
+
+
+});
+
+// Abrechnung erstellen
+veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res, next) {
+  console.log( req.params.id.veranstalter_preis)
+
+    Veranstaltung.findByIdAndUpdate(
+        {_id: req.params.id},
+        {
+            $set: {angebotsstatus : "Abgerechnet"}
+        },
+        function (err, doc) {
+            if (!doc)
+                return next(new Error('Event not found'));
+            else {
+                    transport.sendMail({
+                        from: 'management@vms.de',
+                        to: doc.veranstalter,
+                        subject: 'Ihre Abrechnung zur Veranstaltung ' + doc.titel,
+                        text: 'Sehr geehrter Veranstalter, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhatl dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
+                            + doc.verantalter_preis +
+                        '\n Verwendungszweck: ' + doc.id +
+                            '\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+
+
+                    })
+                console.log(doc.veranstalter_preis)
+                console.log(doc.teilnehmerzahl)
+                console.log(doc.teilnehmer_preis)
+
+                res.status(200).json({message: 'Abrechnung wurde erfolgreich abgeschickt!'});
+
+                console.log('Status geändert')
+            }
         });
 
 
