@@ -21,10 +21,10 @@ var veranstaltungSchema = new Schema({
     end_datum:{type: Date},
     teilnehmerzahl: {type: Number},
     teilnehmer_preis: {type: Number},
-    verantalter_preis:{type: Number},
+    veranstalter_preis:{type: Number},
     sichtbarkeit: {type: String},
     angebotsstatus: {type: String},
-    leistung: {type: String, default: 'keine Zusatzleistungen'}}, {strict: false}
+    leistung: {type: String, default: 'keine Zusatzleistungen'}}, //{strict: false}
 );
 
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
