@@ -233,7 +233,7 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
             res.status(400).json({message: 'Veranstaltung existiert nicht!'})
         }
         if (stornoPossible === false) {
-            res.status(400).json('Die Stornofrist ist abgelaufen, ihre Veranstaltung kann nicht storniert werden!')
+            res.status(400).json({message: 'Die Stornofrist ist abgelaufen, ihre Veranstaltung kann nicht storniert werden!'})
         } else {
             Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, event) {
                 if (err) {
