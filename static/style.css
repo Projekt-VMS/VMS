@@ -152,6 +152,7 @@ button:hover {
 	border: none;
 	border-radius: 4px;
 	padding: 6px;
+	color: white;
 }
 
 .sendButton {
@@ -161,6 +162,7 @@ button:hover {
 	border: none;
 	border-radius: 4px;
 	padding: 6px;
+	color: white;
 }
 
 .cancelButton {
@@ -170,24 +172,29 @@ button:hover {
 	border: none;
 	border-radius: 4px;
 	padding: 6px;
+	color: white;
 }
 
 .field {
 	font-size: 14px;
 	width: 340px;
+	padding: 1%;
 }
 
 .fieldChange {
 	font-size: 14px;
 	width: 255px;
+	padding: 1%;
 }
 
 .fieldNumber {
 	width: 115px;
+	padding: 1%;
 }
 
 .fieldDate {
 	width: 200px;
+	padding: 1%;
 }
 
 .addRoomButton {
@@ -219,6 +226,7 @@ button:hover {
 	border: none;
 	border-radius: 4px;
 	padding: 6px;
+	color: white;
 }
 
 .deleteButton {
@@ -265,6 +273,10 @@ e {
 f {
 	font-weight: bolder;
 	color: gray;
+}
+
+g {
+	color: white;
 }
 
 [id="request"]{ /*Anfrageformular*/
@@ -489,12 +501,13 @@ table#demo2.js-sort-9 tbody tr td:nth-child(10) {
 	font-family: Arial, Helvetica, sans-serif;
 	margin-top: 90px;
 	margin-left: 330px;
-	width: 100%;
+	width: 77%;
 	border-collapse: collapse;
 	table-layout: fixed;
 	text-align: center;
-	overflow: auto; /*Spaltengröße richtet sich nach Inhalt*/
-	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
 }
 #tableVA td, #tableVA th {
 	border: 1px solid #ddd;
@@ -512,4 +525,5 @@ table#demo2.js-sort-9 tbody tr td:nth-child(10) {
 }
 #tableVA td {
 	font-size: 18px;
+
 }

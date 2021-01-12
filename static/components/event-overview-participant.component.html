@@ -25,7 +25,7 @@
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
-    <li><button data-ng-click='abmelden(veranstaltung._id)' class="participateButton">Abmelden</button></li>
+    <li><button data-ng-click='abmelden(veranstaltung._id)' class="participateButton"><g>Abmelden</g></button></li>
     <br><br>
 </ul>
 <div id="noEvent" data-ng-if="(veranstaltungen | filter: teilnehmerID :true).length === 0">
