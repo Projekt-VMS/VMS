@@ -29,18 +29,26 @@
             <input type="password" placeholder="Passwort eingeben" data-ng-model='daten.password'>
         </div>
         <br>
-        <br>
         <div class="container">
             <button data-ng-click='loggeTeilnehmer(daten)' class="loginButton">Login</button>
             <button class="cancelButton"><a href="#!/login">Cancel</a></button>
         </div>
         <br>
+        <br>
+        <br>
+        <div class="container">
+            <p>Passwort vergessen?</p>
+            <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
+            <button data-ng-click='' class="cancelButton">neues Passwort anfragen</button>
+        </div>
+        <br>
+        <br>
         <p>Du hast noch keinen Account?</p>
         <p>Dann registriere dich schnell !</p>
-        <br>
         <div>
             <button class="loginButton" [routerlink]="/registration"><a href="#!/registration">Registrieren</a></button>
         </div>
+        <br>
     </div>
     <div data-ng-if="checked2" data-ng-submit='loggeVeranstalter(daten)'>
         <div class="container">
@@ -55,18 +63,25 @@
             <input type="password" placeholder="Passwort eingeben" data-ng-model='daten.password'>
         </div>
         <br>
-        <br>
         <div class="container">
             <button data-ng-click='loggeVeranstalter(daten)' class="loginButton" ><a href="#!/request-host">Login</a></button>
             <button class="cancelButton"><a href="#!/login">Cancel</a></button>
         </div>
         <br>
+        <br>
+        <br>
+        <div class="container">
+            <p>Passwort vergessen?</p>
+            <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
+            <button data-ng-click='' class="cancelButton">neues Passwort anfragen</button>
+        </div>
+        <br>
         <p>Du hast noch keinen Account?</p>
         <p>Dann registriere dich schnell !</p>
-        <br>
         <div>
             <button class="loginButton" [routerlink]="/registration"><a href="#!/registration">Registrieren</a></button>
         </div>
+        <br>
     </div>
     <div data-ng-if="checked3" data-ng-submit='loggeManagement(daten)'>
         <div class="container">
@@ -81,11 +96,19 @@
             <input type="password" placeholder="Passwort eingeben" data-ng-model='daten.password'>
         </div>
         <br>
-        <br>
         <div class="container">
             <button data-ng-click='loggeManagement(daten)' class="loginButton"><a href="#!/event-overview-management">Login</a></button>
             <button class="cancelButton"><a href="#!/login">Cancel</a></button>
         </div>
+        <br>
+        <br>
+        <br>
+        <div class="container">
+            <p>Passwort vergessen?</p>
+            <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
+            <button data-ng-click='' class="cancelButton">neues Passwort anfragen</button>
+        </div>
+        <br>
     </div>
     <div data-ng-if="checked4" data-ng-submit='loggeAdmin(daten)'>
         <div class="container">
@@ -105,6 +128,7 @@
             <button data-ng-click='loggeAdmin(daten)' class="loginButton" ><a href="#!/event-overview-admin">Login</a></button>
             <button class="cancelButton"><a href="#!/login">Cancel</a></button>
         </div>
+        <br>
     </div>
 </div>
 </div>
