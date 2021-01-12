@@ -15,47 +15,47 @@
     <br>
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
-<div id="roomModify">
+<div id="roomModify"  data-ng-submit='updateVeranstaltung(neueVeranstaltung)' >
     <h2>Veranstaltung: {{veranstaltung.titel}}<a href="#!/event-overview-admin"><button class="deleteButton" id="trashIcon" data-ng-click="loescheVeranstaltung()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <br>
-    <p class="modifyText">im Raum:  <a>{{veranstaltung.raum}}</a></p>
-    <p class="modifyText">mit dem Veranstalter:  <a>{{veranstaltung.veranstalter}}</a></p>
+    <p class="modifyText">im Raum:  {{veranstaltung.raum}}</p>
+    <p class="modifyText">mit dem Veranstalter:  {{veranstaltung.veranstalter}}</p>
     <hr>
     <h3>Titel ändern</h3>
-    <p class="modifyText">aktueller Titel: <a>{{veranstaltung.titel}}</a></p>
+    <p class="modifyText">aktueller Titel: {{veranstaltung.titel}}</p>
     <p class="modifyText">neuer Titel:  <input type="text" placeholder="neuer Titel" class="fieldChange" data-ng-model='neueVeranstaltung.titel'></p>
     <hr>
     <h3>Zeitraum ändern</h3>
-    <p class="modifyText">aktuelles Startdatum:  <a>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</a></p>
+    <p class="modifyText">aktuelles Startdatum:  {{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</p>
     <p class="modifyText">neues Startdatum:  <input type="date" class="fieldDate" data-ng-model='neueVeranstaltung.start_datum'></p>
-    <p class="modifyText">aktuelles Enddatum:  <a>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</a></p>
+    <p class="modifyText">aktuelles Enddatum:  {{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</p>
     <p class="modifyText">neues Enddatum:  <input type="date" class="fieldDate" data-ng-model='neueVeranstaltung.end_datum'></p>
     <hr>
     <h3>Teilnehmerzahl ändern</h3>
-    <p class="modifyText">aktuelle Teilnehmerzahl:  <a>{{veranstaltung.teilnehmerzahl}}</a></p>
+    <p class="modifyText">aktuelle Teilnehmerzahl:  {{veranstaltung.teilnehmerzahl}}</p>
     <p class="modifyText">neue Teilnehmerzahl:  <input type="number" placeholder="neue Anzahl" class="fieldNumber" data-ng-model='neueVeranstaltung.teilnehmerzahl'></p>
     <hr>
     <h3>Neuen Preis für Teilnehmer festlegen</h3>
-    <p class="modifyText">aktueller Preis:  <a>{{veranstaltung.teilnehmer_preis}}€</a></p>
+    <p class="modifyText">aktueller Preis:  {{veranstaltung.teilnehmer_preis}}€</p>
     <p class="modifyText">neuer Preis:  <input type="number" placeholder="neuer Preis" class="fieldNumber" data-ng-model='neueVeranstaltung.teilnehmer_preis'></p>
     <hr>
     <h3>Verfügbarkeit ändern</h3>
-    <p class="modifyText">aktuell:  <a>{{veranstaltung.sichtbarkeit}}</a></p>
-    <p class="modifyText">neu: <input type="checkbox" data-ng-model='neueVeranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" >Öffentlich&nbsp;
+    <p class="modifyText">aktuell:  {{veranstaltung.sichtbarkeit}}</p>
+    <p class="modifyText">neu:
+        <input type="checkbox" data-ng-model='neueVeranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" >Öffentlich&nbsp;
         <input type="checkbox" data-ng-model='neueVeranstaltung.sichtbarkeit' data-ng-true-value="'Privat'" >Privat</p>
-    <hr>
-    <h3>Status ändern</h3>
-    <p class="modifyText">aktueller Status:  <a>{{veranstaltung.angebotsstatus}}</a></p>
-    <div data-ng-if="veranstaltung.angebotsstatus !='Intern'"><div>
-        <p class="modifyText">neuer Status:</p>
+    <div data-ng-hide="veranstaltung.angebotsstatus === 'Intern'">
+        <hr>
+        <h3>Status bei externen Veranstaltungen ändern</h3><p class="modifyText">aktueller Status:  {{veranstaltung.angebotsstatus}}</p>
+        <p class="modifyText">neuer Status:
         <p class="modifyText">Angebot offen:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"></p>
         <p class="modifyText">Angebot akzeptiert:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot akzeptiert'"></p>
         <p class="modifyText">In Abrechnung:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'in Abrechnung'"></p>
         <p class="modifyText">Abgerechnet:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'abgerechnet'"></p>
-    </div></div>
+    </div>
     <hr>
     <h3>Zusatzleistungen ändern</h3>
-    <p class="modifyText">aktuelle Zusatzleistungen: <a>{{veranstaltung.leistung}}</a></p>
+    <p class="modifyText">aktuelle Zusatzleistungen: {{veranstaltung.leistung}}</p>
     <p class="modifyText">neue Zusatzleistungen:  <input type="text" placeholder="neue Zusatzleistungen" class="fieldChange" data-ng-model='neueVeranstaltung.leistung'></p>
     <hr><br>
     <div>
