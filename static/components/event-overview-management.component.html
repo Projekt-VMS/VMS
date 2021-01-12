@@ -1,4 +1,3 @@
-<h1 id="roomText">Alle Veranstaltungen</h1>
 <div class="sidenav">
     <h5>Management</h5>
     <a href='#!/profile-management' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{management.vorname + ' ' + management.name}}<br><c>{{management.email}}</c></p></a>
@@ -14,7 +13,7 @@
     <br>
     <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
-
+<div data-ng-hide="veranstaltungen.length === 0">
 <table id="tableVA">
     <tr>
         <th>Titel</th>
@@ -23,7 +22,8 @@
         <th>Von</th>
         <th>Bis</th>
         <th><i class="fa fa fa-fw fa-user"></i></th>
-        <th>Preis</th>
+        <th>V-Preis*</th>
+        <th>T-Preis*</th>
         <th>Art</th>
         <th>Status</th>
         <th>Zusatzleistungen</th>
@@ -36,6 +36,7 @@
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
         <td>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</td>
         <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.veranstalter_preis}}€</td>
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.angebotsstatus}}</td>
@@ -43,6 +44,13 @@
         <td><a href="#!/event-modify-management/{{veranstaltung._id}}"><i class="fa fa-fw fa-pencil" ></i></a></td>
     </tr>
     <tr>
-        <td colspan="11"><a href="#!/event-create-management"><button class="addRoomButton">+ neue Veranstaltung erstellen ...</button></a></td>
+        <td colspan="12"><a href="#!/event-create-management"><button class="addRoomButton">+ neue Veranstaltung erstellen ...</button></a></td>
     </tr>
 </table>
+    <div id="priceText">
+        <small>* V-Preis = Veranstalterpreis, T-Preis = Teilnehmerpreis</small>
+    </div>
+</div>
+    <div id="noEvent" data-ng-if="veranstaltungen.length === 0">
+    <p>Aktuell existieren noch keine Veranstaltungen. <br><br> <a href="#!/event-create-management"><button class="loginButton">Veranstaltung erstellen</button></a></p>
+</div>

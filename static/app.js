@@ -366,6 +366,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.updateTeilnehmer = (neuerTeilnehmer) => updateTeilnehmer(neuerTeilnehmer);
     	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
+		$scope.currentDate = new Date();
 
 	}])
 

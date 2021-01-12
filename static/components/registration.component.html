@@ -6,8 +6,8 @@
 <div id="registration">
     <div class="container">
         <label>Nutzer-Typ:</label>
-        <input type="checkbox" data-ng-model="checked">Teilnehmer
-        <input type="checkbox" data-ng-model="checked2">Veranstalter
+        <span data-ng-hide="checked2"><input type="checkbox" data-ng-model="checked">Teilnehmer</span>
+        <span data-ng-hide="checked"><input type="checkbox" data-ng-model="checked2">Veranstalter</span>
     </div>
     <div data-ng-if="checked" data-ng-submit='erstelleTeilnehmer(teilnehmer)'>
         <div class="container">

@@ -4,16 +4,16 @@
 <h1>Login</h1>
 <div class="login">
     <br>
-    <div class="container">
+    <div class="container" data-ng-hide="checked3 || checked4">
         <label>für Teilnehmer und Veranstalter:</label>
-        <input type="checkbox" data-ng-model="checked1">Teilnehmer &nbsp;&nbsp;&nbsp;
-        <input type="checkbox" data-ng-model="checked2">Veranstalter
+        <span data-ng-hide="checked2"><input type="checkbox" data-ng-model="checked1">Teilnehmer</span>
+        <span data-ng-hide="checked1"><input type="checkbox" data-ng-model="checked2">Veranstalter</span>
     </div>
     <hr> <br>
-    <div class="container">
+    <div class="container" data-ng-hide="checked1 || checked2">
         <label>für Management und Admin:</label>
-        <input type="checkbox" data-ng-model="checked3">Management &nbsp;&nbsp;&nbsp;
-        <input type="checkbox" data-ng-model="checked4">Admin
+        <span data-ng-hide="checked4"><input type="checkbox" data-ng-model="checked3" data-ng-hide="checked1 || checked2 || checked4">Management</span>
+        <span data-ng-hide="checked3"><input type="checkbox" data-ng-model="checked4" data-ng-hide="checked1 || checked2 || checked3">Admin</span>
     </div>
     <br>
     <div data-ng-if="checked1" data-ng-submit='loggeTeilnehmer(daten)'>
