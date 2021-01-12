@@ -31,68 +31,77 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
     let errors = [];
 
     if (!name || !vorname || !email || !password || !password2) {
-        errors.push({ message: 'Fülle bitte alle Felder aus.' });
+        errors.push({message: 'Fülle bitte alle Felder aus.'});
     }
-    if (validateEmail(email) !== true){
-        errors.push({message: 'Gültige Email eingeben.'})
-    }
-    if (password.length < 5){
-        errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
-    }
-    if (password !== password2) {
-        errors.push({ message: 'Die Passwörter stimmen nicht überein.' });
-    }
-    Teilnehmer.find({email: email}, function(err, teilnehmer){
-        let emailExists = teilnehmer.length > 0;
-        if (emailExists === true){
-            errors.push({ message: 'Die Email ist bereits vergeben.'});
+    if(email === undefined){}
+    else{
+        if (validateEmail(email) !== true) {
+            errors.push({message: 'Gültige Email eingeben.'})
         }
-        if (errors.length > 0) {
-            res.status(400).json({
-                errors,
-                name,
-                vorname,
-                email,
-                password,
-                password2
-            });
-        } else {
-            const newTeilnehmer = new Teilnehmer({
-                name,
-                vorname,
-                email,
-                password
-            });
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newTeilnehmer.password, salt, (err, hash) => {
-                    if (err) throw err;
-                    newTeilnehmer.password = hash;
-                    newTeilnehmer
-                        .save((err, doc) => {
-                            const token = jwt.sign(
-                                {email: newTeilnehmer.email, userID: newTeilnehmer._id}, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
-                                {expiresIn: "1h"})
-                            if (!err){
-                                res.status(200).json({
-                                    token: token,
-                                    expiresIn: 3600,
-                                    userID: newTeilnehmer._id,
-                                    message: 'Du hast dich erfolgreich registriert.'
-                                });
-                                tokens.push(token);
-                                console.log(tokens);
-                            }
-                            else  {console.log(err.toString());
-                                res.status(500).send(err.toString());
-                            }
-                        })
-                    console.log(newTeilnehmer);
+    }
+    if (password === undefined){}
+    else {
+        if (password.length < 5) {
+            errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
+        }
+        if (password !== password2) {
+            errors.push({message: 'Die Passwörter stimmen nicht überein.'});
+        }
+    }
+    Teilnehmer.find({email: email}, function (err, teilnehmer) {
+            console.log(errors)
+            let emailExists = teilnehmer.length > 0;
+            if (emailExists === true) {
+                errors.push({message: 'Die Email ist bereits vergeben.'});
+            }
+            if (errors.length > 0) {
+                res.status(400).json({
+                    errors,
+                    name,
+                    vorname,
+                    email,
+                    password,
+                    password2
                 });
-            });
-        }
+            } else {
+                const newTeilnehmer = new Teilnehmer({
+                    name,
+                    vorname,
+                    email,
+                    password
+                });
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(newTeilnehmer.password, salt, (err, hash) => {
+                        if (err) throw err;
+                        newTeilnehmer.password = hash;
+                        newTeilnehmer
+                            .save((err, doc) => {
+                                const token = jwt.sign(
+                                    {
+                                        email: newTeilnehmer.email,
+                                        userID: newTeilnehmer._id
+                                    }, 'B6B5834672A21DC0C5B40800BDCE9945586DD5A8E33CF29701F0A323DE371601',
+                                    {expiresIn: "1h"})
+                                if (!err) {
+                                    res.status(200).json({
+                                        token: token,
+                                        expiresIn: 3600,
+                                        userID: newTeilnehmer._id,
+                                        message: 'Du hast dich erfolgreich registriert.'
+                                    });
+                                    tokens.push(token);
+                                    console.log(tokens);
+                                } else {
+                                    console.log(err.toString());
+                                    res.status(500).send(err.toString());
+                                }
+                            })
+                        console.log(newTeilnehmer);
+                    });
+                });
+            }
 
-    })
-
+        })
 });
 
 // login teilnehmer
@@ -146,8 +155,6 @@ teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res) {
             res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
             Veranstaltungen.findOneAndUpdate({teilnehmer: req.params.id},
                     {$pull: {teilnehmer: req.params.id}}).exec();
-
-            ;
 
         }});
 })
