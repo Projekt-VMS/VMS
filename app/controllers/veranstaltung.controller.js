@@ -66,6 +66,10 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let raum_preis;
     let veranstalter_preis =0;
     let preis;
+    let raum_kapa;
+
+
+
     Raum.find({raumNr: req.body.raum} ,function (err, doc){ //berechnet Preis des Veranstalters aus Raumpreis und Dauer
         preis = doc
         preis.every(e =>{
@@ -86,15 +90,25 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
             console.log(errors)
         }
 
-        Raum.find({raumNr: req.body.raum}, function (err, doc) { //check if Raum exists
+        Raum.find({raumNr: req.body.raum} ,function (err, doc){ //berechnet Preis des Veranstalters aus Raumpreis und Dauer
+            let kapa = doc
+            kapa.every(e =>{
+                raum_kapa = e.kapazitaet})
+            if(req.body.teilnehmerzahl > raum_kapa){
+                errors.push({message: 'Die Teilnehmeranzahl für diesen Raum ist zu hoch'})
+                return false;
+            }
+        })
+
+
+        Raum.find({raumNr: req.body.raum},'raumNr', function (err, doc) { //check if Raum exists
             raumExists = doc.length > 0;
-            console.log(raumExists)
             if (raumExists === false) {
                 console.log('raum existiert nicht')
                 errors.push({message: 'Der Raum existiert nicht'})
             }
 
-            Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) {
+        Veranstaltung.find({raum: req.body.raum}, 'start_datum end_datum', function (err, veranstaltung) {
                 foundevents = veranstaltung //saves all found events as arrays to foundevents
                 //foundevents.forEach(event => { //as long as result is false there is no overlap; complete array of matching rooms is searched until overlap is found or end of array is reached
                 foundevents.every(event => {
