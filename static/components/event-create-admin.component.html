@@ -26,7 +26,7 @@
     <p class="modifyText">User-Email:  <input type="text" placeholder="E-Mail eingeben" class="field" data-ng-model='veranstaltung.veranstalter'></p>
     <hr>
     <h3>Raum wählen</h3>
-    <p class="modifyText">Raum-Nr.:  <input type="number" placeholder="RID" data-ng-model='veranstaltung.raum'></p>
+    <p class="modifyText">Raum-Nr.:  <input type="number" placeholder="RID" class="fieldNumber" data-ng-model='veranstaltung.raum'></p>
     <hr>
     <h3>Zeitraum festlegen</h3>
     <p class="modifyText">Startdatum:  <input type="date" class="fieldDate" data-ng-model='veranstaltung.start_datum'></p>
@@ -39,18 +39,18 @@
     <p class="modifyText">Preis:  <input type="number" placeholder="Preis" class="fieldDate" data-ng-model='veranstaltung.teilnehmer_preis'></p>
     <hr>
     <h3>Öffentlich oder Privat</h3>
-    <p class="modifyText">Öffentlich:  <input type="checkbox" data-ng-model='veranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" ></p>
-    <p class="modifyText">Privat:  <input type="checkbox" data-ng-model='veranstaltung.sichtbarkeit' data-ng-true-value="'Privat'" ></p>
+    <p class="modifyText">Öffentlich:  <input type="checkbox" data-ng-model='veranstaltung.sichtbarkeit' data-ng-true-value="'Öffentlich'" > &nbsp;&nbsp;
+                          Privat:  <input type="checkbox" data-ng-model='veranstaltung.sichtbarkeit' data-ng-true-value="'Privat'" ></p>
     <hr>
     <h3>Extern oder Intern</h3>
-    <p class="modifyText">Extern:  <input type="checkbox" data-ng-model='veranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"></p>
-    <p class="modifyText">Intern:  <input type="checkbox" data-ng-model='veranstaltung.angebotsstatus' data-ng-true-value="'Intern'"></p>
+    <p class="modifyText">Extern:  <input type="checkbox" data-ng-model='veranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"> &nbsp;&nbsp;
+                          Intern:  <input type="checkbox" data-ng-model='veranstaltung.angebotsstatus' data-ng-true-value="'Intern'"></p>
     <hr>
     <h3>Zusatzleistungen hinzufügen</h3>
     <p class="modifyText">Zusatzleistungen: <input type="text" placeholder="z.B. Catering, ..." class="field" data-ng-model="veranstaltung.leistung"></p>
     <hr><br>
     <div class="container">
-        <a href="#!/event-overview-admin"><button data-ng-click='erstelleVeranstaltung(veranstaltung)' id="logoutButton">Veranstaltung anlegen</button></a>
+        <a href="#!/event-overview-admin"><button data-ng-click='erstelleVeranstaltung(veranstaltung)' id="logoutButton"><g>Veranstaltung anlegen</g></button></a>
     </div>
     <br><br><br>
 </div>
