@@ -12,18 +12,19 @@
 
 <div id="roomModify" data-ng-submit="updateTeilnehmer(neuerTeilnehmer)">
     <h2>Profil bearbeiten<a href="#!/login"><button class="deleteButton" id="trashIcon" data-ng-click="loescheTeilnehmer()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
+    <br>
     <h3>Nachname ändern</h3>
     <div>
-    <p class="modifyText">aktueller Nachname: {{teilnehmer.name}}</p>
+    <p class="modifyText">aktueller Nachname: <a>{{teilnehmer.name}}</a></p>
     <p class="modifyText">neuer Nachname: <input type="text" placeholder="neuer Nachname" class="fieldChange" data-ng-model="neuerTeilnehmer.name"></p>
     </div>
     <hr>
     <h3>E-Mail-Adresse ändern</h3>
-    <p class="modifyText" >aktuelle E-Mail-Adresse: {{teilnehmer.email}}</p>
+    <p class="modifyText" >aktuelle E-Mail-Adresse: <a>{{teilnehmer.email}}</a></p>
     <p class="modifyText" >neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" class="fieldChange" data-ng-model="neuerTeilnehmer.email"></p>
     <hr>
     <h3>Passwort ändern</h3>
-    <p class="modifyText" >aktuelles Passwort:  {{teilnehmer.password}}</p>
+    <p class="modifyText" >aktuelles Passwort:  <a>{{teilnehmer.password}}</a></p>
     <p class="modifyText" >neues Passwort:  <input type="text" placeholder="neues Passwort" class="fieldChange" data-ng-model="neuerTeilnehmer.password"></p>
     <hr>
     <h3>Passwort wiederholen</h3>
