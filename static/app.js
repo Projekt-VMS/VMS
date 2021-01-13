@@ -166,6 +166,12 @@ app.factory('registrierenService', ['$http', function ($http){
 		}
 		return {createRaum, getRaeume, getRaum, editRaum, deleteRaum}
 	}])
+	.factory('statistikService', ['$http', function($http){
+		function raumAuslastung(){
+			return $http.post('/statistik/raumauslastung')
+		}
+		return {raumAuslastung}
+	}])
 
 	.factory('tokenService', [ function (){
 		function getToken(){
@@ -455,7 +461,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	}])
 
-	.controller('managementController', ['$scope','$routeParams', 'tokenService','authService', 'managementService', 'veranstaltungService', 'raumService', 'logoutService', function($scope, $routeParams, tokenService, authService, managementService, veranstaltungService, raumService, logoutService){
+	.controller('managementController', ['$scope','$routeParams', 'tokenService','authService', 'managementService', 'veranstaltungService', 'raumService', 'logoutService', 'statistikService', function($scope, $routeParams, tokenService, authService, managementService, veranstaltungService, raumService, logoutService, statistikService){
 		console.log('Management Controller');
 
 		setTimeout(function () {
@@ -560,6 +566,17 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+		/*function raumAuslastung(){
+			statistikService.raumAuslastung().then(
+				function(res){
+					console.log(res.data)
+					$scope.raumAuslastung = res.data
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			)
+		}*/
 
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
@@ -576,6 +593,11 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
+
+		raumService.getRaeume().then(res => $scope.anzahlRaeume = res.data.length);
+		veranstaltungService.getVeranstaltungen().then(res => $scope.anzahlVeranstaltungen = res.data.length);
+		// Prozent wie viele Räume heute frei sind
+		statistikService.raumAuslastung().then(res => $scope.raumAuslastung = res.data);
 
 		$scope.loggeOut = () => loggeOut();
 

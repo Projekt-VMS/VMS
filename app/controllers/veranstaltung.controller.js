@@ -366,6 +366,31 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
 
 });
 
+//raumauslastung statistik
+veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
+    const todayMoment = moment()
+    const tomorrowMoment = todayMoment.clone().add(1,'days')
+    const arrayVeranstaltungen = [];
+    Veranstaltung.find( function (err, veranstaltung) {
+        foundevents = veranstaltung;
+        console.log(foundevents);
+        foundevents.forEach(event => {
+            range1 = moment.range(event.start_datum, event.end_datum)
+            if(range1.contains(todayMoment)){
+                arrayVeranstaltungen.push(event)
+            }
+        })
+        if(err){
+            res.status(500).json({message: 'Etwas ist schiefgelaufen '})
+        }else{
+            Raum.find(function (err, raum){
+                res.send(JSON.stringify((1- arrayVeranstaltungen.length / raum.length)*100));
+            })
+        }
+    })
+})
+
+
 
 module.exports = veranstaltungsController;
 
