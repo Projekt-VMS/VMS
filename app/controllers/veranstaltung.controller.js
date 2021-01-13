@@ -6,6 +6,7 @@ const Raum = require('../models/Raum');
 let Veranstaltung = require('../models/Veranstaltung');
 const Moment = require('moment');
 const MomentRange = require('moment-range');
+const Teilnehmer = require("../models/Teilnehmer");
 const moment = MomentRange.extendMoment(Moment);
 moment().utc();
 moment.locale('us',{week:{dow : 1}})
@@ -340,31 +341,54 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
         function (err, doc) {
             if (!doc)
                 return next(new Error('Event not found'));
-            else {
+            else if (doc.angebotsstatus === 'Angebot akzeptiert') {
+                transport.sendMail({
+                    from: 'management@vms.de',
+                    to: doc.veranstalter,
+                    subject: 'Ihre Abrechnung zur Veranstaltung ' + doc.titel,
+                    text: 'Sehr geehrter Veranstalter, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
+                        + doc.veranstalter_preis +
+                        '\n Verwendungszweck: ' + doc.id +
+                        '\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+
+
+                })
+            } else if(doc.angebotsstatus=== 'Intern'){
+                doc.teilnehmer.every(e => {
+                    Teilnehmer.findById({_id:e}, 'email', function(err,usermail){
+
+
+                   let tMail = usermail.email
                     transport.sendMail({
                         from: 'management@vms.de',
-                        to: doc.veranstalter,
+                        to: tMail,
                         subject: 'Ihre Abrechnung zur Veranstaltung ' + doc.titel,
-                        text: 'Sehr geehrter Veranstalter, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
-                            + doc.veranstalter_preis +
-                        '\n Verwendungszweck: ' + doc.id +
+                        text: 'Sehr geehrter Teilnehmer, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
+                            + doc.teilnehmer_preis +
+                            '\n Verwendungszweck: ' + doc.id +
                             '\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
-
+                    })
 
                     })
-                console.log(doc.veranstalter_preis)
-                console.log(doc.teilnehmerzahl)
-                console.log(doc.teilnehmer_preis)
 
-                res.status(200).json({message: 'Abrechnung wurde erfolgreich abgeschickt!'});
 
-                console.log('Status geändert')
+                })
             }
-        });
+            else{errors.push({message: 'Eine Abrechnung dieser Veranstaltung ist nicht möglich!'})}
+            console.log(doc.teilnehmer)
+            console.log(doc.veranstalter_preis)
+            console.log(doc.teilnehmerzahl)
+            console.log(doc.teilnehmer_preis)
+
+            res.status(200).json({message: 'Abrechnung wurde erfolgreich abgeschickt!'});
+
+            console.log('Status geändert')
+        }
+    )})
 
 
 
-});
+
 
 //raumauslastung statistik
 veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
