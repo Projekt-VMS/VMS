@@ -1,0 +1,38 @@
+<div class="sidenav">
+    <h5>Veranstalter</h5>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{veranstalter.vorname + ' ' + veranstalter.name}}<br><c>{{veranstalter.email}}</c></p></a>
+    <hr>
+    <br>
+    <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <br>
+    <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
+    <br>
+    <a href='#!/bills-host'><e><i class="fa fa-fw fa-dollar"></i> Abrechnung</e></a>
+    <br>
+    <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
+</div>
+<table id="tableVA" data-ng-hide="veranstaltungen.length === 0">
+    <tr>
+        <th>Titel</th>
+        <th>Raum</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th><i class="fa fa fa-fw fa-user"></i></th>
+        <th>Art</th>
+        <th>Zusatzleistungen</th>
+        <th>Preis</th>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'in Abrechnung'">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
+        <td>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.sichtbarkeit}}</td>
+        <td>{{veranstaltung.leistung}}</td>
+        <td bgcolor="#ffdab9">{{veranstaltung.veranstalter_preis}}€</td>
+    </tr>
+</table>
+<div id="noEvent" data-ng-show="veranstaltungen.length === 0">
+    <p>Aktuell stehen keine offenen Rechnungen aus. <br><br> <a href="#!/event-overview-host"><button class="loginButton"><g>Meine Veranstaltungen</g></button></a></p>
+</div>

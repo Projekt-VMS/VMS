@@ -305,6 +305,12 @@ g {
 	color: #b00f0f;
 	border: none;
 }
+
+[class="fa fa-fw fa-check"] {
+	color: green;
+	border: none;
+}
+
 .deleteIcon {
 	border: none;
 }

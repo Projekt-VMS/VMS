@@ -132,10 +132,14 @@ app.factory('registrierenService', ['$http', function ($http){
 			return	$http.put('/veranstaltung/edit/'+veranstaltungID, veranstaltung)
 		}
 
+		function accountVeranstaltung(veranstaltungID){
+			return $http.put('/veranstaltung/abrechnen/'+veranstaltungID)
+		}
+
 		function deleteVeranstaltung(veranstaltungID){
 			return $http.delete('/veranstaltung/delete/'+veranstaltungID)
 		}
-		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, deleteVeranstaltung}
+		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, accountVeranstaltung, deleteVeranstaltung}
     
 	}])
 
@@ -515,6 +519,16 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+		function abrechnenVeranstaltung(veranstaltung){
+			veranstaltungService.accountVeranstaltung(veranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
 		function loescheVeranstaltung(){
 			veranstaltungService.deleteVeranstaltung(paramID).then(
 				function(res){
@@ -553,6 +567,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.param1 = paramID;
 		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+		$scope.abrechnenVeranstaltung = (veranstaltung) => abrechnenVeranstaltung(veranstaltung);
 		$scope.loescheVeranstaltung = () => loescheVeranstaltung();
 
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
@@ -648,7 +663,16 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
-
+		function abrechnenVeranstaltung(veranstaltung){
+			veranstaltungService.accountVeranstaltung(veranstaltung).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
 		function loescheVeranstaltung(){
 			veranstaltungService.deleteVeranstaltung(paramID).then(
 				function(res){
@@ -696,6 +720,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.param1 = paramID;
 		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
+		$scope.abrechnenVeranstaltung = (veranstaltung) => abrechnenVeranstaltung(veranstaltung);
 		$scope.loescheVeranstaltung = () => loescheVeranstaltung();
 
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
@@ -847,6 +872,18 @@ app.config(function($routeProvider){
 		})
 		.when('/user-overview-admin', {
 			templateUrl: 'components/user-overview-admin.component.html',
+			controller: 'adminController'
+		})
+		.when('/bills-host', {
+			templateUrl: 'components/bills-host.component.html',
+			controller: 'veranstalterController'
+		})
+		.when('/bills-management', {
+			templateUrl: 'components/bills-management.component.html',
+			controller: 'managementController'
+		})
+		.when('/bills-admin', {
+			templateUrl: 'components/bills-admin.component.html',
 			controller: 'adminController'
 		})
 		.otherwise({
