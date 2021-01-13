@@ -1,4 +1,3 @@
-<h1 id="roomText">Alle Veranstaltungen</h1>
 <div class="sidenav">
     <h5>Admin</h5>
     <a href='#!/profile-admin' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.vorname + ' ' + admin.name}}<br><c>{{admin.email}}</c></p></a>
@@ -10,52 +9,35 @@
     <br>
     <a href='#!/event-create-admin'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
     <br>
-    <a href='#!/event-overview-admin'><e><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</e></a>
+    <a href='#!/event-overview-admin'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
     <br>
-    <a href='#!/bills-admin'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
+    <a href='#!/bills-admin'><e><i class="fa fa-fw fa-dollar"></i> Abrechnung</e></a>
     <br>
     <a href='#!/email-admin'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
     <br>
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
-<div data-ng-hide="veranstaltung.length === 0">
-<table id="tableVA">
+<table id="tableVA" data-ng-hide="veranstaltungen.length === 0">
     <tr>
         <th>Titel</th>
-        <th>User</th>
         <th>Raum</th>
         <th>Von</th>
         <th>Bis</th>
         <th><i class="fa fa fa-fw fa-user"></i></th>
-        <th>V-Preis*</th>
-        <th>T-Preis*</th>
         <th>Art</th>
-        <th>Status</th>
         <th>Zusatzleistungen</th>
-        <th> </th>
+        <th>Preis</th>
+        <th>Abrechnen</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'in Abrechnung'">
         <td>{{veranstaltung.titel}}</td>
-        <td>{{veranstaltung.veranstalter}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
         <td>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</td>
         <td>{{veranstaltung.teilnehmerzahl}}</td>
-        <td>{{veranstaltung.veranstalter_preis}}€</td>
-        <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
-        <td>{{veranstaltung.angebotsstatus}}</td>
         <td>{{veranstaltung.leistung}}</td>
-        <td><a href="#!/event-modify-admin/{{veranstaltung._id}}"><i class="fa fa-fw fa-pencil" ></i></a></td>
-    </tr>
-    <tr>
-        <td colspan="12"><a href="#!/event-create-admin"><button class="addRoomButton">+ neue Veranstaltung erstellen ...</button></a></td>
+        <td>{{veranstaltung.veranstalter_preis}}€</td>
+        <td><button data-ng-click="abrechnenVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-check"></i></button></td>
     </tr>
 </table>
-    <div id="priceText">
-        <small>* V-Preis = Veranstalterpreis, T-Preis = Teilnehmerpreis</small>
-    </div>
-</div>
-<div id="noEvent" data-ng-if="veranstaltungen.length === 0">
-    <p>Aktuell existieren noch keine Veranstaltungen. <br><br> <a href="#!/event-create-admin"><button class="loginButton">Veranstaltung erstellen</button></a></p>
-</div>
