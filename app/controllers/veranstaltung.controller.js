@@ -289,6 +289,49 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
         });
     });
 
+//Absage mit Nachricht an Teilnehmer und Veranstalter (bspw. wegen Corona)
+veranstaltungsController.delete('/veranstaltung/delete/message/:id', function (req, res, next) {
+
+    Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, doc) {
+        if (err) {
+            res.status(401).json({message: 'Es hat nicht geklappt!'});
+        } else  {
+            transport.sendMail({
+            from: 'management@vms.de',
+            to: doc.veranstalter,
+            subject: 'Absage Ihrer Veranstaltung ' + doc.titel,
+            text: 'Sehr geehrter Veranstalter, \nLeider müssen wir Ihre oben genannte Veranstaltung absagen. Der Grund dafür: ' +
+                '\n'+
+               // +req.body.absagegrund
+                '\n Bitte kontaktieren Sie uns per Mail, ob wir die Veranstaltungen, angepasst an den Absagegrund, wieder im System aufnehmen sollen.'+
+                '\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+            })
+            doc.teilnehmer.every(e => {
+
+                Teilnehmer.findById({_id:e}, 'email', function(err,usermail){
+                    let tMail = usermail.email
+                    transport.sendMail({
+                        from: 'management@vms.de',
+                        to: tMail,
+                        subject: 'Absage der Veranstaltung ' + doc.titel,
+                        text: 'Sehr geehrter Teilnehmer, \n leider müssen wir oben genannte Veranstaltung absagen. Der Grund dafür: \n \n'
+                      //bitte hier Absagegrund ergänzen  + req.body.
+                       + '\n Wir werden uns bemühen, die Veranstaltung im Rahmen unserer Möglichkeiten erneut anzubieten. Bitte informieren Sie sich in den nächsten Tagen auf unserer Seite, ob die Veranstaltung wieder eingestellt wurde.'})
+
+                })
+                return true
+            })
+        }
+
+
+
+
+
+            res.status(200).json({message: 'Veranstaltung ' + doc.titel + ' wurde abgesagt'});
+    });
+});
+
+
 //update
     veranstaltungsController.put('/veranstaltung/edit/:id', function (req, res, next) {
 
@@ -355,9 +398,8 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
                 })
             } else if(doc.angebotsstatus=== 'Intern'){
                 doc.teilnehmer.every(e => {
+
                     Teilnehmer.findById({_id:e}, 'email', function(err,usermail){
-
-
                    let tMail = usermail.email
                     transport.sendMail({
                         from: 'management@vms.de',
@@ -370,11 +412,9 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
                     })
 
                     })
-
-
+                    return true
                 })
             }
-            else{errors.push({message: 'Eine Abrechnung dieser Veranstaltung ist nicht möglich!'})}
             console.log(doc.teilnehmer)
             console.log(doc.veranstalter_preis)
             console.log(doc.teilnehmerzahl)

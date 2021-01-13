@@ -182,7 +182,7 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
     let anfrageInstance = req.body
     console.log (anfrageInstance)
 
-    if (!titel || !kapazitaet || !start_datum|| !end_datum /*|| !verfuegbarkeit*/ ) {
+    if (!titel || !kapazitaet || !start_datum|| !end_datum || !verfuegbarkeit) {
         errors.push({ message: 'Fülle bitte alle Felder aus.' });
     }
     if (errors.length > 0) {
