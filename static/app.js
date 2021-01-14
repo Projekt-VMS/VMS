@@ -181,7 +181,11 @@ app.factory('registrierenService', ['$http', function ($http){
 		function deleteVeranstaltung(veranstaltungID){
 			return $http.delete('/veranstaltung/delete/'+veranstaltungID)
 		}
-		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, accountVeranstaltung, deleteVeranstaltung}
+
+		function cancelVeranstaltung(veranstaltungID, daten){
+			return $http.post('/veranstaltung/delete/message/'+veranstaltungID, daten)
+		}
+		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, accountVeranstaltung, deleteVeranstaltung, cancelVeranstaltung}
     
 	}])
 
@@ -610,17 +614,19 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
-		/*function raumAuslastung(){
-			statistikService.raumAuslastung().then(
+		function absagen(daten){
+			console.log('...')
+			console.log('log:' + daten)
+			veranstaltungService.cancelVeranstaltung(paramID, daten).then(
 				function(res){
-					console.log(res.data)
-					$scope.raumAuslastung = res.data
+					alert(res.data.message);
 				},
 				function(err){
 					alert(err.data.message);
 				}
-			)
-		}*/
+			);
+		}
+
 
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
@@ -637,6 +643,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
+
+		$scope.absagen = (daten) => absagen(daten);
 
 		raumService.getRaeume().then(res => $scope.anzahlRaeume = res.data.length);
 		veranstaltungService.getVeranstaltungen().then(res => $scope.anzahlVeranstaltungen = res.data.length);
