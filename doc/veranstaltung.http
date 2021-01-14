@@ -5,15 +5,15 @@ Content-Type: application/json
 
 {
   "titel": "BugCheck",
-  "raum": "1",
-  "veranstalter": "frank2@meier2.de",
+  "raum": "3",
+  "veranstalter": "inge@foehlich.de",
   "teilnehmerzahl": 8,
-  "start_datum":"2021-01-09",
-  "end_datum": "2021-01-10",
-  "veranstalter_preis": 400,
+  "start_datum":"2021-01-21",
+  "end_datum": "2021-01-22",
   "teilnehmer_preis": 25,
   "sichtbarkeit": true,
-  "angebotsstatus": "intern"
+  "angebotsstatus": "intern",
+  "veranstalter_preis": 3222
 
 }
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 GET http://localhost:3000/veranstaltung/show
 
 ### // Veranstaltung show one
-GET http://localhost:3000/veranstaltung/showOne/5ff357a5a4cd92651c13ec2e
+GET http://localhost:3000/veranstaltung/showOne/5ffc8735aa82a9e3937bf6f2
 
 ### // Veranstaltung delete
 DELETE http://localhost:3000/veranstaltung/delete/5fdfb9fced9dea3581f17ff0
@@ -43,5 +43,9 @@ GET http://localhost:3000/veranstaltung/showOne/list/5fecee5625f7b034db598063
 ### // raumauslastung
 POST http://localhost:3000/statistik/raumauslastung
 
+
+### // Abrechnung erstellen
+PUT  http://localhost:3000/veranstaltung/abrechnen/5ffd923cffb1ff0008782e25
+Content-Type: application/json
 
 

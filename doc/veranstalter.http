@@ -17,7 +17,12 @@ Content-Type: application/json
 GET http://localhost:3000/veranstalter/show
 
 ### // veranstalter show one
-GET http://localhost:3000/veranstalter/show/5fe095001b550c3f060ed989
+GET http://localhost:3000/veranstalter/showOne
+Content-Type: application/json
+
+{
+"email": "klaus-fischer96@gmx.de"
+}
 
 ### // veranstalter delete (could be changed to :id as well
 DELETE http://localhost:3000/veranstalter/delete/5fde4e43dea39a2267afa50f
@@ -46,3 +51,6 @@ Content-Type: application/json
   "email": "frank2@meier2.de",
   "password": "test"
 }
+
+### // Storno
+DELETE http://localhost:3000/veranstalter/storno/5ff7314f5304fba515200a24

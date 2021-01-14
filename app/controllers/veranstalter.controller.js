@@ -15,6 +15,7 @@ let  transport = nodemailer.createTransport({
 });
 const Moment = require('moment');
 const MomentRange = require('moment-range');
+const Teilnehmer = require("../models/Teilnehmer");
 const {validateEmail} = require("./validation");
 const moment = MomentRange.extendMoment(Moment);
 
@@ -50,13 +51,19 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
     if (password !== password2) {
         errors.push({ msg: 'Passwords do not match' });
     }
+    Teilnehmer.find({email: email}, function (err, teilnehmer) {
+        let emailExists = teilnehmer.length > 0;
+        if (emailExists === true) {
+            errors.push({message: 'Die Email ist bereits als Teilnehmer registriert. Ein Teilnehmer kann kein Veranstalter sein!'});
+        }
+    })
     Veranstalter.find({email: email}, function(err, veranstalter){
         let emailExists = veranstalter.length > 0;
         if (emailExists === true){
             errors.push({ message: 'Die Email ist bereits vergeben.'});
         }
         if (errors.length > 0) {
-            res.send({
+            res.status(400).json({
                 errors,
                 name,
                 vorname,

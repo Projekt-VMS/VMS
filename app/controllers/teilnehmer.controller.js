@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const Moment = require('moment');
 const MomentRange = require('moment-range');
+const Veranstalter = require("../models/Veranstalter");
 const moment = MomentRange.extendMoment(Moment);
 
 var tokens = [];
@@ -48,6 +49,18 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
             errors.push({message: 'Die Passwörter stimmen nicht überein.'});
         }
     }
+
+    Veranstalter.find({email: email}, function (err, veranstalter) {
+        console.log(errors)
+        let emailExists = veranstalter.length > 0;
+        if (emailExists === true) {
+            errors.push({message: 'Die Email ist bereits als Veranstalter registriert. Ein Teilnehmer kann kein Veranstalter sein!'});
+        }
+
+        })
+
+
+
     Teilnehmer.find({email: email}, function (err, teilnehmer) {
             console.log(errors)
             let emailExists = teilnehmer.length > 0;
