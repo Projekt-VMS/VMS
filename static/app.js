@@ -3,6 +3,48 @@
 
 var app = angular.module('app', ['ngRoute']);
 
+angular.module('app').directive('appFilereader', function($q) {
+	var slice = Array.prototype.slice;
+
+	return {
+		restrict: 'A',
+		require: '?ngModel',
+		link: function(scope, element, attrs, ngModel) {
+			if (!ngModel) return;
+
+			ngModel.$render = function() {};
+
+			element.bind('change', function(e) {
+				var element = e.target;
+
+				$q.all(slice.call(element.files, 0).map(readFile))
+					.then(function(values) {
+						if (element.multiple) ngModel.$setViewValue(values);
+						else ngModel.$setViewValue(values.length ? values[0] : null);
+					});
+
+				function readFile(file) {
+					var deferred = $q.defer();
+
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						deferred.resolve(e.target.result);
+					};
+					reader.onerror = function(e) {
+						deferred.reject(e);
+					};
+					reader.readAsDataURL(file);
+
+					return deferred.promise;
+				}
+
+			}); //change
+
+		} //link
+	}; //return
+});
+
+
 	//Erstelle den Service um auf die Kunden-API zuzugreifen.
 	//Dazu mus die HTTP-Dependecy injected werden.
 app.factory('registrierenService', ['$http', function ($http){
@@ -401,6 +443,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 
 		function anfragen(daten){
+			console.log('test ' + daten.teilnehmerListe)
 			veranstalterService.request(tokenService.getID(), daten).then(
 				function(res){
 					alert(res.data.message);

@@ -18,14 +18,15 @@ var veranstaltungSchema = new Schema({
 
     }],
     start_datum: {type: Date, min: today},
-    end_datum:{type: Date},
+    end_datum: {type: Date},
     teilnehmerzahl: {type: Number},
     teilnehmer_preis: {type: Number},
-    veranstalter_preis:{type: Number},
+    veranstalter_preis: {type: Number},
     sichtbarkeit: {type: String},
     angebotsstatus: {type: String},
-    leistung: {type: String, default: 'keine Zusatzleistungen'}}, //{strict: false}
-);
+    leistung: {type: String, default: 'keine Zusatzleistungen'}, //{strict: false}
+    teilnehmerListe: {type: Buffer}
+});
 
 // Erstellt das benötigte Schema mit Name, Schema und der zugehörigen Collection!
 const Veranstaltung = mongoose.model('Veranstaltung', veranstaltungSchema, 'veranstaltungen');

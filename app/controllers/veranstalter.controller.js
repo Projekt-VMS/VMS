@@ -177,7 +177,7 @@ veranstalterController.delete('/veranstalter/logout/:token', function (req, res)
 //anfragen
 veranstalterController.post('/veranstalter/request/:id', function (req, res){
 
-    const {titel, kapazitaet, start_datum, end_datum, verfuegbarkeit, zusatzleistungen} = req.body
+    const {titel, kapazitaet, start_datum, end_datum, verfuegbarkeit, zusatzleistungen, teilnehmerListe} = req.body
     let errors = [];
     let anfrageInstance = req.body
     console.log (anfrageInstance)
@@ -198,6 +198,7 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
     } else {
         Veranstalter.findById({_id: req.params.id}, function (err, veranstalter) {
             let veranstalterEmail = veranstalter.email;
+            let base64result = anfrageInstance.teilnehmerListe.pdf.split(',')[1];
 
             transport.sendMail({
                 from: veranstalterEmail,
@@ -208,8 +209,12 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
                 + '\n Zusatzleistungen: '+ anfrageInstance.zusatzleistungen
                 + '\n Veranstalter: ' + veranstalterEmail
                 + '\n \n Bitte erstellen Sie im System ein entsprechende Angebot!'
-
-
+                + '\n \n Teilnehmerliste finden Sie im Anhang',
+                attachments: [{
+                    filename: 'Teilnehmerliste',
+                    content:  base64result,
+                    encoding: 'base64'
+                }]
             })
             res.status(200).json({message: 'Anfrage wurde erfolgreich abgeschickt!'});
         })
