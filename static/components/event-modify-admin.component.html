@@ -17,6 +17,7 @@
     <br>
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
+
 <div id="roomModify"  data-ng-submit='updateVeranstaltung(neueVeranstaltung)' >
     <h2>Veranstaltung: {{veranstaltung.titel}}<a href="#!/event-overview-admin"><button class="deleteButton" id="trashIcon" data-ng-click="loescheVeranstaltung()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <br>
@@ -52,8 +53,6 @@
         <p class="modifyText">neuer Status:
         <p class="modifyText">Angebot offen:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"></p>
         <p class="modifyText">Angebot akzeptiert:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot akzeptiert'"></p>
-        <p class="modifyText">In Abrechnung:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'in Abrechnung'"></p>
-        <p class="modifyText">Abgerechnet:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'abgerechnet'"></p>
     </div>
     <hr>
     <h3>Zusatzleistungen ändern</h3>

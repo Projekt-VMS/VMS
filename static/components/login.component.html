@@ -12,8 +12,8 @@
     <hr> <br>
     <div class="container" data-ng-hide="checked1 || checked2">
         <label>für Management und Admin:</label>
-        <span data-ng-hide="checked4"><input type="checkbox" data-ng-model="checked3" data-ng-hide="checked1 || checked2 || checked4">Management</span>
-        <span data-ng-hide="checked3"><input type="checkbox" data-ng-model="checked4" data-ng-hide="checked1 || checked2 || checked3">Admin</span>
+        <span data-ng-hide="checked4"><input type="checkbox" data-ng-model="checked3">Management</span>
+        <span data-ng-hide="checked3"><input type="checkbox" data-ng-model="checked4">Admin</span>
     </div>
     <br>
     <div data-ng-if="checked1" data-ng-submit='loggeTeilnehmer(daten)'>

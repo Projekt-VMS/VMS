@@ -1,5 +1,3 @@
-<h1 id="roomText">Alle Räume</h1>
-
 <div class="sidenav">
     <h5>Management</h5>
     <a href='#!/profile-management' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{management.vorname + ' ' + management.name}}<br><c>{{management.email}}</c></p></a>
@@ -17,9 +15,11 @@
     <br>
     <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
-<div>
+
+<div id="roomModify">
     <h2>Raumauslastung: Heute sind {{raumAuslastung}}% der Räume noch frei.</h2>
 </div>
+
 <table id="table">
     <tr>
         <th>Raum-Nr.</th>
