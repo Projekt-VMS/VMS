@@ -50,9 +50,8 @@
     <div data-ng-hide="veranstaltung.angebotsstatus === 'Intern'">
         <hr>
         <h3>Status bei externen Veranstaltungen ändern</h3><p class="modifyText">aktueller Status:  <a>{{veranstaltung.angebotsstatus}}</a></p>
-        <p class="modifyText">neuer Status:
-        <p class="modifyText">Angebot offen:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"></p>
-        <p class="modifyText">Angebot akzeptiert:  <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot akzeptiert'"></p>
+        <p class="modifyText">neuer Status: <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"> Angebot offen
+                                            <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot akzeptiert'"> Angebot akzeptiert </p>
     </div>
     <hr>
     <h3>Zusatzleistungen ändern</h3>
