@@ -648,7 +648,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	}])
 
-		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'authService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService','logoutService', function($scope, $routeParams, tokenService, authService,adminService, managementService, veranstaltungService, raumService, registrierenService, logoutService){
+		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'authService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService','logoutService', 'statistikService', function($scope, $routeParams, tokenService, authService,adminService, managementService, veranstaltungService, raumService, registrierenService, logoutService, statistikService){
 		console.log('Admin Controller');
 
 		setTimeout(function () {
@@ -797,6 +797,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
 
+		statistikService.raumAuslastung().then(res => $scope.raumAuslastung = res.data);
+
 		$scope.loggeOut = () => loggeOut();
 		$scope.currentDate = new Date();
 
@@ -866,22 +868,6 @@ app.config(function($routeProvider){
 			templateUrl: 'components/event-overview-participant.component.html',
 			controller: 'teilnehmerController'
 		})
-		.when('/stats-management', {
-			templateUrl: 'components/stats-management.component.html',
-			controller: 'managementController'
-		})
-		.when('/email-management', {
-			templateUrl: 'components/email-management.component.html',
-			controller: 'managementController'
-		})
-		.when('/email-host', {
-			templateUrl: 'components/email-host.component.html',
-			controller: 'veranstalterController'
-		})
-		.when('/email-participant', {
-			templateUrl: 'components/email-participant.component.html',
-			controller: 'teilnehmerController'
-		})
 		.when('/room-overview-admin', {
 			templateUrl: 'components/room-overview-admin.component.html',
 			controller: 'adminController'
@@ -908,14 +894,6 @@ app.config(function($routeProvider){
 		})
 		.when('/event-modify-admin/:id', {
 			templateUrl: 'components/event-modify-admin.component.html',
-			controller: 'adminController'
-		})
-		.when('/stats-admin', {
-			templateUrl: 'components/stats-admin.component.html',
-			controller: 'adminController'
-		})
-		.when('/email-admin', {
-			templateUrl: 'components/email-admin.component.html',
 			controller: 'adminController'
 		})
 		.when('/user-create-admin', {
