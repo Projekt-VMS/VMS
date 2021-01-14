@@ -15,7 +15,9 @@
     <br>
     <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
-<table id="tableVA" data-ng-hide="veranstaltungen.length === 0">
+
+<h6>Abrechnung noch nicht erstellt:</h6>
+<table style="margin-top: 0.5%" id="tableVA" data-ng-hide="veranstaltungen.length === 0">
     <tr>
         <th>Titel</th>
         <th>Raum</th>
@@ -23,19 +25,47 @@
         <th>Bis</th>
         <th><i class="fa fa fa-fw fa-user"></i></th>
         <th>Art</th>
+        <th>Status</th>
         <th>Zusatzleistungen</th>
         <th>Preis</th>
         <th>Abrechnen</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'in Abrechnung'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'" data-ng-if="((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.end_datum < currentDate.toISOString())">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
         <td>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</td>
         <td>{{veranstaltung.teilnehmerzahl}}</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
+        <td>{{veranstaltung.angebotsstatus}}</td>
         <td>{{veranstaltung.leistung}}</td>
         <td>{{veranstaltung.veranstalter_preis}}€</td>
         <td><button data-ng-click="abrechnenVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-check"></i></button></td>
+    </tr>
+</table>
+
+<h6>Abrechnung bereits erstellt:</h6>
+<table style="margin-top: 0.5%" id="tableVA" data-ng-hide="veranstaltungen.length === 0">
+    <tr>
+        <th>Titel</th>
+        <th>Raum</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th><i class="fa fa fa-fw fa-user"></i></th>
+        <th>Art</th>
+        <th>Status</th>
+        <th>Zusatzleistungen</th>
+        <th>Preis</th>
+    </tr>
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Abrechnung erstellt'">
+        <td>{{veranstaltung.titel}}</td>
+        <td>{{veranstaltung.raum}}</td>
+        <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
+        <td>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</td>
+        <td>{{veranstaltung.teilnehmerzahl}}</td>
+        <td>{{veranstaltung.sichtbarkeit}}</td>
+        <td>{{veranstaltung.angebotsstatus}}</td>
+        <td>{{veranstaltung.leistung}}</td>
+        <td>{{veranstaltung.veranstalter_preis}}€</td>
     </tr>
 </table>

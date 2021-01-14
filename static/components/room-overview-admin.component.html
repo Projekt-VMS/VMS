@@ -1,4 +1,3 @@
-<h1 id="roomText">Alle Räume</h1>
 <div class="sidenav">
     <h5>Admin</h5>
     <a href='#!/profile-admin' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.vorname + ' ' + admin.name}}<br><c>{{admin.email}}</c></p></a>
@@ -17,6 +16,10 @@
     <a href='#!/email-admin'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
     <br>
     <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
+</div>
+
+<div id="roomModify">
+    <h2>Raumauslastung: Heute sind {{raumAuslastung}}% der Räume noch frei.</h2>
 </div>
 
 <table id="table">

@@ -16,7 +16,7 @@
     <label>Status:</label>
     <input type="checkbox" data-ng-model="state1" >Angebot offen
     <input type="checkbox" data-ng-model="state2">Angebot akzeptiert
-    <input type="checkbox" data-ng-model="state3">in Abrechnnung
+    <input type="checkbox" data-ng-model="state3">Abrechnung erstellt
 </div>
 <div data-ng-hide="veranstaltungen.length === 0">
 <table id="tableVA" data-ng-hide="(veranstaltungen | filter: emailVeranstalter :true).length === 0">
@@ -59,7 +59,7 @@
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'in Abrechnung' && state3">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Abrechnung erstellt' && state3">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>

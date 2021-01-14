@@ -275,7 +275,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		loginService.loginAdmin(daten).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
-			location.href = '/#!/profile-admin'
+			location.href = '/#!/event-overview-admin'
 		},
 			function(err) {
 				console.log(err.data.message);
@@ -458,6 +458,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
 		$scope.storniereVeranstaltung = (veranstaltung) => storniereVeranstaltung(veranstaltung);
 		$scope.loggeOut = () => loggeOut();
+		$scope.currentDate = new Date();
 
 	}])
 
@@ -600,6 +601,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		statistikService.raumAuslastung().then(res => $scope.raumAuslastung = res.data);
 
 		$scope.loggeOut = () => loggeOut();
+		$scope.currentDate = new Date();
 
 	}])
 
@@ -753,6 +755,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.loescheRaum = () => loescheRaum();
 
 		$scope.loggeOut = () => loggeOut();
+		$scope.currentDate = new Date();
 
 	}])
 
