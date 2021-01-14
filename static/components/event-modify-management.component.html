@@ -51,7 +51,13 @@
     <h3>Zusatzleistungen ändern</h3>
     <p class="modifyText">aktuelle Zusatzleistungen: <a>{{veranstaltung.leistung}}</a></p>
     <p class="modifyText">neue Zusatzleistungen:  <input type="text" placeholder="neue Zusatzleistungen" class="fieldChange" data-ng-model='neueVeranstaltung.leistung'></p>
+    <hr>
+    <div data-ng-submit='absagen(daten)'>
+        <h3>Veranstaltung absagen</h3>
+        <p class="modifyText">Absagegrund angeben:  <input type="text" placeholder="z.B.: wegen neuer Corona-Maßnahmen" data-ng-model='daten.grund'></p>
+        <button data-ng-click='absagen(daten)' id="logoutButton"><g>Absagen</g></button>
     <hr><br>
+    </div>
     <div>
         <a href="#!/event-overview-management"><button data-ng-click='updateVeranstaltung(neueVeranstaltung)' id="logoutButton"><g>Änderung bestätigen</g></button></a>
     </div>
