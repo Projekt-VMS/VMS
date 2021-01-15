@@ -5,9 +5,11 @@ const Veranstalter = require('../models/Veranstalter');
 const Raum = require('../models/Raum');
 let Veranstaltung = require('../models/Veranstaltung');
 const Moment = require('moment');
+var momentTz = require('moment-timezone');
 const MomentRange = require('moment-range');
 const Teilnehmer = require("../models/Teilnehmer");
 const moment = MomentRange.extendMoment(Moment);
+//moment.tz.add('Europe/Berlin|CET CEST CEMT|-10 -20 -30')
 moment().utc();
 moment.locale('us',{week:{dow : 1}})
 var date = new Date();
@@ -59,6 +61,8 @@ result2 = false;
 
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus, leistung } = req.body;
+    start_datum = momentTz(start_datum).tz('Europe/Berlin').format('YYYY-MM-DD');
+    end_datum = momentTz(end_datum).tz('Europe/Berlin').format('YYYY-MM-DD');
     let errors = [];
 
     if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus ) {
