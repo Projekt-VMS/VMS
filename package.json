@@ -36,6 +36,8 @@
     "nodemailer": "^6.4.17",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "pdfmake": "^0.1.69",
+    "roboto-font": "^0.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -46,6 +48,7 @@
     "@angular/compiler-cli": "~11.0.1",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
+    "base64-stream": "^1.0.0",
     "browserslist": "^4.16.0",
     "codelyzer": "^6.0.0",
     "connect-flash": "^0.1.1",

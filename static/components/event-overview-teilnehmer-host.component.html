@@ -1,0 +1,27 @@
+<div class="sidenav">
+    <h5>Veranstalter</h5>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{veranstalter.vorname + ' ' + veranstalter.name}}<br><c>{{veranstalter.email}}</c></p></a>
+    <hr>
+    <br>
+    <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <br>
+    <a href='#!/event-overview-host'><e><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</e></a>
+    <br>
+    <a href='#!/bills-host'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
+</div>
+<div class = "filter" >
+    <p> aktuelle Teilnehmer der Veranstaltung {{veranstaltung.titel}}:</p>
+</div>
+<table id="tableVA">
+    <tr>
+        <th>Name</th>
+        <th>Vorname</th>
+        <th>Email</th>
+    </tr>
+    <tr data-ng-repeat="teilnehmer in teilnehmers">
+        <td>{{teilnehmer.name}}</td>
+        <td>{{teilnehmer.vorname}}</td>
+        <td>{{teilnehmer.email}}</td>
+    </tr>
+</table>
+<button data-ng-click='downloadeListe()' id="logoutButton"><g>Teilnehmerliste</g></button>

@@ -20,6 +20,7 @@ let  transport = nodemailer.createTransport({
     }
 });
 
+
 date.setDate(date.getDate() + 7)
 
 //show all
@@ -358,7 +359,6 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
 //get Teilnehmerliste pro Veranstaltung
 
 veranstaltungsController.get('/veranstaltung/showOne/list/:id', function (req, res) {
-    //getVeranstaltungWithVeranstalter(req.params.id);
 
     Veranstaltung.findOne({_id: req.params.id},'teilnehmer')
         .populate('teilnehmer', 'name vorname email')
@@ -374,6 +374,61 @@ veranstaltungsController.get('/veranstaltung/showOne/list/:id', function (req, r
 
 
 });
+
+//generate Teilnehmerliste als PDF
+
+veranstaltungsController.post('/veranstaltung/download/:id', function (req, res) {
+
+    Veranstaltung.findOne({_id: req.params.id},'teilnehmer')
+        .populate('teilnehmer', 'name vorname email')
+        .catch(err => {
+            console.log(err.toString());
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            dbres.teilnehmer.every( e => {
+                // pfdmake import
+                var {Base64Encode} = require('base64-stream');
+                let fonts = {
+                    Roboto: {
+                        normal: 'node_modules/roboto-font/fonts/Roboto/roboto-regular-webfont.ttf',
+                        bold: 'node_modules/roboto-font/fonts/Roboto/roboto-bold-webfont.ttf',
+                        italics: 'node_modules/roboto-font/fonts/Roboto/roboto-italic-webfont.ttf',
+                        bolditalics: 'node_modules/roboto-font/fonts/Roboto/roboto-bolditalic-webfont.ttf'
+                    }
+                };
+
+                var PdfPrinter = require('pdfmake');
+                var printer = new PdfPrinter(fonts);
+                var fs = require('fs');
+                let teilnehmerName = e.name;
+                let teilnehmerVorname = e.vorname;
+                let teilnehmerEmail = e.email;
+                let counter =+ 1;
+
+                var docDefinition = {
+                    content: [
+                        'Teilnehmerliste' +
+                        '\n \nNr: ' + counter + '     Name:  ' + teilnehmerName + '     Vorname:  ' + teilnehmerVorname + '     Email:  ' + teilnehmerEmail +
+                        '\n'
+                    ]
+                }
+                var pdfDoc = printer.createPdfKitDocument(docDefinition);
+
+                const stream = pdfDoc.pipe(new Base64Encode())
+                pdfDoc.end()
+                let finalString = ''
+                stream.on('data', function (chunk) {
+                finalString += chunk;
+                });
+                stream.on('end', function () {
+                    console.log('binary pdf: ', finalString)
+                    res.status(200).send(finalString)
+                });
+            })
+        })
+});
+
 
 // Abrechnung erstellen
 veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res, next) {
@@ -443,7 +498,7 @@ veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
         console.log(foundevents);
         foundevents.forEach(event => {
             range1 = moment.range(event.start_datum, event.end_datum)
-            if(range1.contains(todayMoment)){
+            if(range1.contains(todayMoment) || (todayMoment === event.start_datum) || (todayMoment === event.end_datum)){
                 arrayVeranstaltungen.push(event)
             }
         })
