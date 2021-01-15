@@ -382,7 +382,7 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
     Veranstaltung.findByIdAndUpdate(
         {_id: req.params.id},
         {
-            $set: {angebotsstatus : "Abgerechnet"}
+            $set: {angebotsstatus : "Abrechnung erstellt"}
         },
         function (err, doc) {
             if (!doc)
