@@ -8,8 +8,6 @@
     <a href='#!/event-overview-host'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
     <br>
     <a href='#!/bills-host'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
-    <br>
-    <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
 
 <div id="request" data-ng-submit='anfragen(daten)'>
@@ -44,6 +42,14 @@
     <br>
     <br>
     <input type="checkbox" data-ng-model='daten.angebotsstatus' data-ng-true-value="'Öffentlich'">öffentlich&nbsp;<input type="checkbox" data-ng-model='daten.angebotsstatus' data-ng-true-value="'Privat'">geschlossen
+    <br>
+    <hr>
+    <br>
+    <p class="requestText">Bei geschlossene Veranstaltungen kannst du deine Teilnehmerliste hochladen.</p>
+    <label>Füge deine Teilnehmerliste hinzu:</label>
+    <br>
+    <br>
+    <input type="file" accept=".pdf" data-ng-model='daten.teilnehmerListe.pdf' data-app-filereader>
     <br>
     <hr>
     <br>

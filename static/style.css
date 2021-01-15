@@ -86,7 +86,7 @@ h6 {
 	color: #29b2d9;
 	text-align: left;
 	font-size: x-large;
-	margin: 5% 0 0 16.5%;
+	margin: 5% 0 0 19.5%;
 }
 
 label {
@@ -253,6 +253,17 @@ button:hover {
 	padding: 6px;
 }
 
+[id="stornoButton"] {
+	float: right;
+	margin-right: 1%;
+	background-color: #de4c4c;
+	font-family: Calibri;
+	font-size: 22px;
+	border: none;
+	border-radius: 4px;
+	padding: 6px;
+}
+
 a {
 	color: black;
 	text-decoration: none;
@@ -363,6 +374,23 @@ g {
 	margin-right: auto;
 	text-align: left;
 	width: 40%;
+	color: gray;
+	font-size: 18px;
+}
+[class="introText"] {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	width: 36%;
+	color: gray;
+	font-size: 18px;
+}
+
+.introText {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	width: 36%;
 	color: gray;
 	font-size: 18px;
 }

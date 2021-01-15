@@ -12,17 +12,12 @@
     <a href='#!/event-overview-admin'><e><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</e></a>
     <br>
     <a href='#!/bills-admin'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
-    <br>
-    <a href='#!/email-admin'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
-    <br>
-    <a href='#!/stats-admin'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
 
 <div id="roomModify"  data-ng-submit='updateVeranstaltung(neueVeranstaltung)' >
     <h2>Veranstaltung: {{veranstaltung.titel}}<a href="#!/event-overview-admin"><button class="deleteButton" id="trashIcon" data-ng-click="loescheVeranstaltung()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <br>
-    <p class="modifyText">im Raum:  <a>{{veranstaltung.raum}}</a></p>
-    <p class="modifyText">mit dem Veranstalter:  <a>{{veranstaltung.veranstalter}}</a></p>
+    <p class="introText">im Raum  <a>{{veranstaltung.raum}}</a> und mit dem Veranstalter  <a>{{veranstaltung.veranstalter}}</a></p>
     <hr>
     <h3>Titel ändern</h3>
     <p class="modifyText">aktueller Titel: <a>{{veranstaltung.titel}}</a></p>

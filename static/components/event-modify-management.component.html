@@ -10,21 +10,16 @@
     <a href='#!/event-overview-management'><e><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</e></a>
     <br>
     <a href='#!/bills-management'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
-    <br>
-    <a href='#!/email-management'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
-    <br>
-    <a href='#!/stats-management'><i class="fa fa-fw fa-dashboard"></i> Statistiken</a>
 </div>
 
 <div id="roomModify"  data-ng-submit='updateVeranstaltung(neueVeranstaltung)' >
     <h2>Veranstaltung: {{veranstaltung.titel}}<a href="#!/event-overview-management"><button class="deleteButton" id="trashIcon" data-ng-click="loescheVeranstaltung()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <br>
-    <p class="modifyText">im Raum:  <a>{{veranstaltung.raum}}</a></p>
-    <p class="modifyText">mit dem Veranstalter:  <a>{{veranstaltung.veranstalter}}</a></p>
+    <p class="introText">Im Raum  <a>{{veranstaltung.raum}}</a> und mit dem Veranstalter  <a>{{veranstaltung.veranstalter}}</a></p>
     <hr>
     <h3>Titel ändern</h3>
     <p class="modifyText">aktueller Titel: <a>{{veranstaltung.titel}}</a></p>
-    <p class="modifyText">neuer Titel:  <input type="text" placeholder="neuer Titel" class="fieldChange" data-ng-model='neueVeranstaltung.titel'></p>
+    <p class="modifyText">neuer Titel:  <input type="text" placeholder="neuer Titel" class="field" data-ng-model='neueVeranstaltung.titel'></p>
     <hr>
     <h3>Zeitraum ändern</h3>
     <p class="modifyText">aktuelles Startdatum:  <a>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</a></p>
@@ -49,15 +44,22 @@
         <hr>
         <h3>Status bei externen Veranstaltungen ändern</h3><p class="modifyText">aktueller Status:  <a>{{veranstaltung.angebotsstatus}}</a></p>
         <p class="modifyText">neuer Status: &nbsp;&nbsp;<input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot offen'"> Angebot offen
-                                                        <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot akzeptiert'">Angebot akzeptiert</p>
+                                              <input type="checkbox" data-ng-model='neueVeranstaltung.angebotsstatus' data-ng-true-value="'Angebot akzeptiert'">Angebot akzeptiert</p>
      </div>
     <hr>
     <h3>Zusatzleistungen ändern</h3>
     <p class="modifyText">aktuelle Zusatzleistungen: <a>{{veranstaltung.leistung}}</a></p>
-    <p class="modifyText">neue Zusatzleistungen:  <input type="text" placeholder="neue Zusatzleistungen" class="fieldChange" data-ng-model='neueVeranstaltung.leistung'></p>
+    <p class="modifyText">neue Zusatzleistungen:  <input type="text" placeholder="neue Zusatzleistungen" class="field" data-ng-model='neueVeranstaltung.leistung'></p>
+    <hr>
+    <div data-ng-submit='absagen(daten)'>
+        <h3>Veranstaltung absagen</h3>
+        <p class="modifyText">Absagegrund angeben:  <input type="text" placeholder="z.B.: wegen neuer Corona-Maßnahmen" class="field" data-ng-model='daten.grund'></p>
+
     <hr><br>
+    </div>
     <div>
         <a href="#!/event-overview-management"><button data-ng-click='updateVeranstaltung(neueVeranstaltung)' id="logoutButton"><g>Änderung bestätigen</g></button></a>
+        <button data-ng-click='absagen(daten)' id="stornoButton"><g>Absagen</g></button>
     </div>
     <br><br><br>
 </div>

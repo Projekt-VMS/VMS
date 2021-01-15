@@ -3,6 +3,48 @@
 
 var app = angular.module('app', ['ngRoute']);
 
+angular.module('app').directive('appFilereader', function($q) {
+	var slice = Array.prototype.slice;
+
+	return {
+		restrict: 'A',
+		require: '?ngModel',
+		link: function(scope, element, attrs, ngModel) {
+			if (!ngModel) return;
+
+			ngModel.$render = function() {};
+
+			element.bind('change', function(e) {
+				var element = e.target;
+
+				$q.all(slice.call(element.files, 0).map(readFile))
+					.then(function(values) {
+						if (element.multiple) ngModel.$setViewValue(values);
+						else ngModel.$setViewValue(values.length ? values[0] : null);
+					});
+
+				function readFile(file) {
+					var deferred = $q.defer();
+
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						deferred.resolve(e.target.result);
+					};
+					reader.onerror = function(e) {
+						deferred.reject(e);
+					};
+					reader.readAsDataURL(file);
+
+					return deferred.promise;
+				}
+
+			}); //change
+
+		} //link
+	}; //return
+});
+
+
 	//Erstelle den Service um auf die Kunden-API zuzugreifen.
 	//Dazu mus die HTTP-Dependecy injected werden.
 app.factory('registrierenService', ['$http', function ($http){
@@ -139,7 +181,11 @@ app.factory('registrierenService', ['$http', function ($http){
 		function deleteVeranstaltung(veranstaltungID){
 			return $http.delete('/veranstaltung/delete/'+veranstaltungID)
 		}
-		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, accountVeranstaltung, deleteVeranstaltung}
+
+		function cancelVeranstaltung(veranstaltungID, daten){
+			return $http.post('/veranstaltung/delete/message/'+veranstaltungID, daten)
+		}
+		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, editVeranstaltung, accountVeranstaltung, deleteVeranstaltung, cancelVeranstaltung}
     
 	}])
 
@@ -401,6 +447,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 
 		function anfragen(daten){
+			console.log('test ' + daten.teilnehmerListe)
 			veranstalterService.request(tokenService.getID(), daten).then(
 				function(res){
 					alert(res.data.message);
@@ -567,17 +614,19 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
-		/*function raumAuslastung(){
-			statistikService.raumAuslastung().then(
+		function absagen(daten){
+			console.log('...')
+			console.log('log:' + daten)
+			veranstaltungService.cancelVeranstaltung(paramID, daten).then(
 				function(res){
-					console.log(res.data)
-					$scope.raumAuslastung = res.data
+					alert(res.data.message);
 				},
 				function(err){
 					alert(err.data.message);
 				}
-			)
-		}*/
+			);
+		}
+
 
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
@@ -595,6 +644,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
 
+		$scope.absagen = (daten) => absagen(daten);
+
 		raumService.getRaeume().then(res => $scope.anzahlRaeume = res.data.length);
 		veranstaltungService.getVeranstaltungen().then(res => $scope.anzahlVeranstaltungen = res.data.length);
 		// Prozent wie viele Räume heute frei sind
@@ -605,7 +656,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	}])
 
-		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'authService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService','logoutService', function($scope, $routeParams, tokenService, authService,adminService, managementService, veranstaltungService, raumService, registrierenService, logoutService){
+		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'authService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService','logoutService', 'statistikService', function($scope, $routeParams, tokenService, authService,adminService, managementService, veranstaltungService, raumService, registrierenService, logoutService, statistikService){
 		console.log('Admin Controller');
 
 		setTimeout(function () {
@@ -754,6 +805,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
 
+		statistikService.raumAuslastung().then(res => $scope.raumAuslastung = res.data);
+
 		$scope.loggeOut = () => loggeOut();
 		$scope.currentDate = new Date();
 
@@ -823,22 +876,6 @@ app.config(function($routeProvider){
 			templateUrl: 'components/event-overview-participant.component.html',
 			controller: 'teilnehmerController'
 		})
-		.when('/stats-management', {
-			templateUrl: 'components/stats-management.component.html',
-			controller: 'managementController'
-		})
-		.when('/email-management', {
-			templateUrl: 'components/email-management.component.html',
-			controller: 'managementController'
-		})
-		.when('/email-host', {
-			templateUrl: 'components/email-host.component.html',
-			controller: 'veranstalterController'
-		})
-		.when('/email-participant', {
-			templateUrl: 'components/email-participant.component.html',
-			controller: 'teilnehmerController'
-		})
 		.when('/room-overview-admin', {
 			templateUrl: 'components/room-overview-admin.component.html',
 			controller: 'adminController'
@@ -865,14 +902,6 @@ app.config(function($routeProvider){
 		})
 		.when('/event-modify-admin/:id', {
 			templateUrl: 'components/event-modify-admin.component.html',
-			controller: 'adminController'
-		})
-		.when('/stats-admin', {
-			templateUrl: 'components/stats-admin.component.html',
-			controller: 'adminController'
-		})
-		.when('/email-admin', {
-			templateUrl: 'components/email-admin.component.html',
 			controller: 'adminController'
 		})
 		.when('/user-create-admin', {

@@ -8,15 +8,12 @@
     <a href='#!/event-overview-host'><e><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</e></a>
     <br>
     <a href='#!/bills-host'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
-    <br>
-    <a href='#!/email-host'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
 
 <div class="filter">
     <label>Status:</label>
     <input type="checkbox" data-ng-model="state1" >Angebot offen
     <input type="checkbox" data-ng-model="state2">Angebot akzeptiert
-    <input type="checkbox" data-ng-model="state3">Abrechnung erstellt
 </div>
 <div data-ng-hide="veranstaltungen.length === 0">
 <table id="tableVA" data-ng-hide="(veranstaltungen | filter: emailVeranstalter :true).length === 0">
@@ -29,7 +26,6 @@
         <th>V-Preis*</th>
         <th>T-Preis*</th>
         <th>Art</th>
-        <th>Status</th>
         <th>Zusatzleistungen</th>
         <th>Stornieren</th>
     </tr>
@@ -42,7 +38,6 @@
         <td>{{veranstaltung.veranstalter_preis}}€</td>
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
-        <td>{{veranstaltung.angebotsstatus}}</td>
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
@@ -55,11 +50,10 @@
         <td>{{veranstaltung.veranstalter_preis}}€</td>
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
-        <td>{{veranstaltung.angebotsstatus}}</td>
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Abrechnung erstellt' && state3">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'angebotsstatus'" data-ng-if="!state1 && !state2 && veranstaltung.angebotsstatus != 'Abrechnung erstellt'">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -68,20 +62,6 @@
         <td>{{veranstaltung.veranstalter_preis}}€</td>
         <td>{{veranstaltung.teilnehmer_preis}}€</td>
         <td>{{veranstaltung.sichtbarkeit}}</td>
-        <td>{{veranstaltung.angebotsstatus}}</td>
-        <td>{{veranstaltung.leistung}}</td>
-        <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
-    </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'angebotsstatus'" data-ng-if="!state1 && !state2 && !state3">
-        <td>{{veranstaltung.titel}}</td>
-        <td>{{veranstaltung.raum}}</td>
-        <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
-        <td>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</td>
-        <td>{{veranstaltung.teilnehmerzahl}}</td>
-        <td>{{veranstaltung.veranstalter_preis}}€</td>
-        <td>{{veranstaltung.teilnehmer_preis}}€</td>
-        <td>{{veranstaltung.sichtbarkeit}}</td>
-        <td>{{veranstaltung.angebotsstatus}}</td>
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>

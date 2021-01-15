@@ -6,8 +6,6 @@
     <a href='#!/event-search-participant'><i class="fa fa-fw fa-search"></i> Veranstaltungssuche</a>
     <br>
     <a href='#!/event-overview-participant'><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</a>
-    <br>
-    <a href='#!/email-participant'><i class="fa fa-fw fa-envelope"></i> E-Mail</a>
 </div>
 
 <div id="roomModify" data-ng-submit="updateTeilnehmer(neuerTeilnehmer)">
@@ -24,7 +22,7 @@
     <p class="modifyText" >neue E-Mail-Adresse:  <input type="text" placeholder="neue E-Mail-Adresse" class="fieldChange" data-ng-model="neuerTeilnehmer.email"></p>
     <hr>
     <h3>Passwort ändern</h3>
-    <p class="modifyText" >aktuelles Passwort:  <a>{{teilnehmer.password}}</a></p>
+    <p class="modifyText" >aktuelles Passwort:  <a>*************</a></p>
     <p class="modifyText" >neues Passwort:  <input type="text" placeholder="neues Passwort" class="fieldChange" data-ng-model="neuerTeilnehmer.password"></p>
     <hr>
     <h3>Passwort wiederholen</h3>
