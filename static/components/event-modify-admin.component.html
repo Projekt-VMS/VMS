@@ -17,8 +17,7 @@
 <div id="roomModify"  data-ng-submit='updateVeranstaltung(neueVeranstaltung)' >
     <h2>Veranstaltung: {{veranstaltung.titel}}<a href="#!/event-overview-admin"><button class="deleteButton" id="trashIcon" data-ng-click="loescheVeranstaltung()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <br>
-    <p class="modifyText">im Raum:  <a>{{veranstaltung.raum}}</a></p>
-    <p class="modifyText">mit dem Veranstalter:  <a>{{veranstaltung.veranstalter}}</a></p>
+    <p class="introText">im Raum  <a>{{veranstaltung.raum}}</a> und mit dem Veranstalter  <a>{{veranstaltung.veranstalter}}</a></p>
     <hr>
     <h3>Titel ändern</h3>
     <p class="modifyText">aktueller Titel: <a>{{veranstaltung.titel}}</a></p>
