@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const Moment = require('moment');
 const MomentRange = require('moment-range');
 const Veranstalter = require("../models/Veranstalter");
+const {validatePassword} = require("./validation");
 const moment = MomentRange.extendMoment(Moment);
 
 var tokens = [];
@@ -42,10 +43,10 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
     }
     if (password === undefined){}
     else {
-        if (password.length < 5) {
-            errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
+        if (validatePassword(password)!== true) {
+            errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein, einen Großbuchstaben und eine Zahl enthalten.'})
         }
-        if (password !== password2) {
+        else if (password !== password2) {
             errors.push({message: 'Die Passwörter stimmen nicht überein.'});
         }
     }

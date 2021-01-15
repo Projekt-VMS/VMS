@@ -3,6 +3,7 @@ const managementController = express();
 const Management = require('../models/Management');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const {validatePassword} = require("./validation");
 const {validateEmail} = require("./validation");
 
 let tokens =[];
@@ -44,8 +45,8 @@ managementController.post('/management/registration/add', function (req, res) {
     if (validateEmail(email) !== true){
         errors.push({message: 'Gültige Email eingeben.'})
     }
-    if (password.length < 5){
-        errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
+    if (validatePassword(password) !== true){
+        errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein, einen Großbuchstaben und eine Zahl enthalten.'})
     }
     if (password !== password2) {
         errors.push({ msg: 'Passwords do not match' });

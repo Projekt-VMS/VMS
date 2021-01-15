@@ -16,6 +16,7 @@ let  transport = nodemailer.createTransport({
 const Moment = require('moment');
 const MomentRange = require('moment-range');
 const Teilnehmer = require("../models/Teilnehmer");
+const {validatePassword} = require("./validation");
 const {validateEmail} = require("./validation");
 const moment = MomentRange.extendMoment(Moment);
 
@@ -45,8 +46,8 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
     if (validateEmail(email) !== true){
         errors.push({message: 'Gültige Email eingeben.'})
     }
-    if (password.length < 5){
-        errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein.'})
+    if (validatePassword(password) !== true){
+        errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein, einen Großbuchstaben und eine Zahl enthalten.'})
     }
     if (password !== password2) {
         errors.push({ msg: 'Passwords do not match' });
