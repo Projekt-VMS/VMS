@@ -13,6 +13,17 @@ const moment = MomentRange.extendMoment(Moment);
 
 var tokens = [];
 
+//list all
+teilnehmerController.get('/teilnehmer/show', function(req, res){
+    Teilnehmer.find()
+        .catch(err=>{
+            console.log(err.toString()); res.status(500).send(err.toString());
+        })
+        .then(dbres=>{
+            console.log(dbres);
+            res.send(dbres);
+        });
+});
 
 //Show one Teilnehmer
 teilnehmerController.get('/teilnehmer/showOne/:id', function (req, res) {
