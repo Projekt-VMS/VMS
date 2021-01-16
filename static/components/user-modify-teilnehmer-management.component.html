@@ -1,0 +1,40 @@
+<div class="sidenav">
+    <h5>Management</h5>
+    <a href='#!/profile-management' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{management.vorname + ' ' + management.name}}<br><c>{{management.email}}</c></p></a>
+    <hr>
+    <br>
+    <a href='#!/user-overview-management'><e><i class="fa fa-fw fa-users"></i> User-Übersicht</e></a>
+    <br>
+    <a href='#!/room-overview-management'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <br>
+    <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <br>
+    <a href='#!/event-overview-management'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <br>
+    <a href='#!/bills-management'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
+</div>
+
+<div id="roomModify" data-ng-submit="updateTeilnehmer(neuerTeilnehmer)">
+    <h2>Profil bearbeiten<a href="#!/user-overview-management"><button class="deleteButton" id="trashIcon" data-ng-click="loescheTeilnehmer()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
+    <h3>Nachname ändern</h3>
+    <p class="modifyText">aktueller Nachname: <a>{{teilnehmer.name}}</a></p>
+    <p class="modifyText">neuer Nachname: <input type="text" placeholder="neuer Nachname" class="fieldChange" data-ng-model="neuerTeilnehmer.name"></p>
+    <hr>
+    <h3>E-Mail-Adresse ändern</h3>
+    <p class="modifyText">aktuelle E-Mail-Adresse: <a>{{teilnehmer.email}}</a></p>
+    <p class="modifyText">neue E-Mail-Adresse: <input type="text" placeholder="neue E-Mail-Adresse" class="fieldChange" data-ng-model="neuerTeilnehmer.email"></p>
+    <hr>
+    <h3>Passwort ändern</h3>
+    <p class="modifyText">aktuelles Passwort: <a>{{teilnehmer.password}}</a></p>
+    <p class="modifyText">neues Passwort: <input type="text" placeholder="neues Passwort" class="fieldChange" data-ng-model="neuerTeilnehmer.password"></p>
+    <hr>
+    <h3>Passwort wiederholen</h3>
+    <p class="modifyText">neues Passwort: <input type="text" placeholder="Passwort wiederholen" class="fieldChange" data-ng-model="neuerTeilnehmer.password2"></p>
+    <br>
+    <hr>
+    <br>
+    <div>
+        <a href="#!/user-overview-management"><button data-ng-click="updateTeilnehmer(neuerTeilnehmer)" id="logoutButton"><g>Änderung bestätigen</g></button></a>
+    </div>
+    <br><br><br>
+</div>

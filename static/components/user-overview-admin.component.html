@@ -1,10 +1,9 @@
-<h1 id="roomText">Alle Management-User</h1>
 <div class="sidenav">
     <h5>Admin</h5>
     <a href='#!/profile-admin' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{admin.vorname + ' ' + admin.name}}<br><c>{{admin.email}}</c></p></a>
     <hr>
     <br>
-    <a href='#!/user-overview-admin'><e><i class="fa fa-fw fa-users"></i> Management-User</e></a>
+    <a href='#!/user-overview-admin'><e><i class="fa fa-fw fa-users"></i> User-Übersicht</e></a>
     <br>
     <a href='#!/room-overview-admin'><i class="fa fa-fw fa-list"></i> Räume</a>
     <br>
@@ -15,7 +14,8 @@
     <a href='#!/bills-admin'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
 </div>
 
-<table id="table">
+<h6>Management:</h6>
+<table id="table" style="margin-top: 1%">
     <tr>
         <th>Name</th>
         <th>Vorname</th>
@@ -26,9 +26,41 @@
         <td>{{management.name}}</td>
         <td>{{management.vorname}}</td>
         <td>{{management.email}}</td>
-        <td><a href="#!/user-modify-admin/{{management._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/user-modify-admin"></i></a></td>
+        <td><a href="#!/user-modify-management-admin/{{management._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/user-modify-management-admin"></i></a></td>
     </tr>
     <tr>
         <td colspan="4"><a href="#!/user-create-admin"><button class="addRoomButton" [routerlink]="/user-create-admin">+ weiteren User hinzufügen ...</button></a></td>
+    </tr>
+</table>
+
+<h6>Veranstalter:</h6>
+<table id="table" style="margin-top: 1%">
+    <tr>
+        <th>Name</th>
+        <th>Vorname</th>
+        <th>E-Mail-Adresse</th>
+        <th> </th>
+    </tr>
+    <tr data-ng-repeat="veranstalter in veranstalters">
+        <td>{{veranstalter.name}}</td>
+        <td>{{veranstalter.vorname}}</td>
+        <td>{{veranstalter.email}}</td>
+        <td><a href="#!/user-modify-veranstalter-admin/{{veranstalter._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/user-modify-veranstalter-admin"></i></a></td>
+    </tr>
+</table>
+
+<h6>Teilnehmer:</h6>
+<table id="table" style="margin-top: 1%">
+    <tr>
+        <th>Name</th>
+        <th>Vorname</th>
+        <th>E-Mail-Adresse</th>
+        <th> </th>
+    </tr>
+    <tr data-ng-repeat="teilnehmer in teilnehmers">
+        <td>{{teilnehmer.name}}</td>
+        <td>{{teilnehmer.vorname}}</td>
+        <td>{{teilnehmer.email}}</td>
+        <td><a href="#!/user-modify-teilnehmer-admin/{{teilnehmer._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/user-modify-teilnehmer-admin"></i></a></td>
     </tr>
 </table>
