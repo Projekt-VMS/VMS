@@ -8,8 +8,17 @@ const jwt = require("jsonwebtoken");
 const Moment = require('moment');
 const MomentRange = require('moment-range');
 const Veranstalter = require("../models/Veranstalter");
+const nodemailer = require("nodemailer");
 const {validatePassword} = require("./validation");
 const moment = MomentRange.extendMoment(Moment);
+let  transport = nodemailer.createTransport({
+    host: "smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+        user: "f91515824063a2",
+        pass: "e0703dbc730281"
+    }
+});
 
 var tokens = [];
 
@@ -189,18 +198,56 @@ teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res) {
 //Update Teilnehmer
 teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
 
-    Teilnehmer.findByIdAndUpdate(
+    if (req.body.password !== undefined) {
+        let password = req.body.password;
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(password, salt, (err, hash) => {
+                if (err) throw err;
+                req.body.password = hash;
+                console.log(password)
+
+                Teilnehmer.findByIdAndUpdate(
+                    {_id: req.params.id},
+                    {
+                        $set: req.body
+                    },
+                    function (err, teilnehmer) {
+                        if (err) {
+                            res.status(401).json({message: 'Es hat nicht geklappt!'});
+                        } else if (req.body.password !== undefined) {
+
+                            let tMail = teilnehmer.email
+                            transport.sendMail({
+                                from: 'management@vms.de',
+                                to: tMail,
+                                subject: 'Änderungen an Ihrem Profil',
+                                text: 'Sehr geehrter Teilnehmer, ' +
+                                    '\n\nihr Passwort wurde geändert. Das neue Passwort lautet:' + req.body.password2 +
+                                    '\n\nHiermit können Sie sich nun im System anmelden.' +
+                                    '\n\nMit freundlichen Grüßen' +
+                                    '\nDas VMS'
+                            })
+                            res.status(200).json({message: 'User ' + teilnehmer.email + ' wurde erfolgreich geändert'});
+                        }
+                    })
+            })
+        })
+    }
+    else {Teilnehmer.findByIdAndUpdate(
         {_id: req.params.id},
-        {$set: req.body
+        {
+            $set: req.body
         },
         function (err, teilnehmer) {
-            if (err){
+            if (err) {
                 res.status(401).json({message: 'Es hat nicht geklappt!'});
+            } else {
+
+                res.status(200).json({message: 'User ' + teilnehmer.email + ' wurde erfolgreich geändert'});
+
             }
-            else {
-                res.status(200).json({message: 'User ' + teilnehmer.email + ' wurde erfolgreich überschrieben'});
-            }
-        })
+        }
+    )}
 });
 
 //logout

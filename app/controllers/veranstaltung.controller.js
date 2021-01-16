@@ -162,7 +162,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                                 to: req.body.veranstalter,
                                 subject: 'Ihr Angebot ',
                                 text: 'Vielen Dank für Ihre Anfrage. Anbei erhalten sie ihr Angebot auf Basis Ihrer eingegebenen Daten: '
-                                    + doc
+                                    + doc + '\n Bitte antworten Sie auf diese Mail, ob Sie das Angebot so annehmen möchten. \n Mit freundlichen Grüßen \nDas VMS'
                             })
 
                         } else { //error if event can't be safed
@@ -230,8 +230,9 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
                             to: tMail,
                             subject: 'Absage der Veranstaltung ' + doc.titel,
                             text: 'Sehr geehrter Teilnehmer, \n leider müssen wir oben genannte Veranstaltung absagen. Der Grund dafür: \n \n'
-                                //bitte hier Absagegrund ergänzen  + req.body.
-                                + '\n Wir werden uns bemühen, die Veranstaltung im Rahmen unserer Möglichkeiten erneut anzubieten. Bitte informieren Sie sich in den nächsten Tagen auf unserer Seite, ob die Veranstaltung wieder eingestellt wurde.'
+                               + grund
+                                + '\n Wir werden uns bemühen, die Veranstaltung im Rahmen unserer Möglichkeiten erneut anzubieten. Bitte informieren Sie sich in den nächsten Tagen auf unserer Seite, ob die Veranstaltung wieder eingestellt wurde. \n\nMit freundlichen Grüßen \nDas VMS'
+
                         })
 
                     })
@@ -250,7 +251,7 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
 
 //update
     veranstaltungsController.put('/veranstaltung/edit/:id', function (req, res, next) {
-
+        let {aenderungen} = req.body
         Veranstaltung.findByIdAndUpdate(
             {_id: req.params.id},
             {
@@ -260,6 +261,31 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
                 if (err)
                     res.status(401).json({message: 'Es hat nicht geklappt!'});
                 else {
+                    transport.sendMail({
+                        from: 'management@vms.de',
+                        to: event.veranstalter,
+                        subject: 'Änderung Ihrer Veranstaltung ' + event.titel,
+                        text: 'Sehr geehrter Veranstalter, \n\n Ihre Veranstaltung ' + event.titel +  ' wurde geändert:' +
+                            aenderungen +
+                            '\n\nWir freuen uns auf Ihre nächste Buchung! ' +
+                            '\n\nMit freundlichen Grüßen ' +
+                            '\nDas VMS '
+                    })
+                    event.teilnehmer.every(e => {
+
+                        Teilnehmer.findById({_id: e}, 'email', function (err, usermail) {
+                            let tMail = usermail.email
+                            transport.sendMail({
+                                from: 'management@vms.de',
+                                to: tMail,
+                                subject: 'Absage der Veranstaltung ' + event.titel,
+                                text:'Sehr geehrter Teilnehmer, \n\noben genannte Veranstaltung wurde geändert. Folgende Änderungen wurden eingetragen:' +
+                                    '\n\n'+aenderungen+'\n\n Dies dient für Sie als Information.\n\n Mit freundlichen Grüßen\nDasVMS'
+                            })
+
+                        })
+                        return true
+                    })
                     res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde erfolgreich überschrieben'});
                 }
             });

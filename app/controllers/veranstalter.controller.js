@@ -173,26 +173,57 @@ veranstalterController.delete('/veranstalter/delete/:id', function (req, res, ne
 //Update
 veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
 
-    Veranstalter.findByIdAndUpdate(
-        {_id: req.params.id},
-        {$set: req.body
-        },
-        function (err, veranstalter) {
-            if (err){
-                res.status(401).json({message: 'Es hat nicht geklappt!'});
-            }
-            else {
-                res.status(200).json({message: 'User ' + veranstalter.email + ' wurde erfolgreich überschrieben'});
-            }
-        })
-});
+        if (req.body.password !== undefined) {
+            let password = req.body.password;
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(password, salt, (err, hash) => {
+                    if (err) throw err;
+                    req.body.password = hash;
+                    console.log(password)
 
-//logout
-veranstalterController.delete('/veranstalter/logout/:token', function (req, res) {
-    tokens = tokens.filter(token => token !== req.params.token)
-    res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
-    console.log(tokens);
-});
+                    Veranstalter.findByIdAndUpdate(
+                        {_id: req.params.id},
+                        {
+                            $set: req.body
+                        },
+                        function (err, veranstalter) {
+                            if (err) {
+                                res.status(401).json({message: 'Es hat nicht geklappt!'});
+                            } else if (req.body.password !== undefined) {
+
+                                let vMail = veranstalter.email
+                                transport.sendMail({
+                                    from: 'management@vms.de',
+                                    to: vMail,
+                                    subject: 'Änderungen an Ihrem Profil',
+                                    text: 'Sehr geehrter Veranstalter, ' +
+                                        '\n\nihr Passwort wurde geändert. Das neue Passwort lautet: ' + req.body.password2 +
+                                        '\n\nHiermit können Sie sich nun im System anmelden.' +
+                                        '\n\nMit freundlichen Grüßen' +
+                                        '\nDas VMS'
+                                })
+                                res.status(200).json({message: 'User ' + veranstalter.email + ' wurde erfolgreich geändert'});
+                            }
+                        })
+                })
+            })
+        }
+        else {Veranstalter.findByIdAndUpdate(
+            {_id: req.params.id},
+            {
+                $set: req.body
+            },
+            function (err, veranstalter) {
+                if (err) {
+                    res.status(401).json({message: 'Es hat nicht geklappt!'});
+                } else {
+
+                    res.status(200).json({message: 'User ' + veranstalter.email + ' wurde erfolgreich geändert'});
+
+                }
+            }
+        )}
+    });
 
 //anfragen
 veranstalterController.post('/veranstalter/request/:id', function (req, res){
