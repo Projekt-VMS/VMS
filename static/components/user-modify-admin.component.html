@@ -16,6 +16,7 @@
 
 <div id="roomModify" data-ng-submit="updateManagement(neuerManagement)">
     <h2>Profil bearbeiten<a href="#!/user-overview-admin"><button class="deleteButton" id="trashIcon" data-ng-click="loescheManagement()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
+    <br>
     <h3>Nachname ändern</h3>
     <p class="modifyText">aktueller Nachname: <a>{{management.name}}</a></p>
     <p class="modifyText">neuer Nachname: <input type="text" placeholder="neuer Nachname" class="fieldChange" data-ng-model="neuerManagement.name"></p>
