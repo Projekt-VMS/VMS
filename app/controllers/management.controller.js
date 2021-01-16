@@ -3,9 +3,17 @@ const managementController = express();
 const Management = require('../models/Management');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 const {validatePassword} = require("./validation");
 const {validateEmail} = require("./validation");
-
+let  transport = nodemailer.createTransport({
+    host: "smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+        user: "f91515824063a2",
+        pass: "e0703dbc730281"
+    }
+});
 let tokens =[];
 
 //list all
@@ -173,5 +181,19 @@ managementController.delete('/management/logout/:token', function (req, res) {
     res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
     console.log(tokens);
 });
+
+//Anfrage neues Passwort
+managementController.put('/passwort',function (req, res, next) {
+    if(req.body.email !== undefined){
+    transport.sendMail({
+        from: req.body.email,
+        to: 'management@vms.de',
+        subject: 'Neues Passwort für ' + req.body.email,
+        text: 'Sehr geehrter Management User, ' +
+            '\n\nunser User mit der Email ' + req.body.email
+            + '\n\n wünscht ein neues Passwort. Bitte ändern Sie das Passwort des Users im System. Dem User wird das neue Passwort automatisch mitgetielt.'
+    })}
+    else {res.status(400).send({message: 'Bitte email eingeben!'})}
+})
 
 module.exports = managementController;
