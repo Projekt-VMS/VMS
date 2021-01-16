@@ -648,10 +648,9 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			);
 		}
 		function absagen(daten){
-			console.log('...')
-			console.log('log:' + daten)
 			veranstaltungService.cancelVeranstaltung(paramID, daten).then(
 				function(res){
+					location.href = '/#!/event-overview-management'
 					alert(res.data.message);
 				},
 				function(err){

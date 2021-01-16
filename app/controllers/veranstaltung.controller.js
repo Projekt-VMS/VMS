@@ -390,8 +390,8 @@ veranstaltungsController.post('/veranstaltung/download/:id', function (req, res)
             res.status(500).send(err.toString());
         })
         .then(dbres => {
-            dbres.teilnehmer.every( e => {
-                // pfdmake import
+
+            console.log(dbres.teilnehmer)
                 var {Base64Encode} = require('base64-stream');
                 let fonts = {
                     Roboto: {
@@ -405,18 +405,42 @@ veranstaltungsController.post('/veranstaltung/download/:id', function (req, res)
                 var PdfPrinter = require('pdfmake');
                 var printer = new PdfPrinter(fonts);
                 var fs = require('fs');
-                let teilnehmerName = e.name;
-                let teilnehmerVorname = e.vorname;
-                let teilnehmerEmail = e.email;
-                let counter =+ 1;
+
+                function buildTableBody(data, columns) {
+                    var body = [];
+
+                    body.push(columns);
+
+                    data.forEach(function(row) {
+                        var dataRow = [];
+
+                        columns.forEach(function(column) {
+                            dataRow.push(row[column].toString());
+                        })
+
+                        body.push(dataRow);
+                    });
+                    console.log(body)
+                    return body;
+                }
+
+                function table(data, columns) {
+                    return {
+                        table: {
+                            headerRows: 1,
+                            body: buildTableBody(data, columns)
+                        }
+                    };
+                }
 
                 var docDefinition = {
                     content: [
-                        'Teilnehmerliste' +
-                        '\n \nNr: ' + counter + '     Name:  ' + teilnehmerName + '     Vorname:  ' + teilnehmerVorname + '     Email:  ' + teilnehmerEmail +
-                        '\n'
+                        { text: 'Teilnehmerliste', alignment: 'center'},
+                        { text: '\n \n'},
+                        table(dbres.teilnehmer, ['name', 'vorname', 'email'])
                     ]
                 }
+
                 var pdfDoc = printer.createPdfKitDocument(docDefinition);
 
                 const stream = pdfDoc.pipe(new Base64Encode())
@@ -426,10 +450,8 @@ veranstaltungsController.post('/veranstaltung/download/:id', function (req, res)
                 finalString += chunk;
                 });
                 stream.on('end', function () {
-                    console.log('binary pdf: ', finalString)
                     res.status(200).send(finalString)
                 });
-            })
         })
 });
 
