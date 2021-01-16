@@ -296,10 +296,21 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
 
 //Absage mit Nachricht an Teilnehmer und Veranstalter (bspw. wegen Corona)
 veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req, res, next) {
+    let absagePossible = true;
+    Veranstaltung.findById({_id: req.params.id}, function (err, event) {
+        if (event !== null) {
+            let currentDate = moment();
+            let newMomentObj = moment(event.start_datum)
+            if (newMomentObj.diff(currentDate, 'days') <= 0) {
+                absagePossible = false;
+            }
+        }
+
+
     let {grund} = req.body
     if(!grund){
         res.status(400).json({message: 'Grund für Absage eingeben.'})
-    }else {
+    }else if(absagePossible === true) {
         Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, doc) {
             if (err) {
                 res.status(401).json({message: 'Es hat nicht geklappt!'});
@@ -337,6 +348,8 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
             res.status(200).json({message: 'Veranstaltung ' + doc.titel + ' wurde abgesagt'});
         });
     }
+    else {res.status(400).json({message: 'Veranstaltung hat bereits begonnen. Eine Absage ist nicht möglich"'})}
+})
 });
 
 
