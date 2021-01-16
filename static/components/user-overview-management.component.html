@@ -1,0 +1,47 @@
+<div class="sidenav">
+    <h5>Management</h5>
+    <a href='#!/profile-management' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{management.vorname + ' ' + management.name}}<br><c>{{management.email}}</c></p></a>
+    <hr>
+    <br>
+    <a href='#!/user-overview-management'><e><i class="fa fa-fw fa-users"></i> User-Übersicht</e></a>
+    <br>
+    <a href='#!/room-overview-management'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <br>
+    <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <br>
+    <a href='#!/event-overview-management'><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</a>
+    <br>
+    <a href='#!/bills-management'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
+</div>
+
+<h6>Veranstalter:</h6>
+<table id="table" style="margin-top: 1%">
+    <tr>
+        <th>Name</th>
+        <th>Vorname</th>
+        <th>E-Mail-Adresse</th>
+        <th> </th>
+    </tr>
+    <tr data-ng-repeat="veranstalter in veranstalters">
+        <td>{{veranstalter.name}}</td>
+        <td>{{veranstalter.vorname}}</td>
+        <td>{{veranstalter.email}}</td>
+        <td><a href="#!/user-modify-veranstalter-management/{{veranstalter._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/user-modify-management"></i></a></td>
+    </tr>
+</table>
+
+<h6>Teilnehmer:</h6>
+<table id="table" style="margin-top: 1%">
+    <tr>
+        <th>Name</th>
+        <th>Vorname</th>
+        <th>E-Mail-Adresse</th>
+        <th> </th>
+    </tr>
+    <tr data-ng-repeat="teilnehmer in teilnehmers">
+        <td>{{teilnehmer.name}}</td>
+        <td>{{teilnehmer.vorname}}</td>
+        <td>{{teilnehmer.email}}</td>
+        <td><a href="#!/user-modify-teilnehmer-management/{{teilnehmer._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/user-modify-teilnehmer-management"></i></a></td>
+    </tr>
+</table>

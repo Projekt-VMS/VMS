@@ -3,6 +3,8 @@
     <a href='#!/profile-management' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{management.vorname + ' ' + management.name}}<br><c>{{management.email}}</c></p></a>
     <hr>
     <br>
+    <a href='#!/user-overview-management'><i class="fa fa-fw fa-users"></i> User-Übersicht</a>
+    <br>
     <a href='#!/room-overview-management'><e><i class="fa fa-fw fa-list"></i> Räume</e></a>
     <br>
     <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
@@ -13,7 +15,7 @@
 </div>
 
 <div id="roomModify">
-    <h2>Raumauslastung: Heute sind <f>{{raumAuslastung}}%</f> der Räume noch frei.</h2>
+    <h2>Raumauslastung: Heute sind noch <f>{{raumAuslastung}}%</f> der Räume frei.</h2>
     <div class="center">
     <div class="flex-wrapper">
         <div class="single-chart">

@@ -86,7 +86,7 @@ h6 {
 	color: #29b2d9;
 	text-align: left;
 	font-size: x-large;
-	margin: 5% 0 0 19.5%;
+	margin: 6% 0 0 19.5%;
 }
 
 label {
@@ -160,6 +160,17 @@ button:hover {
 	border-radius: 4px;
 	padding: 6px;
 	color: white;
+}
+
+.listButton {
+	background-color: #58bddb;
+	font-family: Calibri;
+	font-size: 22px;
+	border: none;
+	border-radius: 4px;
+	padding: 6px;
+	color: white;
+	margin: 5% 0 5% 48%;
 }
 
 .sendButton {

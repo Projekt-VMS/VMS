@@ -22,6 +22,18 @@ const moment = MomentRange.extendMoment(Moment);
 
 let tokens = [];
 
+//list all
+veranstalterController.get('/veranstalter/show', function(req, res){
+    Veranstalter.find()
+        .catch(err=>{
+            console.log(err.toString()); res.status(500).send(err.toString());
+        })
+        .then(dbres=>{
+            console.log(dbres);
+            res.send(dbres);
+        });
+});
+
 //show one
 veranstalterController.get('/veranstalter/showOne/:id', function (req, res) {
     Veranstalter.findOne({_id: req.params.id})

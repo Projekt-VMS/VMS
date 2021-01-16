@@ -9,10 +9,9 @@
     <br>
     <a href='#!/bills-host'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
 </div>
-<div class = "filter" >
-    <p> aktuelle Teilnehmer der Veranstaltung {{veranstaltung.titel}}:</p>
-</div>
-<table id="tableVA">
+
+<h6>Aktuelle Teilnehmer der Veranstaltung {{veranstaltung.titel}}:</h6>
+<table id="tableVA" style="margin-top: 2%">
     <tr>
         <th>Name</th>
         <th>Vorname</th>
@@ -24,4 +23,4 @@
         <td>{{teilnehmer.email}}</td>
     </tr>
 </table>
-<button data-ng-click='downloadeListe()' id="logoutButton"><g>Teilnehmerliste</g></button>
+<button data-ng-click='downloadeListe()' class="listButton"><g>Teilnehmerliste als PDF generieren</g></button>
