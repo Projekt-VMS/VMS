@@ -462,15 +462,20 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
 
 //
 veranstaltungsController.post('/statistik/veranstaltungAuslastung/:id', function (req, res){
-    Veranstaltung.findOne({_id: req.params.id})
-        .catch(err => {
-            console.log(err.toString());
-            res.status(500).send(err.toString());
-        })
-        .then(dbres => {
-            res.send(dbres.teilnehmer.length)
-        });
+    let veranstaltung = Veranstaltung.findOne({_id: req.params.id});
 
+    if(veranstaltung._id === undefined) {
+        res.send('0');
+    }else{
+        Veranstaltung.findOne({_id: req.params.id})
+            .catch(err => {
+                console.log(err.toString());
+                res.status(500).send(err.toString());
+            })
+            .then(dbres => {
+                res.send(dbres.teilnehmer.length)
+            });
+    }
 
 })
 
