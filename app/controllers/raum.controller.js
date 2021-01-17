@@ -84,8 +84,8 @@ raumController.put('/raum/edit/:id',function (req, res, next) {
             if (!raum)
                 return next(new Error('raum not found'));
             else {
-                console.log(raum);
-                res.send(raum);
+
+                res.status(200).json({message: 'Raum ' + raum.raumNr + ' wurde erfolgreich überschrieben'});
             }
         });
 
