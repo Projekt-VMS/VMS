@@ -287,11 +287,11 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
                     from: veranstalterEmail,
                     to: 'management@vms.de',
                     subject: `Anfrage von ${veranstalterEmail}`,
-                    text: 'Es wurde eine neue Anfrage im VMS erstellt: \n Titel: ' + anfrageInstance.titel + '\n Maximal benötigte Kapazität: ' + anfrageInstance.kapazitaet
+                    text: 'Es wurde eine neue Anfrage im VMS erstellt: \n\n Titel: ' + anfrageInstance.titel + '\n Maximal benötigte Kapazität: ' + anfrageInstance.kapazitaet
                         + '\n Zeitraum: ' + anfrageInstance.start_datum.format('DD-MM-YYYY') + ' bis '+ anfrageInstance.end_datum.format('DD-MM-YYYY') + '\n Sichtbarkeit: ' + anfrageInstance.sichtbarkeit
                         + '\n Zusatzleistungen: '+ anfrageInstance.leistung
                         + '\n Veranstalter: ' + veranstalterEmail
-                        + '\n \n Bitte erstellen Sie im System ein entsprechende Angebot!'
+                        + '\n \n Bitte erstellen Sie im System ein entsprechendes Angebot!'
                     })
                 }
             })

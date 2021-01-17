@@ -59,8 +59,8 @@ result2 = false;
 
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus, leistung, teilnehmerListe } = req.body;
-
-    teilnehmerListe = teilnehmerListe.pdf.split(',')[1];
+    if (teilnehmerListe !== undefined){
+    teilnehmerListe = teilnehmerListe.pdf.split(',')[1];}
 
     start_datum = momentTz(start_datum).tz('Europe/Berlin').format('YYYY-MM-DD');
     end_datum = momentTz(end_datum).tz('Europe/Berlin').format('YYYY-MM-DD');
@@ -74,6 +74,14 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let veranstalter_preis =0;
     let preis;
     let raum_kapa;
+    let currentDate = moment();
+
+    if(moment(start_datum) < currentDate){
+        errors.push({message: 'Das Startdatum darf nicht in der Vergangenheit liegen'});
+    }
+    else if(start_datum > end_datum){
+        errors.push({message: 'Das Startdatum darf nicht nach dem Enddatum liegen'});
+    }
 
     Raum.find({raumNr: req.body.raum} ,function (err, doc){ //berechnet Preis des Veranstalters aus Raumpreis und Dauer
         preis = doc
@@ -127,7 +135,11 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                 })
                 if (!((moment(req.body.start_datum).isSame(req.body.end_datum, 'week')))) {
                     errors.push({message: 'Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!'})
+
                 }
+
+
+
                 console.log('hier auch ' )
                 if (errors.length > 0) {
                     res.status(400).json({
