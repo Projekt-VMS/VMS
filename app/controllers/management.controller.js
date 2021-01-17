@@ -184,14 +184,16 @@ managementController.delete('/management/logout/:token', function (req, res) {
 //Anfrage neues Passwort
 managementController.put('/passwort',function (req, res, next) {
     if(req.body.email !== undefined){
-    transport.sendMail({
-        from: req.body.email,
-        to: 'management@vms.de',
-        subject: 'Neues Passwort für ' + req.body.email,
-        text: 'Sehr geehrter Management User, ' +
-            '\n\nunser User mit der Email ' + req.body.email
-            + '\n\n wünscht ein neues Passwort. Bitte ändern Sie das Passwort des Users im System. Dem User wird das neue Passwort automatisch mitgetielt.'
-    })}
+        res.status(200).json({message: 'Dein neues Passwort wurde angefragt.'});
+        transport.sendMail({
+            from: req.body.email,
+            to: 'management@vms.de',
+            subject: 'Neues Passwort für ' + req.body.email,
+            text: 'Sehr geehrter Management User, ' +
+                '\n\nunser User mit der Email ' + req.body.email
+                + '\n\nwünscht ein neues Passwort. Bitte ändern Sie das Passwort des Users im System. Dem User wird das neue Passwort automatisch mitgetielt.'
+        })
+    }
     else {res.status(400).send({message: 'Bitte email eingeben!'})}
 })
 
