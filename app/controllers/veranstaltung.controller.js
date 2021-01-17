@@ -44,7 +44,6 @@ veranstaltungsController.get('/veranstaltung/showOne/:id', function (req, res) {
                 res.status(500).send(err.toString());
             })
             .then(dbres => {
-                console.log(dbres);
                 res.send(dbres);
             });
 });
@@ -323,8 +322,6 @@ veranstaltungsController.post('/veranstaltung/download/:id', function (req, res)
             res.status(500).send(err.toString());
         })
         .then(dbres => {
-
-            console.log(dbres.teilnehmer)
                 var {Base64Encode} = require('base64-stream');
                 let fonts = {
                     Roboto: {
@@ -353,7 +350,6 @@ veranstaltungsController.post('/veranstaltung/download/:id', function (req, res)
 
                         body.push(dataRow);
                     });
-                    console.log(body)
                     return body;
                 }
 
@@ -447,13 +443,7 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
                     return true
                 })
             }
-            console.log(doc.teilnehmer)
-            console.log(doc.veranstalter_preis)
-            console.log(doc.teilnehmerzahl)
-            console.log(doc.teilnehmer_preis)
-
             res.status(200).json({message: 'Abrechnung wurde erfolgreich abgeschickt!'});
-
             console.log('Status geändert')
         }
     )})
@@ -464,12 +454,12 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
 
 //raumauslastung statistik
 veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
-    const todayMoment = moment()
+    const todayMoment = moment().startOf('day');
     const tomorrowMoment = todayMoment.clone().add(1,'days')
     const arrayVeranstaltungen = [];
     Veranstaltung.find( function (err, veranstaltung) {
         foundevents = veranstaltung;
-        console.log(foundevents);
+        console.log(todayMoment);
         foundevents.forEach(event => {
             range1 = moment.range(event.start_datum, event.end_datum)
             if(range1.contains(todayMoment) || (todayMoment === event.start_datum) || (todayMoment === event.end_datum)){
