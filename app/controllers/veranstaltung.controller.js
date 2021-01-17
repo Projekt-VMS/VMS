@@ -460,7 +460,8 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
         }
     )})
 
-//
+// veranstaltungsauslastung
+
 veranstaltungsController.post('/statistik/veranstaltungAuslastung/:id', function (req, res){
     let veranstaltung = Veranstaltung.findOne({_id: req.params.id});
 
@@ -486,23 +487,29 @@ veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
     const todayMoment = moment().startOf('day');
     const tomorrowMoment = todayMoment.clone().add(1,'days')
     const arrayVeranstaltungen = [];
-    Veranstaltung.find( function (err, veranstaltung) {
-        foundevents = veranstaltung;
-        console.log(todayMoment);
-        foundevents.forEach(event => {
-            range1 = moment.range(event.start_datum, event.end_datum)
-            if(range1.contains(todayMoment) || (todayMoment === event.start_datum) || (todayMoment === event.end_datum)){
-                arrayVeranstaltungen.push(event)
+    let veranstaltung = Veranstaltung.findOne({_id: req.params.id});
+
+    if(veranstaltung._id === undefined) {
+        res.send('100');
+    }else {
+        Veranstaltung.find(function (err, veranstaltung) {
+            foundevents = veranstaltung;
+            console.log(todayMoment);
+            foundevents.forEach(event => {
+                range1 = moment.range(event.start_datum, event.end_datum)
+                if (range1.contains(todayMoment) || (todayMoment === event.start_datum) || (todayMoment === event.end_datum)) {
+                    arrayVeranstaltungen.push(event)
+                }
+            })
+            if (err) {
+                res.status(500).json({message: 'Etwas ist schiefgelaufen '})
+            } else {
+                Raum.find(function (err, raum) {
+                    res.send(JSON.stringify((1 - arrayVeranstaltungen.length / raum.length) * 100));
+                })
             }
         })
-        if(err){
-            res.status(500).json({message: 'Etwas ist schiefgelaufen '})
-        }else{
-            Raum.find(function (err, raum){
-                res.send(JSON.stringify((1- arrayVeranstaltungen.length / raum.length)*100));
-            })
-        }
-    })
+    }
 })
 
 

@@ -976,6 +976,17 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 						alert(err.data.message);
 				});
 		}
+			function absagen(daten){
+				veranstaltungService.cancelVeranstaltung(paramID, daten).then(
+					function(res){
+						location.href = '/#!/event-overview-admin'
+						alert(res.data.message);
+					},
+					function(err){
+						alert(err.data.message);
+					}
+				);
+			}
 
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
@@ -1000,6 +1011,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
+
+		$scope.absagen = (daten) => absagen(daten);
 
 		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
