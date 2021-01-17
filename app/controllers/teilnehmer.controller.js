@@ -241,6 +241,17 @@ teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
             if (err) {
                 res.status(401).json({message: 'Es hat nicht geklappt!'});
             } else {
+                let tMail = teilnehmer.email
+                transport.sendMail({
+                    from: 'management@vms.de',
+                    to: tMail,
+                    subject: 'Änderungen an Ihrem Profil',
+                    text: 'Sehr geehrter Teilnehmer, ' +
+                        '\n\nihr Profil wurde geändert. Diese Mail dient als Info für Sie. Bei fragen wenden Sie sich bitte an das VMS.'+
+                        '\n\n' +
+                        '\n\nMit freundlichen Grüßen' +
+                        '\nDas VMS'
+                })
 
                 res.status(200).json({message: 'User ' + teilnehmer.email + ' wurde erfolgreich geändert'});
 

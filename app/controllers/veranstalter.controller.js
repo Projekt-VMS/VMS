@@ -217,6 +217,17 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
                 if (err) {
                     res.status(401).json({message: 'Es hat nicht geklappt!'});
                 } else {
+                    let vMail = veranstalter.email
+                    transport.sendMail({
+                        from: 'management@vms.de',
+                        to: vMail,
+                        subject: 'Änderungen an Ihrem Profil',
+                        text: 'Sehr geehrter Veranstalter, ' +
+                            '\n\nihr Profil wurde geändert. Diese Mail dient als Info für Sie. Bei fragen wenden Sie sich bitte an das VMS.'+
+                            '\n\n' +
+                            '\n\nMit freundlichen Grüßen' +
+                            '\nDas VMS'
+                    })
 
                     res.status(200).json({message: 'User ' + veranstalter.email + ' wurde erfolgreich geändert'});
 
