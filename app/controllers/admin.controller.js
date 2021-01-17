@@ -14,7 +14,6 @@ adminController.get('/admin/showOne/:id', function (req, res) {
             res.status(500).send(err.toString());
         })
         .then(dbres => {
-            console.log('aktiver User:'+ dbres);
             res.send(dbres);
         });
 });

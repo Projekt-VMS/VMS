@@ -46,6 +46,9 @@
     <hr>
     <h3>Zusatzleistungen hinzufügen</h3>
     <p class="modifyText">Zusatzleistungen: <input type="text" placeholder="z.B. Catering, ..." class="field" data-ng-model='veranstaltung.leistung'></p>
+    <hr>
+    <h3>Teilnehmerliste bei privaten Veranstaltungen hinzufügen</h3>
+    <p class="modifyText">Zusatzleistungen: <input type="file" accept=".pdf" data-ng-model='veranstaltung.teilnehmerListe.pdf' data-app-filereader></p>
     <hr><br>
     <div class="container">
         <a href="#!/event-overview-management"><button data-ng-click='erstelleVeranstaltung(veranstaltung)' id="logoutButton"><g>Veranstaltung anlegen</g></button></a>

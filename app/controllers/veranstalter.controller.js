@@ -42,7 +42,6 @@ veranstalterController.get('/veranstalter/showOne/:id', function (req, res) {
             res.status(500).send(err.toString());
         })
         .then(dbres => {
-            console.log('aktiver Veranstalter:'+ dbres);
             res.send(dbres);
         });
 });
@@ -269,6 +268,24 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
             })
         }
     })
+})
+
+//update teilnehmerliste
+veranstalterController.put('/veranstaltung/teilnehmerListe/edit/:id', function(req, res){
+    let base64result = req.body.teilnehmerListe.pdf.split(',')[1];
+
+    Veranstaltung.findByIdAndUpdate(
+        {_id: req.params.id},
+        {
+            teilnehmerListe: base64result
+        },
+        function (err, event) {
+            if (err)
+                res.status(400).json({message: 'Es hat nicht geklappt!'});
+            else {
+                res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde erfolgreich überschrieben'});
+            }
+        });
 })
 
 module.exports = veranstalterController;
