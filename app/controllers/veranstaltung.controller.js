@@ -437,7 +437,7 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
                     to: doc.veranstalter,
                     subject: 'Ihre Abrechnung zur Veranstaltung ' + doc.titel,
                     text: 'Sehr geehrter Veranstalter, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
-                        + doc.veranstalter_preis +
+                        + doc.veranstalter_preis +'€' +
                         '\n Verwendungszweck: ' + doc.id +
                         '\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
 
@@ -453,7 +453,7 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
                         to: tMail,
                         subject: 'Ihre Abrechnung zur Veranstaltung ' + doc.titel,
                         text: 'Sehr geehrter Teilnehmer, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
-                            + doc.teilnehmer_preis +
+                            + doc.teilnehmer_preis + '€' +
                             '\n Verwendungszweck: ' + doc.id +
                             '\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
                     })
