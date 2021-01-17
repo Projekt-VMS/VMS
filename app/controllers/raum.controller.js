@@ -49,15 +49,25 @@ raumController.post('/raum/add',function (req, res) {
 // raumInstance.raum = raum.id
 //     console.log(raumInstance);
     let raumInstance = new Raum(req.body);
-    raumInstance.save()
-        .then(raumInstance => {
-            res.status(200).json({ 'Success': true })
-        })
-        .catch(err => {
-            res.status(400).send({ 'Success': false, 'Message': 'Error occured while creating new Raum' });
-        });
+    Raum.find({raumNr: req.body.raumNr}, function (err, doc) {
+        let raum = doc
+        console.log (raum.length)
+        if (raum.length  > 0) {
+            res.status(400).send({message: 'Dieser Raum existiert bereits.'})
+        } else {
+            raumInstance.save((err, doc) => { //saves room
+                if (!err) {
+                    console.log("success!")
+                    res.status(200).json({message: 'Raum wurde erfolgreich erstellt!'});
+                }
+            })
+        }
+    })
+})
 
-});
+
+
+
 
 //delete
 raumController.delete('/raum/delete/:id', function (req, res, next) {

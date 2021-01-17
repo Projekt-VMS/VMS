@@ -316,18 +316,30 @@ let stornoPossible;
 veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
 
     Veranstaltung.findById({_id: req.params.id}, function (err, event) {
-        if(event !== null) {
+        if (event !== null) {
             let newMomentObj = moment(event.start_datum)
             if (newMomentObj.diff(currentDate, 'days') < 3) {  //if you want to resign closer then 1 day before start of the event
                 stornoPossible = false;
                 console.log(newMomentObj.diff(currentDate, 'days'))
             }
-        }
-        else{
+        } else {
             res.status(400).json({message: 'Veranstaltung existiert nicht!'})
         }
         if (stornoPossible === false) {
-            res.status(400).json({message: 'Die Stornofrist ist abgelaufen, ihre Veranstaltung kann nicht storniert werden!'})
+            transport.sendMail({
+                from: 'management@vms.de',
+                to: event.veranstalter,
+                subject: 'Ihre Abrechnung zur Veranstaltung ' + event.titel,
+                text: 'Sehr geehrter Veranstalter, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung, da sie die Veranstaltung außerhalb der Stornofrist storniert haben. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
+                    + (event.veranstalter_preis * 40 / 100) + '€' +
+                    '\n Verwendungszweck: ' + event.id +
+                    '\n\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+            })
+
+
+
+
+            res.status(400).json({message: 'Die Stornofrist ist abgelaufen, ihre Veranstaltung kann nicht storniert werden! Ihnen werden 40% der Kosten in Rechnung gestellt!'})
         } else {
             Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, event) {
                 if (err) {
@@ -337,8 +349,32 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
                 }
             })
         }
-    })
-})
+        Veranstaltung.findByIdAndUpdate(
+            {_id: req.params.id},
+            {
+                $set: {angebotsstatus: "Abrechnung erstellt"}
+            },
+            function (err, doc) {
+                if (!doc){
+                    return next(new Error('Event not found'))}})
+
+        event.teilnehmer.every(e => {
+
+            Teilnehmer.findById({_id: e}, 'email', function (err, usermail) {
+                let tMail = usermail.email
+                transport.sendMail({
+                    from: 'management@vms.de',
+                    to: tMail,
+                    subject: 'Absage der Veranstaltung ' + event.titel,
+                    text: 'Sehr geehrter Teilnehmer, \n\n der Veranstalter hat oben genannte Veranstaltung abgesagt.'
+                        +
+                        '\n\nWir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+                })
+
+            })
+            return true
+        })
+    })})
 
 //update teilnehmerliste
 veranstalterController.put('/veranstaltung/teilnehmerListe/edit/:id', function(req, res){

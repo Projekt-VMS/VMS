@@ -226,7 +226,7 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
         Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, doc) {
             if (err) {
                 res.status(401).json({message: 'Es hat nicht geklappt!'});
-            } else {
+            } else  {
                 transport.sendMail({
                     from: 'management@vms.de',
                     to: doc.veranstalter,
@@ -246,9 +246,9 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
                             from: 'management@vms.de',
                             to: tMail,
                             subject: 'Absage der Veranstaltung ' + doc.titel,
-                            text: 'Sehr geehrter Teilnehmer, \n leider müssen wir oben genannte Veranstaltung absagen. Der Grund dafür: \n \n'
+                            text: 'Sehr geehrter Teilnehmer, \nleider müssen wir oben genannte Veranstaltung absagen. Der Grund dafür: \n \n'
                                + grund
-                                + '\n Wir werden uns bemühen, die Veranstaltung im Rahmen unserer Möglichkeiten erneut anzubieten. Bitte informieren Sie sich in den nächsten Tagen auf unserer Seite, ob die Veranstaltung wieder eingestellt wurde. \n\nMit freundlichen Grüßen \nDas VMS'
+                                + '\n\nWir werden uns bemühen, die Veranstaltung im Rahmen unserer Möglichkeiten erneut anzubieten. Bitte informieren Sie sich in den nächsten Tagen auf unserer Seite, ob die Veranstaltung wieder eingestellt wurde. \n\nMit freundlichen Grüßen \nDas VMS'
 
                         })
 
@@ -268,7 +268,6 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
 
 //update
     veranstaltungsController.put('/veranstaltung/edit/:id', function (req, res, next) {
-        let {aenderungen} = req.body
         Veranstaltung.findByIdAndUpdate(
             {_id: req.params.id},
             {
@@ -282,9 +281,9 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
                         from: 'management@vms.de',
                         to: event.veranstalter,
                         subject: 'Änderung Ihrer Veranstaltung ' + event.titel,
-                        text: 'Sehr geehrter Veranstalter, \n\n Ihre Veranstaltung ' + event.titel +  ' wurde geändert:' +
-                            aenderungen +
-                            '\n\nWir freuen uns auf Ihre nächste Buchung! ' +
+                        text: 'Sehr geehrter Veranstalter, \n\nIhre Veranstaltung ' + event.titel +  ' wurde geändert.' + ' Näherer Informatione finden Sie in der Detailansicht der Veranstaltung im System.'
+
+                           + '\n\nWir freuen uns auf Ihre nächste Buchung! ' +
                             '\n\nMit freundlichen Grüßen ' +
                             '\nDas VMS '
                     })
@@ -295,9 +294,9 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
                             transport.sendMail({
                                 from: 'management@vms.de',
                                 to: tMail,
-                                subject: 'Absage der Veranstaltung ' + event.titel,
-                                text:'Sehr geehrter Teilnehmer, \n\noben genannte Veranstaltung wurde geändert. Folgende Änderungen wurden eingetragen:' +
-                                    '\n\n'+aenderungen+'\n\n Dies dient für Sie als Information.\n\n Mit freundlichen Grüßen\nDasVMS'
+                                subject: 'Änderung der Veranstaltung ' + event.titel,
+                                text:'Sehr geehrter Teilnehmer, \n\noben genannte Veranstaltung wurde geändert. Für nähere Informationen besuchen Sie bitte die Detailansicht der Veranstaltung im System.'
+                                    +'\n\n'+'\n\n Dies dient für Sie als Information.\n\n Mit freundlichen Grüßen\nDasVMS'
                             })
 
                         })
@@ -439,7 +438,7 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
                     text: 'Sehr geehrter Veranstalter, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
                         + doc.veranstalter_preis +'€' +
                         '\n Verwendungszweck: ' + doc.id +
-                        '\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+                        '\n\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
 
 
                 })
@@ -455,7 +454,7 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
                         text: 'Sehr geehrter Teilnehmer, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
                             + doc.teilnehmer_preis + '€' +
                             '\n Verwendungszweck: ' + doc.id +
-                            '\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+                            '\n\nWir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
                     })
 
                     })
@@ -512,7 +511,7 @@ veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
                 res.status(500).json({message: 'Etwas ist schiefgelaufen '})
             } else {
                 Raum.find(function (err, raum) {
-                    res.send(JSON.stringify((1 - arrayVeranstaltungen.length / raum.length) * 100));
+                    res.send(JSON.stringify((1 - arrayVeranstaltungen.length / raum.length) * 100).toFixed(2));
                 })
             }
         })
