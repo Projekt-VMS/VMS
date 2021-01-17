@@ -162,7 +162,7 @@ button:hover {
 	color: white;
 }
 
-.listButton {
+.pdfButton {
 	background-color: #58bddb;
 	font-family: Calibri;
 	font-size: 22px;
@@ -171,6 +171,12 @@ button:hover {
 	padding: 6px;
 	color: white;
 	margin: 5% 0 5% 48%;
+}
+
+.listButton {
+	padding-top: 5%;
+	padding-bottom: 3%;
+	margin-left: 10%;
 }
 
 .sendButton {

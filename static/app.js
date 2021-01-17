@@ -1097,6 +1097,10 @@ app.config(function($routeProvider){
 			templateUrl: 'components/event-overview-teilnehmer-host.component.html',
 			controller: 'veranstalterController'
 		})
+		.when('/event-overview-privat-host/:id', {
+			templateUrl: 'components/event-overview-privat-host.component.html',
+			controller: 'veranstalterController'
+		})
 		.when('/event-overview-participant', {
 			templateUrl: 'components/event-overview-participant.component.html',
 			controller: 'teilnehmerController'
