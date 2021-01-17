@@ -171,8 +171,15 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                                 from: 'test@vms.de',
                                 to: req.body.veranstalter,
                                 subject: 'Ihr Angebot ',
-                                text: 'Vielen Dank für Ihre Anfrage. Anbei erhalten sie ihr Angebot auf Basis Ihrer eingegebenen Daten: '
-                                    + doc + '\n Bitte antworten Sie auf diese Mail, ob Sie das Angebot so annehmen möchten. \n Mit freundlichen Grüßen \nDas VMS'
+                                text: 'Sehr geehrter Veranstalter, \n\nVielen Dank für Ihre Anfrage. Anbei erhalten sie ihr Angebot auf Basis Ihrer eingegebenen Daten: \n\n'
+                                    +'Titel: ' + veranstaltungInstance.titel
+                                    +'\nStart: ' + moment(veranstaltungInstance.start_datum).format('DD-MM-YYYY')
+                                    +'\nEnddatum: ' + moment(veranstaltungInstance.end_datum).format('DD-MM-YYYY')
+                                    +'\nZusatzleistung: ' + veranstaltungInstance.leistung
+                                    +'\nTeilnehmerzahl: ' + veranstaltungInstance.teilnehmerzahl
+                                    +'\nRaum: ' + veranstaltungInstance.raum
+                                    +'\nIhr Preis: ' + veranstaltungInstance.veranstalter_preis +'€'+
+                                    '\n\nBitte antworten Sie auf diese Mail, ob Sie das Angebot so annehmen möchten.\n\n Mit freundlichen Grüßen \nDas VMS'
                             })
 
                         } else { //error if event can't be safed
