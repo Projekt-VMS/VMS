@@ -1,0 +1,29 @@
+<div class="sidenav">
+    <h5>Veranstalter</h5>
+    <a href='#!/profile-host' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{veranstalter.vorname + ' ' + veranstalter.name}}<br><c>{{veranstalter.email}}</c></p></a>
+    <hr>
+    <br>
+    <a href='#!/request-host'><i class="fa fa-fw fa-plus"></i> Anfrage erstellen</a>
+    <br>
+    <a href='#!/event-overview-host'><e><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</e></a>
+    <br>
+    <a href='#!/bills-host'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
+</div>
+
+<div id="roomModify" style="text-align: center">
+    <h5>Neue Teilnehmerliste hochladen</h5>
+    <div style="font-size: x-large">
+        <br>
+        <span>Neue Teilnehmerliste als PDF-Datei hochladen:</span>
+        <br><br>
+        <span style="text-align: center" data-gn-sumbit="updateListe(neueListe, veranstaltung._id)"><input type="file" accept=".pdf" data-ng-model='neueListe.teilnehmerListe.pdf' data-app-filereader></span>
+        <button class="loginButton" data-ng-click="updateListe(neueListe, veranstaltung._id)">Hochladen</button>
+        <br><br><hr>
+        <h5>Aktuelle Teilehmerliste herunterladen</h5>
+        <br>
+        <span>Teilnehmerliste im PDF-Format generieren:</span>
+        <br><br>
+        <button data-ng-click='zeigeTeilnehmerListe(veranstaltung._id)' class="loginButton"><g>Teilnehmerliste generieren</g></button>
+        <br><br>
+    </div>
+</div>
