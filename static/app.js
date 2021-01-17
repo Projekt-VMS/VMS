@@ -73,7 +73,10 @@ app.factory('registrierenService', ['$http', function ($http){
 		function loginAdmin(daten){
 			return $http.post('/admin/login', daten)
 		}
-		return {loginTeilnehmer, loginVeranstalter, loginManagement, loginAdmin};
+		function passwortAnfragen(daten){
+			return $http.put('/passwort', daten)
+		}
+		return {loginTeilnehmer, loginVeranstalter, loginManagement, loginAdmin, passwortAnfragen};
 	}])
 
 	.factory('logoutService', ['$http', function ($http){
@@ -219,7 +222,6 @@ app.factory('registrierenService', ['$http', function ($http){
 
 		function getRaeume(){
 			return $http.get('/raum/show')
-				.catch(err=>console.log(err.toString()));
 		}
 
 		function getRaum(raumID){
@@ -357,13 +359,24 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			})
 	}
 
+	function passwortAnfragen(daten){
+		$scope.daten={};
+		loginService.passwortAnfragen(daten).then(function(res){
+			alert(res.data.message);
+		},
+		function(err){
+			alert(err.data.message);
+		})
+	}
+
 	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
-	$scope.erstelleManagement = (management) => erstelleManagement(management);
 	$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
 	$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
 	$scope.loggeManagement = (daten) => loggeManagement(daten);
 	$scope.loggeAdmin = (daten) => loggeAdmin(daten);
+
+	$scope.passwortAnfragen = (daten) => passwortAnfragen(daten);
 
 }])
 
