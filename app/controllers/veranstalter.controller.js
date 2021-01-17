@@ -5,6 +5,7 @@ const Veranstaltung = require('../models/Veranstaltung');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
+var momentTz = require('moment-timezone');
 let  transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
@@ -227,15 +228,26 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
 
 //anfragen
 veranstalterController.post('/veranstalter/request/:id', function (req, res){
-
-    const {titel, kapazitaet, start_datum, end_datum, verfuegbarkeit, zusatzleistungen, teilnehmerListe} = req.body
+    let {titel, kapazitaet, start_datum, end_datum, sichtbarkeit, zusatzleistungen, teilnehmerListe} = req.body
+    req.body.start_datum =  momentTz(start_datum).tz('Europe/Berlin')
+    req.body.end_datum =  momentTz(end_datum).tz('Europe/Berlin')
     let errors = [];
     let anfrageInstance = req.body
     console.log (anfrageInstance)
 
-    if (!titel || !kapazitaet || !start_datum|| !end_datum || !verfuegbarkeit) {
+    if (!titel || !kapazitaet || !start_datum|| !end_datum || !sichtbarkeit) {
         errors.push({ message: 'Fülle bitte alle Felder aus.' });
     }
+    else if(req.body.start_datum < currentDate){
+        errors.push({ message: 'Das Start Datum darf nicht in der Vergangenheit liegen' })
+    }
+    else if(req.body.start_datum > req.body.end_datum){
+        errors.push({ message: 'Das Start Datum darf nicht vor dem Enddatum liegen' });
+    }
+    else if(!((moment(req.body.start_datum).isSame(req.body.end_datum, 'week')))) {
+        errors.push({message: 'Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!'})
+    }
+
     if (errors.length > 0) {
         res.status(400).json({
             errors,
@@ -243,21 +255,23 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
             kapazitaet,
             start_datum,
             end_datum,
-            verfuegbarkeit,
+            sichtbarkeit,
 
         });
     } else {
         Veranstalter.findById({_id: req.params.id}, function (err, veranstalter) {
             let veranstalterEmail = veranstalter.email;
-            let base64result = anfrageInstance.teilnehmerListe.pdf.split(',')[1];
+            if(teilnehmerListe !== undefined) {
+                let base64result = anfrageInstance.teilnehmerListe.pdf.split(',')[1]
+
 
             transport.sendMail({
                 from: veranstalterEmail,
                 to: 'management@vms.de',
                 subject: `Anfrage von ${veranstalterEmail}`,
                 text: 'Es wurde eine neue Anfrage im VMS erstellt: \n Titel: ' + anfrageInstance.titel + '\n Maximal benötigte Kapazität: ' + anfrageInstance.kapazitaet
-                + '\n Zeitraum: ' + anfrageInstance.start_datum + ' bis '+ anfrageInstance.end_datum + '\n Sichtbarkeit' + anfrageInstance.angebotsstatus
-                + '\n Zusatzleistungen: '+ anfrageInstance.zusatzleistungen
+                + '\n Zeitraum: ' + anfrageInstance.start_datum.format('DD-MM-YYYY') + ' bis '+ anfrageInstance.end_datum.format('DD-MM-YYYY') + '\n Sichtbarkeit' + anfrageInstance.sichtbarkeit
+                + '\n Zusatzleistungen: '+ anfrageInstance.leistung
                 + '\n Veranstalter: ' + veranstalterEmail
                 + '\n \n Bitte erstellen Sie im System ein entsprechende Angebot!'
                 + '\n \n Teilnehmerliste finden Sie im Anhang',
@@ -267,8 +281,22 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
                     encoding: 'base64'
                 }]
             })
-            res.status(200).json({message: 'Anfrage wurde erfolgreich abgeschickt!'});
-        })
+
+        }
+        else{
+                transport.sendMail({
+                    from: veranstalterEmail,
+                    to: 'management@vms.de',
+                    subject: `Anfrage von ${veranstalterEmail}`,
+                    text: 'Es wurde eine neue Anfrage im VMS erstellt: \n Titel: ' + anfrageInstance.titel + '\n Maximal benötigte Kapazität: ' + anfrageInstance.kapazitaet
+                        + '\n Zeitraum: ' + anfrageInstance.start_datum.format('DD-MM-YYYY') + ' bis '+ anfrageInstance.end_datum.format('DD-MM-YYYY') + '\n Sichtbarkeit: ' + anfrageInstance.sichtbarkeit
+                        + '\n Zusatzleistungen: '+ anfrageInstance.leistung
+                        + '\n Veranstalter: ' + veranstalterEmail
+                        + '\n \n Bitte erstellen Sie im System ein entsprechende Angebot!'
+                    })
+                }
+            })
+        res.status(200).json({message: 'Anfrage wurde erfolgreich abgeschickt!'});
     }
 })
 

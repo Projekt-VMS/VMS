@@ -9,7 +9,6 @@ var momentTz = require('moment-timezone');
 const MomentRange = require('moment-range');
 const Teilnehmer = require("../models/Teilnehmer");
 const moment = MomentRange.extendMoment(Moment);
-//moment.tz.add('Europe/Berlin|CET CEST CEMT|-10 -20 -30')
 moment().utc();
 moment.locale('us',{week:{dow : 1}})
 var date = new Date();
@@ -128,7 +127,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                     return true;
                 })
                 if (!((moment(req.body.start_datum).isSame(req.body.end_datum, 'week')))) {
-                   // errors.push({message: 'Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!'})
+                    errors.push({message: 'Veranstaltung darf nicht länger als Sonntag dauern! Außerdem darf eine Veranstaltung maximal 7 Tage dauern!'})
                 }
                 console.log('hier auch ' )
                 if (errors.length > 0) {
