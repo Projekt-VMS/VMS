@@ -185,8 +185,16 @@ app.factory('registrierenService', ['$http', function ($http){
 			return $http.post('/veranstaltung/download/'+veranstaltungID)
 		}
 
+		function editListe(veranstaltungID, teilnehmerListe){
+			return $http.put('/veranstaltung/teilnehmerListe/edit/'+veranstaltungID, teilnehmerListe)
+		}
+
 		function editVeranstaltung(veranstaltungID, veranstaltung){
 			return	$http.put('/veranstaltung/edit/'+veranstaltungID, veranstaltung)
+		}
+
+		function showTeilnehmerListe(veranstaltungID){
+			return $http.get('/veranstaltung/teilnehmerListe/show/'+veranstaltungID)
 		}
 
 		function accountVeranstaltung(veranstaltungID){
@@ -200,7 +208,7 @@ app.factory('registrierenService', ['$http', function ($http){
 		function cancelVeranstaltung(veranstaltungID, daten){
 			return $http.post('/veranstaltung/delete/message/'+veranstaltungID, daten)
 		}
-		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, showTeilnehmer, downloadListe, editVeranstaltung, accountVeranstaltung, deleteVeranstaltung, cancelVeranstaltung}
+		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, showTeilnehmer, downloadListe, editListe, showTeilnehmerListe, editVeranstaltung, accountVeranstaltung, deleteVeranstaltung, cancelVeranstaltung}
     
 	}])
 
@@ -467,6 +475,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 
 		function anfragen(daten){
+			console.log(daten)
 			console.log('test ' + daten.teilnehmerListe)
 			veranstalterService.request(tokenService.getID(), daten).then(
 				function(res){
@@ -495,6 +504,32 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 					alert(err.data.message);
 				}
 			);
+		}
+		function updateListe(neueListe, veranstaltungID){
+			$scope.neueListe = {};
+			veranstaltungService.editListe(veranstaltungID, neueListe).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+
+		function zeigeTeilnehmerListe(veranstalterID){
+			veranstaltungService.showTeilnehmerListe(veranstalterID).then(function (res){
+				console.log(res.data)
+				let binaryPdf = atob(res.data);
+				const len = binaryPdf.length;
+				const buffer = new ArrayBuffer(len);
+				const view = new Uint8Array(buffer);
+				for (let i = 0; i < len; i += 1) {
+					view[i] = binaryPdf.charCodeAt(i);
+				}
+				const blob = new Blob([view], { type: 'application/pdf' });
+				window.open(window.URL.createObjectURL(blob));
+			})
 		}
 
 		function updateVeranstalter(neuerVeranstalter){
@@ -546,6 +581,8 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.storniereVeranstaltung = (veranstaltung) => storniereVeranstaltung(veranstaltung);
 		$scope.loggeOut = () => loggeOut();
 		$scope.downloadeListe = () => downloadeListe();
+		$scope.updateListe = (neueListe, veranstaltungID) => updateListe(neueListe, veranstaltungID);
+		$scope.zeigeTeilnehmerListe = (veranstalterID) => zeigeTeilnehmerListe(veranstalterID);
 
 	}])
 
@@ -603,6 +640,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			);
 		}
 		function updateVeranstaltung(neueVeranstaltung){
+			console.log(neueVeranstaltung)
 			$scope.neueVeranstaltung={};
 			veranstaltungService.editVeranstaltung(paramID, neueVeranstaltung).then(
 				function(res){

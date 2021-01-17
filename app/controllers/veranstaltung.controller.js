@@ -59,11 +59,14 @@ let raumExists;
 result2 = false;
 
 veranstaltungsController.post('/veranstaltung/add',function (req, res) {
-    let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus, leistung } = req.body;
+    let { titel, veranstalter, raum, start_datum, end_datum, teilnehmerzahl, teilnehmer_preis, sichtbarkeit, angebotsstatus, leistung, teilnehmerListe } = req.body;
+
+    teilnehmerListe = teilnehmerListe.pdf.split(',')[1];
+
     start_datum = momentTz(start_datum).tz('Europe/Berlin').format('YYYY-MM-DD');
     end_datum = momentTz(end_datum).tz('Europe/Berlin').format('YYYY-MM-DD');
-    let errors = [];
 
+    let errors = [];
     if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus ) {
         errors.push({message: 'Fülle bitte alle Felder aus.'});
     }
@@ -72,8 +75,6 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let veranstalter_preis =0;
     let preis;
     let raum_kapa;
-
-
 
     Raum.find({raumNr: req.body.raum} ,function (err, doc){ //berechnet Preis des Veranstalters aus Raumpreis und Dauer
         preis = doc
@@ -90,7 +91,6 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     Veranstalter.find({email: req.body.veranstalter}, function (err, doc) { //check if Veranstalter exists
         veranstalterExists = doc.length > 0;
         if (veranstalterExists === false) {
-            console.log('endlich')
             errors.push({message: 'Der Veranstalter existiert nicht.'});
             console.log(errors)
         }
@@ -148,12 +148,12 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                         teilnehmer_preis,
                         sichtbarkeit,
                         angebotsstatus,
-                        leistung
+                        leistung,
+                        teilnehmerListe
                     })
                     console.log(veranstaltungInstance)
                     veranstaltungInstance.save((err, doc) => { //saves event
                         if (!err) {
-                            console.log(veranstalter_preis)
                             console.log("success!")
                             res.status(200).json({message: 'Veranstaltung wurde erfolgreich erstellt!'}); //sends mail once event is saved
                             transport.sendMail({
@@ -304,7 +304,7 @@ veranstaltungsController.get('/veranstaltung/showOne/list/:id', function (req, r
             res.status(500).send(err.toString());
         })
         .then(dbres => {
-            console.log(dbres);
+
             res.send(dbres);
         });
 
@@ -387,6 +387,21 @@ veranstaltungsController.post('/veranstaltung/download/:id', function (req, res)
                 });
         })
 });
+
+// TeilnehmerListe show
+
+veranstaltungsController.get('/veranstaltung/teilnehmerListe/show/:id', function (req, res){
+
+    Veranstaltung.findOne({_id: req.params.id})
+        .catch(err => {
+            console.log(err.toString());
+            res.status(500).send(err.toString());
+        })
+        .then(dbres => {
+            var b64string = dbres.teilnehmerListe.toString();
+            res.send(b64string)
+        });
+})
 
 
 // Abrechnung erstellen

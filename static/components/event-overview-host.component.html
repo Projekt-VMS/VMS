@@ -64,6 +64,9 @@
         <td>{{veranstaltung.sichtbarkeit}}</td>
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
+        <td data-gn-sumbit="updateListe(neueListe, veranstaltung._id)"><input type="file" accept=".pdf" data-ng-model='neueListe.teilnehmerListe.pdf' data-app-filereader></td>
+        <td><button data-ng-click="updateListe(neueListe, veranstaltung._id)"><i class="fa fa-fw fa fa-fw fa-check"></i></button></td>
+        <td><button data-ng-click='zeigeTeilnehmerListe(veranstaltung._id)' class="listButton"><g>Teilnehmerliste</g></button></td>
     </tr>
 </table>
     <div id="priceText">
@@ -73,3 +76,4 @@
 <div id="noEvent" data-ng-if="(veranstaltungen | filter: emailVeranstalter :true).length === 0">
     <p>Du hast aktuell noch keine eigenen Veranstaltungen. <br><br> <a href="#!/request-host"><button class="loginButton"><g>Anfrage erstellen</g></button></a></p>
 </div>
+
