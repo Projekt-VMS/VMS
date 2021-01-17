@@ -23,16 +23,6 @@
     <p class="modifyText">aktueller Titel: <a>{{veranstaltung.titel}}</a></p>
     <p class="modifyText">neuer Titel:  <input type="text" placeholder="neuer Titel" class="field" data-ng-model='neueVeranstaltung.titel'></p>
     <hr>
-    <h3>Zeitraum ändern</h3>
-    <p class="modifyText">aktuelles Startdatum:  <a>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</a></p>
-    <p class="modifyText">neues Startdatum:  <input type="date" class="fieldDate" data-ng-model='neueVeranstaltung.start_datum'></p>
-    <p class="modifyText">aktuelles Enddatum:  <a>{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</a></p>
-    <p class="modifyText">neues Enddatum:  <input type="date" class="fieldDate" data-ng-model='neueVeranstaltung.end_datum'></p>
-    <hr>
-    <h3>Teilnehmerzahl ändern</h3>
-    <p class="modifyText">aktuelle Teilnehmerzahl:  <a>{{veranstaltung.teilnehmerzahl}}</a></p>
-    <p class="modifyText">neue Teilnehmerzahl:  <input type="number" placeholder="neue Anzahl" class="fieldNumber" data-ng-model='neueVeranstaltung.teilnehmerzahl'></p>
-    <hr>
     <h3>Neuen Preis für Teilnehmer festlegen</h3>
     <p class="modifyText">aktueller Preis:  <a>{{veranstaltung.teilnehmer_preis}}€</a></p>
     <p class="modifyText">neuer Preis:  <input type="number" placeholder="neuer Preis" class="fieldNumber" data-ng-model='neueVeranstaltung.teilnehmer_preis'></p>
