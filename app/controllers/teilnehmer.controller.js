@@ -11,12 +11,12 @@ const Veranstalter = require("../models/Veranstalter");
 const nodemailer = require("nodemailer");
 const {validatePassword} = require("./validation");
 const moment = MomentRange.extendMoment(Moment);
-let  transport = nodemailer.createTransport({
+let transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-        user: "f91515824063a2",
-        pass: "e0703dbc730281"
+        user: "38cbd2ae4553d6",
+        pass: "6b6d116b85c38d"
     }
 });
 
@@ -185,9 +185,9 @@ teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res) {
             Veranstaltungen.findOneAndUpdate({teilnehmer: req.params.id},
                 {$pull: {teilnehmer: req.params.id}}).exec();
 
+
             res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
-            Veranstaltungen.findOneAndUpdate({teilnehmer: req.params.id},
-                    {$pull: {teilnehmer: req.params.id}}).exec();
+
 
         }});
 })

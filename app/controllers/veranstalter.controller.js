@@ -6,12 +6,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const nodemailer = require('nodemailer');
 var momentTz = require('moment-timezone');
-let  transport = nodemailer.createTransport({
+let transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-        user: "f91515824063a2",
-        pass: "e0703dbc730281"
+        user: "38cbd2ae4553d6",
+        pass: "6b6d116b85c38d"
     }
 });
 const Moment = require('moment');
