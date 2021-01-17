@@ -239,7 +239,11 @@ app.factory('registrierenService', ['$http', function ($http){
 		function raumAuslastung(){
 			return $http.post('/statistik/raumauslastung')
 		}
-		return {raumAuslastung}
+
+		function veranstaltungAuslastung(veranstaltungID){
+			return $http.post('/statistik/veranstaltungAuslastung/'+veranstaltungID)
+		}
+		return {raumAuslastung, veranstaltungAuslastung}
 	}])
 
 	.factory('tokenService', [ function (){
@@ -363,7 +367,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 }])
 
-	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService','authService', 'teilnehmerService','veranstaltungService','logoutService', function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService, logoutService){
+	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService','authService', 'teilnehmerService','veranstaltungService','logoutService', 'statistikService',  function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService, logoutService, statistikService){
 		console.log('Teilnehmer Controller');
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
@@ -446,6 +450,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
     	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
 		$scope.currentDate = new Date();
+		statistikService.veranstaltungAuslastung(paramID).then(res => $scope.veranstaltungAuslastung = res.data)
 
 	}])
 

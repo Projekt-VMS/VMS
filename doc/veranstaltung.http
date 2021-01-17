@@ -49,3 +49,5 @@ PUT  http://localhost:3000/veranstaltung/abrechnen/5ffd923cffb1ff0008782e25
 Content-Type: application/json
 
 
+### // veranstaltungAuslastung
+POST http://localhost:3000/statistik/veranstaltungAuslastung/6002e8275cb861fc0128ccd3
