@@ -17,10 +17,12 @@
 <div id="roomModify" data-ng-submit='updateRaum(neuerRaum)'>
     <h2>Raum {{raum.raumNr}}<button id="trashIcon" class="deleteButton" data-ng-click="loescheRaum()"><i class="fa fa-fw fa-trash"></i></button></h2>
     <br>
+    <div data-ng-submit='pruefeVerfuegbarkeit(datum)'>
     <h3>Verfügbarkeit prüfen</h3>
     <p class="modifyText">von:  <input type="date" class="fieldDate" data-ng-model="datum.start_datum"></p>
     <p class="modifyText">bis:  <input type="date" class="fieldDate" data-ng-model="datum.end_datum"></p>
     <button id="logoutButton" data-ng-click="pruefeVerfuegbarkeit(datum)"><g>Verfügbarkeit prüfen</g></button>
+    </div>
     <br><br><br>
     <hr>
     <h3>Neuen Preis festlegen</h3>
