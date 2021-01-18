@@ -493,11 +493,7 @@ veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
     const todayMoment = moment().startOf('day');
     const tomorrowMoment = todayMoment.clone().add(1,'days')
     const arrayVeranstaltungen = [];
-    let veranstaltung = Veranstaltung.findOne({_id: req.params.id});
 
-    if(veranstaltung._id === undefined) {
-        res.send('100');
-    }else {
         Veranstaltung.find(function (err, veranstaltung) {
             foundevents = veranstaltung;
             console.log(todayMoment);
@@ -515,8 +511,7 @@ veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
                 })
             }
         })
-    }
-})
+    })
 
 
 
