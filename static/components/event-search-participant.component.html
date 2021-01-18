@@ -24,22 +24,22 @@
 </div>
 
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmer_preis' | filter : search" data-ng-if="(veranstaltung.teilnehmer_preis < 25) && (price1) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
-        <hr>
+    <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
-        <hr>
+    <hr>
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-        <hr>
+    <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-        <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
-        <hr>
+    <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmer_preis' | filter : search" data-ng-if="(veranstaltung.teilnehmer_preis < 50) && (veranstaltung.teilnehmer_preis >= 25) && (price2) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
@@ -47,8 +47,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
@@ -56,6 +54,7 @@
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmer_preis' | filter : search" data-ng-if="(veranstaltung.teilnehmer_preis < 100) && (veranstaltung.teilnehmer_preis >= 50) && (price3) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
@@ -63,8 +62,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
@@ -72,6 +69,7 @@
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmer_preis' | filter : search" data-ng-if="(veranstaltung.teilnehmer_preis >= 100) && (price4) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
@@ -79,8 +77,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
@@ -88,6 +84,7 @@
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmerzahl' | filter : search" data-ng-if="(veranstaltung.teilnehmerzahl < 10) && (attendence1) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
@@ -95,8 +92,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
@@ -104,6 +99,7 @@
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmerzahl' | filter : search" data-ng-if="(veranstaltung.teilnehmerzahl < 20) && (veranstaltung.teilnehmerzahl >= 10) && (attendence2) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
@@ -111,8 +107,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
@@ -120,6 +114,7 @@
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmerzahl' | filter : search" data-ng-if="(veranstaltung.teilnehmerzahl < 50) && (veranstaltung.teilnehmerzahl >= 20) && (attendence3) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
@@ -127,8 +122,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
@@ -136,6 +129,7 @@
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmerzahl' | filter : search" data-ng-if="(veranstaltung.teilnehmerzahl >= 50) && (attendence4) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
@@ -143,8 +137,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
@@ -152,6 +144,7 @@
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' | filter : search" data-ng-if="(!price1) && (!price2) && (!price3) && (!price4) && (!attendence1) && (!attendence2) && (!attendence3) && (!attendence4) && (veranstaltung.sichtbarkeit === 'Öffentlich') && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl) && ((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.start_datum > currentDate.toISOString())">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
@@ -159,8 +152,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>

@@ -486,6 +486,13 @@ g {
 	text-align: center;
 }
 
+[id="utilization"] {
+	float: left;
+	font-size: xx-large;
+	color: #29b2d9;
+	margin: 1% 0 0 1%;
+}
+
 li {
 	padding-bottom: 1%;
 	list-style: none;

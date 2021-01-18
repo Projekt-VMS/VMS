@@ -9,6 +9,7 @@
 </div>
 
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter : teilnehmerID :true | orderBy : 'titel'">
+    <span id="utilization">{{veranstaltungAuslastung}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Veranstalter: <span id="searchText">{{veranstaltung.veranstalter}}</span></li>
@@ -18,8 +19,6 @@
     <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
     <hr>
     <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
-    <hr>
-    <li>Teilnehmerzahl: <span id="searchText">{{veranstaltung.teilnehmerzahl}}</span></li>
     <hr>
     <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
     <hr>
