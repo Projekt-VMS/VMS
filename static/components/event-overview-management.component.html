@@ -18,8 +18,8 @@
     <label><d>Sortieren nach:</d></label>
     <span data-ng-hide="checked2 || checked3 || checked4"><input type="checkbox" data-ng-model="checked1">User</span>
     <span data-ng-hide="checked1 || checked3 || checked4"><input type="checkbox" data-ng-model="checked2">Raum</span>
-    <span data-ng-hide="checked1 || checked2 || checked4"><input type="checkbox" data-ng-model="checked3">Teilnehmerzahl</span>
-    <span data-ng-hide="checked1 || checked2 || checked3"><input type="checkbox" data-ng-model="checked4">Datum</span>
+    <span data-ng-hide="checked1 || checked2 || checked4"><input type="checkbox" data-ng-model="checked3">Datum</span>
+    <span data-ng-hide="checked1 || checked2 || checked3"><input type="checkbox" data-ng-model="checked4">Teilnehmerzahl</span>
 </div>
 
 <div data-ng-hide="veranstaltung.length === 0">
@@ -66,7 +66,7 @@
             <td>{{veranstaltung.leistung}}</td>
             <td><a href="#!/event-modify-management/{{veranstaltung._id}}"><i class="fa fa-fw fa-pencil" ></i></a></td>
         </tr>
-        <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmerzahl'" data-ng-if="checked3">
+        <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'start_datum'" data-ng-if="checked3">
             <td>{{veranstaltung.titel}}</td>
             <td>{{veranstaltung.veranstalter}}</td>
             <td>{{veranstaltung.raum}}</td>
@@ -80,7 +80,7 @@
             <td>{{veranstaltung.leistung}}</td>
             <td><a href="#!/event-modify-management/{{veranstaltung._id}}"><i class="fa fa-fw fa-pencil" ></i></a></td>
         </tr>
-        <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'start_datum'" data-ng-if="checked4">
+        <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'teilnehmerzahl'" data-ng-if="checked4">
             <td>{{veranstaltung.titel}}</td>
             <td>{{veranstaltung.veranstalter}}</td>
             <td>{{veranstaltung.raum}}</td>
