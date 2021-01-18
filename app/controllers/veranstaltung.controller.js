@@ -507,8 +507,7 @@ veranstaltungsController.post('/statistik/raumauslastung', function (req, res){
                 res.status(500).json({message: 'Etwas ist schiefgelaufen '})
             } else {
                 Raum.find(function (err, raum) {
-                    res.send(JSON.stringify((1 - arrayVeranstaltungen.length / raum.length) * 100).toFixed(2));
-                })
+                    res.send(JSON.stringify((1 - arrayVeranstaltungen.length / raum.length) * 100))})
             }
         })
     })
