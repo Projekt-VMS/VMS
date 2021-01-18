@@ -37,10 +37,12 @@
         <br>
         <br>
         <div class="container" data-ng-submit='passwortAnfragen(daten2)'>
-            <p>Passwort vergessen?</p>
-            <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
-            <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten2.email'>
-            <button data-ng-click='passwortAnfragen(daten2)' class="cancelButton">neues Passwort anfragen</button>
+            <input type="checkbox" data-ng-model="forgot">Passwort vergessen?
+            <div data-ng-show="forgot">
+                <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
+                <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten2.email'>
+                <button data-ng-click='passwortAnfragen(daten2)' class="cancelButton" style="margin-left: 3%">neues Passwort anfragen</button>
+            </div>
         </div>
         <br>
         <br>
@@ -72,10 +74,12 @@
         <br>
         <br>
         <div class="container" data-ng-submit='passwortAnfragen(daten2)'>
-            <p>Passwort vergessen?</p>
-            <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
-            <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten2.email'>
-            <button data-ng-click='passwortAnfragen(daten2)' class="cancelButton">neues Passwort anfragen</button>
+            <input type="checkbox" data-ng-model="forgot">Passwort vergessen?
+            <div data-ng-show="forgot">
+                <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
+                <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten2.email'>
+                <button data-ng-click='passwortAnfragen(daten2)' class="cancelButton" style="margin-left: 3%">neues Passwort anfragen</button>
+            </div>
         </div>
         <br>
         <p>Du hast noch keinen Account?</p>
@@ -106,10 +110,12 @@
         <br>
         <br>
         <div class="container" data-ng-submit='passwortAnfragen(daten2)'>
-            <p>Passwort vergessen?</p>
-            <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
-            <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten2.email'>
-            <button data-ng-click='passwortAnfragen(daten2)' class="cancelButton">neues Passwort anfragen</button>
+            <input type="checkbox" data-ng-model="forgot">Passwort vergessen?
+            <div data-ng-show="forgot">
+                <p>Durch Klick auf den Button lassen wir dir so schnell wie möglich ein Neues zukommen.</p>
+                <input type="text" placeholder="E-Mail-Adresse eingeben" data-ng-model='daten2.email'>
+                <button data-ng-click='passwortAnfragen(daten2)' class="cancelButton" style="margin-left: 3%">neues Passwort anfragen</button>
+            </div>
         </div>
         <br>
     </div>
