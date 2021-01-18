@@ -468,23 +468,24 @@ veranstaltungsController.put('/veranstaltung/abrechnen/:id', function (req, res,
 
 // veranstaltungsauslastung
 
-veranstaltungsController.post('/statistik/veranstaltungAuslastung/:id', function (req, res){
-    let veranstaltung = Veranstaltung.findOne({_id: req.params.id});
+/*veranstaltungsController.post('/statistik/veranstaltungAuslastung/:id', function (req, res){
+    Veranstaltung.findOne({_id: req.params.id}, function (err, veranstaltung) {
+        console.log(veranstaltung._id)
+        if (veranstaltung._id === undefined) {
+            res.send('0');
+        } else {
+            Veranstaltung.findOne({_id: req.params.id})
+                .catch(err => {
+                    console.log(err.toString());
+                    res.status(500).send(err.toString());
+                })
+                .then(dbres => {
+                    res.send(dbres.teilnehmer.length)
+                });
+        }
+    })
 
-    if(veranstaltung._id === undefined) {
-        res.send('0');
-    }else{
-        Veranstaltung.findOne({_id: req.params.id})
-            .catch(err => {
-                console.log(err.toString());
-                res.status(500).send(err.toString());
-            })
-            .then(dbres => {
-                res.send(dbres.teilnehmer.length)
-            });
-    }
-
-})
+})*/
 
 
 

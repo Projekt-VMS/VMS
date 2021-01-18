@@ -460,6 +460,16 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+		/*function auslastung(veranstaltungID){
+			statistikService.veranstaltungAuslastung(veranstaltungID).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}*/
 
 		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
 		$scope.abmelden = (veranstaltung) => abmelden(veranstaltung);
@@ -467,7 +477,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
     	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
 		$scope.currentDate = new Date();
-		statistikService.veranstaltungAuslastung(paramID).then(res => $scope.veranstaltungAuslastung = res.data)
+		//$scope.auslastung = (veranstaltungID) => auslastung(veranstaltungID).then(res => $scope.anzeige = res);
 
 	}])
 
