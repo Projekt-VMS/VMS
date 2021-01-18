@@ -235,7 +235,11 @@ app.factory('registrierenService', ['$http', function ($http){
 		function deleteRaum(raumID){
 			return $http.delete('/raum/delete/'+raumID)
 		}
-		return {createRaum, getRaeume, getRaum, editRaum, deleteRaum}
+
+		function checkAvailability(raumID, datum){
+			return $http.post('/raum/verfuegbarkeit/'+raumID, datum)
+		}
+		return {createRaum, getRaeume, getRaum, editRaum, deleteRaum, checkAvailability}
 	}])
 	.factory('statistikService', ['$http', function($http){
 		function raumAuslastung(){
@@ -741,6 +745,16 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+		function pruefeVerfuegbarkeit(datum){
+			raumService.checkAvailability(paramID, datum).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
 		function loggeOut(){
 			logoutService.logoutManagement(tokenService.getToken()).then(
 				function(res){
@@ -780,6 +794,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
+		$scope.pruefeVerfuegbarkeit = (datum) => pruefeVerfuegbarkeit(datum);
 
 		$scope.absagen = (daten) => absagen(daten);
 
@@ -966,6 +981,17 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			);
 		}
 
+		function pruefeVerfuegbarkeit(datum){
+			raumService.checkAvailability(paramID, datum).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+
 		function loggeOut(){
 			logoutService.logoutAdmin(tokenService.getToken()).then(
 				function(res){
@@ -1011,6 +1037,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
+		$scope.pruefeVerfuegbarkeit = (datum) => pruefeVerfuegbarkeit(datum);
 
 		$scope.absagen = (daten) => absagen(daten);
 
