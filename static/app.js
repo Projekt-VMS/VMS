@@ -1,6 +1,3 @@
-// Erstellt ein Modul mit Services (Factories) und einem zugeh�rigen Controller.
-// F�r das Routing (config) muss die 'ngRoute'-Dependency gealden werden.
-
 var app = angular.module('app', ['ngRoute']);
 
 angular.module('app').directive('appFilereader', function($q) {
@@ -38,15 +35,12 @@ angular.module('app').directive('appFilereader', function($q) {
 					return deferred.promise;
 				}
 
-			}); //change
+			});
 
-		} //link
-	}; //return
+		}
+	};
 });
 
-
-	//Erstelle den Service um auf die Kunden-API zuzugreifen.
-	//Dazu mus die HTTP-Dependecy injected werden.
 app.factory('registrierenService', ['$http', function ($http){
 		function registrierenTeilnehmer(teilnehmer){
 			return $http.post('/teilnehmer/registration/add', teilnehmer)
@@ -274,9 +268,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	console.log('Login Controller is running');
 
 	function erstelleTeilnehmer(teilnehmer){
-		// Input-Felder zur�cksetzen.
 		$scope.teilnehmer={};
-		// Daten an Service weiterleiten.
 		registrierenService.registrierenTeilnehmer(teilnehmer).then(function (res){
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
@@ -286,7 +278,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			function(err) {
 				console.log(err.data.message);
 				err.data.errors.forEach(error => alert(error.message))
-				//$scope.message = res.data.message
 			})
 	}
 
@@ -311,12 +302,10 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				localStorage.setItem('user_id', res.data.userID);
 				localStorage.setItem('token_id', res.data.token);
 				location.href = '/#!/event-search-participant'
-				alert(res.data.message);
 			},
 			function(err) {
 				console.log(err.data.message);
 				alert(err.data.message);
-				//$scope.message = res.data.message
 			})
 	}
 
@@ -331,7 +320,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			function(err) {
 				console.log(err.data.message);
 				alert(err.data.message);
-				//$scope.message = res.data.message
 			})
 	}
 
@@ -345,7 +333,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			function(err) {
 				console.log(err.data.message);
 				alert(err.data.message);
-				//$scope.message = res.data.message
 			})
 	}
 
@@ -359,7 +346,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			function(err) {
 				console.log(err.data.message);
 				alert(err.data.message);
-				//$scope.message = res.data.message
 			})
 	}
 
@@ -379,13 +365,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 	$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
 	$scope.loggeManagement = (daten) => loggeManagement(daten);
 	$scope.loggeAdmin = (daten) => loggeAdmin(daten);
-
 	$scope.passwortAnfragen = (daten) => passwortAnfragen(daten);
 
 }])
 
 	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService','authService', 'teilnehmerService','veranstaltungService','logoutService', 'statistikService',  function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService, logoutService, statistikService){
 		console.log('Teilnehmer Controller');
+
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
 				let bool = res.data;
@@ -483,6 +469,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'authService', 'veranstalterService', 'veranstaltungService', 'logoutService', function ($scope, $routeParams, tokenService, authService, veranstalterService, veranstaltungService, logoutService){
 		console.log('Veranstalter Controller');
+
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
 				let bool = res.data;
