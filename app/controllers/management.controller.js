@@ -47,7 +47,7 @@ managementController.post('/management/registration/add', function (req, res) {
     let errors = [];
 
     if (!name || !vorname || !email || !password || !password2) {
-        errors.push({ msg: 'Please enter all fields' });
+        errors.push({ message: 'Fülle bitte alle Felder aus' });
     }
     if (validateEmail(email) !== true){
         errors.push({message: 'Gültige Email eingeben.'})

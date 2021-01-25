@@ -837,17 +837,37 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 		function erstelleManagement(management){
 			$scope.management={};
-			registrierenService.registrierenManagement(management)
+			registrierenService.registrierenManagement(management).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					err.data.errors.forEach(error => alert(error.message))
+				}
+			);
 		}
 
 		function updateManagement(neuerManagement){
 			$scope.neuerManagement = {};
-			console.log(neuerManagement);
-			managementService.editManagement(paramID ,neuerManagement);
+			managementService.editManagement(paramID ,neuerManagement).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
 
 		function loescheManagement() {
-			managementService.deleteManagement(paramID);
+			managementService.deleteManagement(paramID).then(
+				function(res){
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
 		}
 
 		function erstelleVeranstaltung(veranstaltung){
