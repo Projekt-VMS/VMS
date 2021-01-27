@@ -337,7 +337,7 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
 
 // Stornierung
 let currentDate = moment();
-let stornoPossible;
+let stornoPossible = true;
 veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
 
     Veranstaltung.findById({_id: req.params.id}, function (err, event) {
@@ -350,6 +350,7 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
         } else {
             res.status(400).json({message: 'Veranstaltung existiert nicht!'})
         }
+
         if (stornoPossible === false) {
             transport.sendMail({
                 from: 'management@vms.de',
@@ -360,11 +361,8 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
                     '\n Verwendungszweck: ' + event.id +
                     '\n\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
             })
-
-
-
-
-            res.status(400).json({message: 'Die Stornofrist ist abgelaufen, ihre Veranstaltung kann nicht storniert werden! Ihnen werden 40% der Kosten in Rechnung gestellt!'})
+            stornoPossible = true
+            res.status(400).json({message: 'Die Stornofrist ist abgelaufen, ihre Veranstaltung wird storniert! Ihnen werden 40% der Kosten in Rechnung gestellt!'})
         } else {
             Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, event) {
                 if (err) {
@@ -377,7 +375,9 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
         Veranstaltung.findByIdAndUpdate(
             {_id: req.params.id},
             {
-                $set: {angebotsstatus: "Abrechnung erstellt"}
+                $set: {angebotsstatus: "Abrechnung erstellt",
+                veranstalter_preis: (event.veranstalter_preis * 40 / 100) }
+
             },
             function (err, doc) {
                 if (!doc){
