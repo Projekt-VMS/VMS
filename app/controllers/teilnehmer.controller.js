@@ -187,11 +187,21 @@ teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res) {
 
     Teilnehmer.findOneAndRemove({_id: req.params.id},function(err, id){
         if (err || resignPossible === false) {
-            res.status(401).json({message: 'User konnte nicht gelöscht werden'});
+            res.status(401).json({message: 'User konnte nicht gelöscht werden, da Sie an einer Veranstaltung teilnehmen!'});
         }
         else {
             Veranstaltungen.findOneAndUpdate({teilnehmer: req.params.id},
                 {$pull: {teilnehmer: req.params.id}}).exec();
+            transport.sendMail({
+                from: 'management@vms.de',
+                to: id.email,
+                subject: 'Löschung Ihres Profils',
+                text: 'Sehr geehrter Teilnehmer, ' +
+                    '\n\nihr Profil wurde gelöscht. Diese Mail dient als Info für Sie. Bei fragen wenden Sie sich bitte an das VMS.'+
+                    '\n\n' +
+                    '\n\nMit freundlichen Grüßen' +
+                    '\nDas VMS'
+            })
 
 
             res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});

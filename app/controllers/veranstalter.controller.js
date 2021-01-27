@@ -173,6 +173,17 @@ veranstalterController.delete('/veranstalter/delete/:id', function (req, res, ne
             res.status(401).json({message: 'User konnte nicht gelöscht werden'});
         }
         else {
+
+            transport.sendMail({
+                from: 'management@vms.de',
+                to: id.email,
+                subject: 'Löschung Ihres Profils',
+                text: 'Sehr geehrter Veranstalter, ' +
+                    '\n\nihr Profil wurde gelöscht. Diese Mail dient als Info für Sie. Bei fragen wenden Sie sich bitte an das VMS.'+
+                    '\n\n' +
+                    '\n\nMit freundlichen Grüßen' +
+                    '\nDas VMS'
+            })
             res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
         }
     });
