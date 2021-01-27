@@ -197,8 +197,8 @@ managementController.put('/passwort',function (req, res, next) {
                         to: 'management@vms.de',
                         subject: 'Neues Passwort für ' + req.body.email,
                         text: 'Sehr geehrter Management User, ' +
-                            '\n\nunser User mit der Email ' + req.body.email
-                            + '\n\nwünscht ein neues Passwort. Bitte ändern Sie das Passwort des Users im System. Dem User wird das neue Passwort automatisch mitgetielt.'
+                            '\n\nunser User mit der Email\n\n ' + req.body.email
+                            + '\n\nwünscht ein neues Passwort. Bitte ändern Sie das Passwort des Users im System. \nDem User wird das neue Passwort automatisch mitgetielt.'
                     })
                 } else {
                     res.status(400).send({message: 'Bitte geben Sie eine existierende Email-Adresse ein!'})

@@ -62,7 +62,7 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
         errors.push({message: 'Passwort muss mindestens 5 Zeichen lang sein, einen Großbuchstaben und eine Zahl enthalten.'})
     }
     if (password !== password2) {
-        errors.push({ msg: 'Passwords do not match' });
+        errors.push({ message: 'Passwörter stimmen nicht überein' });
     }
     Teilnehmer.find({email: email}, function (err, teilnehmer) {
         let emailExists = teilnehmer.length > 0;
@@ -180,9 +180,14 @@ veranstalterController.delete('/veranstalter/delete/:id', function (req, res, ne
 
 //Update
 veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
-
         if (req.body.password !== undefined) {
-            let password = req.body.password;
+            if (validatePassword(req.body.password) !== true){
+                res.status(400).send({message: 'Passwort muss mindestens 5 Zeichen lang sein, einen Großbuchstaben und eine Zahl enthalten.'})
+            }
+            else if (req.body.password !== req.body.password2) {
+                res.status(400).send({ message: 'Passwörter stimmen nicht überein' });
+            }
+            else{ let password = req.body.password;
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(password, salt, (err, hash) => {
                     if (err) throw err;
@@ -214,7 +219,8 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
                             }
                         })
                 })
-            })
+
+            })}
         }
         else {Veranstalter.findByIdAndUpdate(
             {_id: req.params.id},

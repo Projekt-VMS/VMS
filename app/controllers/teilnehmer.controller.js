@@ -206,6 +206,13 @@ teilnehmerController.delete('/teilnehmer/delete/:id', function (req, res) {
 teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
 
     if (req.body.password !== undefined) {
+        if (validatePassword(req.body.password) !== true){
+            res.status(400).send({message: 'Passwort muss mindestens 5 Zeichen lang sein, einen Großbuchstaben und eine Zahl enthalten.'})
+        }
+        else if (req.body.password !== req.body.password2) {
+            res.status(400).send({ message: 'Passwörter stimmen nicht überein' });
+        }
+        else{
         let password = req.body.password;
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, (err, hash) => {
@@ -238,7 +245,7 @@ teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
                         }
                     })
             })
-        })
+        })}
     }
     else {Teilnehmer.findByIdAndUpdate(
         {_id: req.params.id},
