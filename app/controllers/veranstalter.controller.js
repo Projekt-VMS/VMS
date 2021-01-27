@@ -109,6 +109,14 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
                                     userID: newVeranstalter._id,
                                     message: 'Du hast dich erfolgreich registriert.'
                                 });
+                                transport.sendMail({
+                                    from: 'management@vms.de',
+                                    to: newVeranstalter.email,
+                                    subject: 'Herzlich Willkommen bei VMS',
+                                    text: 'Sehr geehrter Veranstalter, \n\n ' +
+                                        'herzlichen Dank für Ihre Registrierung beim VMS\n\nMit freundlichen Grüßen' +
+                                        '\nDas VMS '
+                                })
                                 tokens.push(token);
                                 console.log(tokens);
                             }

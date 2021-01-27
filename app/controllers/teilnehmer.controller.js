@@ -122,6 +122,14 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
                                         userID: newTeilnehmer._id,
                                         message: 'Du hast dich erfolgreich registriert.'
                                     });
+                                    transport.sendMail({
+                                        from: 'management@vms.de',
+                                        to: newTeilnehmer.email,
+                                        subject: 'Herzlich Willkommen bei VMS',
+                                        text: 'Sehr geehrter Teilnehmer, \n\n' +
+                                            'herzlichen Dank für Ihre Registrierung beim VMS\n\nMit freundlichen Grüßen' +
+                                            '\nDas VMS '
+                                    })
                                     tokens.push(token);
                                     console.log(tokens);
                                 } else {
