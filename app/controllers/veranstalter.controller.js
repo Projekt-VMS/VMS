@@ -233,7 +233,11 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
 
             })}
         }
-        else {Veranstalter.findByIdAndUpdate(
+        else if (validateEmail(req.body.email) === false && req.body.email !== undefined ){
+                res.status(400).send({message: 'Änderung fehlgeschlagen: Bitte geben Sie eine gültige Email Adresse ein.'})
+            }
+        else{
+        {{Veranstalter.findByIdAndUpdate(
             {_id: req.params.id},
             {
                 $set: req.body
@@ -258,7 +262,7 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
 
                 }
             }
-        )}
+        )}}}
     });
 
 //anfragen

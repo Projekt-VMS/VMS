@@ -257,6 +257,9 @@ teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
             })
         })}
     }
+    else if (validateEmail(req.body.email) === false && req.body.email !== undefined ){
+        res.status(400).send({message: 'Änderung fehlgeschlagen: Bitte geben Sie eine gültige Email Adresse ein.'})
+    }
     else {Teilnehmer.findByIdAndUpdate(
         {_id: req.params.id},
         {
@@ -335,7 +338,7 @@ teilnehmerController.put('/teilnehmer/deregisterEvent/:id/:veranstaltung', funct
             console.log(newMomentObj.diff(currentDate, 'days'))
         }
         if (resignPossible === false) {
-            res.status(400).json('Die Rücktrittsfrist ist abgelaufen.');
+            res.status(400).send({message:'Die Rücktrittsfrist ist abgelaufen. Wenn du nicht zur Veranstaltung erscheinst müssen wir dir leider trotzdem den vollen Preis berechenen.'});
         } else {
             Veranstaltungen.findByIdAndUpdate({_id: req.params.veranstaltung}, 'teilnehmerzahl teilnehmer', function (err, event) {
                 Veranstaltungen.findByIdAndUpdate({_id: req.params.veranstaltung}, //pushes userID into Veranstaltung
