@@ -419,6 +419,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			teilnehmerService.editTeilnehmer(paramID ,neuerTeilnehmer).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/profile-participant'
 				},
 				function(err){
 					alert(err.data.message);
@@ -556,6 +557,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstalterService.editVeranstalter(paramID ,neuerVeranstalter).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/profile-host'
 				},
 				function(err){
 					alert(err.data.message);
@@ -705,6 +707,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstalterService.editVeranstalter(paramID ,neuerVeranstalter).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/user-overview-management'
 				},
 				function(err){
 					alert(err.data.message);
@@ -726,6 +729,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			teilnehmerService.editTeilnehmer(paramID ,neuerTeilnehmer).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/user-overview-management'
 				},
 				function(err){
 					alert(err.data.message);
@@ -852,6 +856,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			managementService.editManagement(paramID ,neuerManagement).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/user-overview-admin'
 				},
 				function(err){
 					alert(err.data.message);
@@ -957,6 +962,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstalterService.editVeranstalter(paramID ,neuerVeranstalter).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/user-overview-admin'
 				},
 				function(err){
 					alert(err.data.message);
@@ -980,6 +986,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			teilnehmerService.editTeilnehmer(paramID ,neuerTeilnehmer).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/user-overview-admin'
 				},
 				function(err){
 					alert(err.data.message);

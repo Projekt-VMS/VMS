@@ -25,7 +25,7 @@
     <p class="modifyText">neue E-Mail-Adresse: <input type="text" placeholder="neue E-Mail-Adresse" class="fieldChange" data-ng-model="neuerTeilnehmer.email"></p>
     <hr>
     <h3>Passwort ändern</h3>
-    <p class="modifyText">aktuelles Passwort: <a>{{teilnehmer.password}}</a></p>
+    <p class="modifyText">aktuelles Passwort: <a>***********</a></p>
     <p class="modifyText">neues Passwort: <input type="password" placeholder="neues Passwort" class="fieldChange" data-ng-model="neuerTeilnehmer.password"></p>
     <hr>
     <h3>Passwort wiederholen</h3>
@@ -34,7 +34,7 @@
     <hr>
     <br>
     <div>
-        <a href="#!/user-overview-admin"><button data-ng-click="updateTeilnehmer(neuerTeilnehmer)" id="logoutButton"><g>Änderung bestätigen</g></button></a>
+        <button data-ng-click="updateTeilnehmer(neuerTeilnehmer)" id="logoutButton"><g>Änderung bestätigen</g></button>
     </div>
     <br><br><br>
 </div>

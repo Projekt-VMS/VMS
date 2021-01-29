@@ -423,4 +423,11 @@ veranstalterController.put('/veranstaltung/teilnehmerListe/edit/:id', function(r
         });
 })
 
+//logout
+veranstalterController.delete('/veranstalter/logout/:token', function (req, res) {
+    tokens = tokens.filter(token => token !== req.params.token)
+    res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
+    console.log(tokens);
+});
+
 module.exports = veranstalterController;

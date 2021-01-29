@@ -195,7 +195,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
 
 
 //delete one
-    veranstaltungsController.delete('/veranstaltung/delete/:id', function (req, res, next) {
+veranstaltungsController.delete('/veranstaltung/delete/:id', function (req, res, next) {
 
         Veranstaltung.findByIdAndRemove({_id: req.params.id}, function (err, event) {
             if (err) {
@@ -204,7 +204,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                 res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde gelöscht'});
             }
         });
-    });
+});
 
 //Absage mit Nachricht an Teilnehmer und Veranstalter (bspw. wegen Corona)
 veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req, res, next) {
