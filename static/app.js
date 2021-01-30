@@ -1079,6 +1079,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 					alert(err.data.message);
 				}
 			);
+		}
 			
 
 
