@@ -779,12 +779,33 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+		function downloadeListe(){
+			veranstaltungService.downloadListe(paramID).then(
+				function(res){
+					let binaryPdf = atob(res.data);
+					console.log(binaryPdf)
+					const len = binaryPdf.length;
+					const buffer = new ArrayBuffer(len);
+					const view = new Uint8Array(buffer);
+					for (let i = 0; i < len; i += 1) {
+						view[i] = binaryPdf.charCodeAt(i);
+					}
+					const blob = new Blob([view], { type: 'application/pdf' });
+					window.open(window.URL.createObjectURL(blob));
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
 
 
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 		$scope.veranstaltungen = [];
 		$scope.param1 = paramID;
+
+		veranstaltungService.showTeilnehmer(paramID).then(res => $scope.teilnehmerz = res.data.teilnehmer);
 		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
 		$scope.abrechnenVeranstaltung = (veranstaltung) => abrechnenVeranstaltung(veranstaltung);
@@ -799,6 +820,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.pruefeVerfuegbarkeit = (datum) => pruefeVerfuegbarkeit(datum);
 
 		$scope.absagen = (daten) => absagen(daten);
+		$scope.downloadeListe = () => downloadeListe();
 
 		raumService.getRaeume().then(res => $scope.anzahlRaeume = res.data.length);
 		veranstaltungService.getVeranstaltungen().then(res => $scope.anzahlVeranstaltungen = res.data.length);
@@ -1028,17 +1050,39 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 						alert(err.data.message);
 				});
 		}
-			function absagen(daten){
-				veranstaltungService.cancelVeranstaltung(paramID, daten).then(
-					function(res){
-						location.href = '/#!/event-overview-admin'
-						alert(res.data.message);
-					},
-					function(err){
-						alert(err.data.message);
+		function absagen(daten){
+			veranstaltungService.cancelVeranstaltung(paramID, daten).then(
+				function(res){
+					location.href = '/#!/event-overview-admin'
+					alert(res.data.message);
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+		function downloadeListe(){
+			veranstaltungService.downloadListe(paramID).then(
+				function(res){
+					let binaryPdf = atob(res.data);
+					console.log(binaryPdf)
+					const len = binaryPdf.length;
+					const buffer = new ArrayBuffer(len);
+					const view = new Uint8Array(buffer);
+					for (let i = 0; i < len; i += 1) {
+						view[i] = binaryPdf.charCodeAt(i);
 					}
-				);
-			}
+					const blob = new Blob([view], { type: 'application/pdf' });
+					window.open(window.URL.createObjectURL(blob));
+				},
+				function(err){
+					alert(err.data.message);
+				}
+			);
+		}
+		function dateCompare(date){
+			return date < currentDate.toISOString();
+		}
 
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
@@ -1049,6 +1093,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.managements = [];
 
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
+		veranstaltungService.showTeilnehmer(paramID).then(res => $scope.teilnehmerz = res.data.teilnehmer);
 		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
 		$scope.veranstaltungen = [];
 		$scope.param1 = paramID;
@@ -1066,6 +1111,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.pruefeVerfuegbarkeit = (datum) => pruefeVerfuegbarkeit(datum);
 
 		$scope.absagen = (daten) => absagen(daten);
+		$scope.downloadeListe = () => downloadeListe();
 
 		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
@@ -1149,6 +1195,14 @@ app.config(function($routeProvider){
 		.when('/event-overview-teilnehmer-host/:id', {
 			templateUrl: 'components/event-overview-teilnehmer-host.component.html',
 			controller: 'veranstalterController'
+		})
+		.when('/event-overview-teilnehmer-admin/:id', {
+			templateUrl: 'components/event-overview-teilnehmer-admin.component.html',
+			controller: 'adminController'
+		})
+		.when('/event-overview-teilnehmer-management/:id', {
+			templateUrl: 'components/event-overview-teilnehmer-management.component.html',
+			controller: 'managementController'
 		})
 		.when('/event-overview-privat-host/:id', {
 			templateUrl: 'components/event-overview-privat-host.component.html',

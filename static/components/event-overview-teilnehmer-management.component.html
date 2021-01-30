@@ -1,0 +1,37 @@
+<div class="sidenav">
+    <h5>Management</h5>
+    <a href='#!/profile-management' class="currentPage"><i class="fa fa-fw fa-user" id="userIcon"></i><p>{{management.vorname + ' ' + management.name}}<br><c>{{management.email}}</c></p></a>
+    <hr>
+    <br>
+    <a href='#!/user-overview-management'><i class="fa fa-fw fa-users"></i> User-Übersicht</a>
+    <br>
+    <a href='#!/room-overview-management'><i class="fa fa-fw fa-list"></i> Räume</a>
+    <br>
+    <a href='#!/event-create-management'><i class="fa fa-fw fa-plus"></i> Veranstaltung erstellen</a>
+    <br>
+    <a href='#!/event-overview-management'><e><i class="fa fa-fw fa-calendar"></i> Veranstaltungen</e></a>
+    <br>
+    <a href='#!/bills-management'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
+</div>
+
+<div data-ng-hide="veranstaltung.teilnehmer.length === 0">
+    <h6>Aktuelle Teilnehmer der Veranstaltung {{veranstaltung.titel}}:</h6>
+    <table id="tableVA" style="margin-top: 2%">
+        <tr>
+            <th>Name</th>
+            <th>Vorname</th>
+            <th>Email</th>
+        </tr>
+        <tr data-ng-repeat="teilnehmer in teilnehmers">
+            <td>{{teilnehmer.name}}</td>
+            <td>{{teilnehmer.vorname}}</td>
+            <td>{{teilnehmer.email}}</td>
+        </tr>
+    </table>
+    <button data-ng-click='downloadeListe()' class="pdfButton"><g>Teilnehmerliste als PDF generieren</g></button>
+</div>
+
+<div id="noEvent" data-ng-if="veranstaltung.teilnehmer.length === 0">
+    <p>Für diese Veranstaltung sind aktuell noch keine Teilnehmer angemeldet.</p>
+    <a href="#!/event-overview-management"><button class="loginButton">Zur Veranstaltungs-Übersicht</button></a>
+</div>
