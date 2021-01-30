@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<table id="table">
+<table id="table" data-ng-hide="raeume.length === 0">
     <tr>
         <th>Raum-Nr.</th>
         <th>Größe</th>
@@ -55,3 +55,7 @@
         <td colspan="4"><a href="#!/room-create-admin"><button class="addRoomButton" [routerlink]="/room-create-admin">+ weiteren Raum hinzufügen ...</button></a></td>
     </tr>
 </table>
+
+<div id="noEvent" data-ng-if="raeume.length === 0" style="margin-top: 10%">
+    <p>Aktuell existieren noch keine Räume. <br><br> <a href="#!/room-create-admin"><button class="loginButton">Raum erstellen</button></a></p>
+</div>

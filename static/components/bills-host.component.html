@@ -10,7 +10,7 @@
     <a href='#!/bills-host'><e><i class="fa fa-fw fa-dollar"></i> Abrechnung</e></a>
 </div>
 
-<table id="tableVA" data-ng-hide="veranstaltungen.length === 0">
+<table id="tableVA" data-ng-hide="result.length === 0">
     <tr>
         <th>Titel</th>
         <th>Raum</th>
@@ -21,7 +21,7 @@
         <th>Zusatzleistungen</th>
         <th>Preis</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Abrechnung erstellt'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | filter: {angebotsstatus: 'Abrechnung erstellt'} | orderBy : 'titel' as result">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -32,6 +32,7 @@
         <td bgcolor="#ffdab9">{{veranstaltung.veranstalter_preis}}€</td>
     </tr>
 </table>
-<div id="noEvent" data-ng-show="veranstaltungen.length === 0">
-    <p>Aktuell stehen keine offenen Rechnungen aus. <br><br> <a href="#!/event-overview-host"><button class="loginButton"><g>Meine Veranstaltungen</g></button></a></p>
+
+<div id="noEvent" data-ng-show="result.length === 0">
+    <p>Aktuell stehen keine offenen Rechnungen aus. <br><br> <a href="#!/event-overview-host"><button class="loginButton"><g>Zur Veranstaltungs-Übersicht</g></button></a></p>
 </div>
