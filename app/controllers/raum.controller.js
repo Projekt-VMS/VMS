@@ -91,20 +91,82 @@ raumController.delete('/raum/delete/:id', function (req, res, next) {
 
 // update
 raumController.put('/raum/edit/:id',function (req, res, next) {
+   let kapa;
+   let eventName = [];
+   let start;
+   let events;
 
-    Raum.findByIdAndUpdate(
-        {_id: req.params.id},
-        {$set: req.body
-        },
-        function (err, raum) {
-            if (!raum)
-                return next(new Error('raum not found'));
-            else {
 
-                res.status(200).json({message: 'Raum ' + raum.raumNr + ' wurde erfolgreich überschrieben'});
-            }
-        });
+    if(req.body.raumpreis < 0){
+        res.status(400).json({message: 'Der Preis darf nicht negativ oder 0 sein!'})
+    }
+    else if(req.body.kapazitaet < 5){
+        res.status(400).json({message: 'Die minimale Kapazität muss 5 sein!'})
+    }
 
+
+
+
+
+    else if(req.body.kapazitaet !== undefined){
+        Raum.findOne({_id: req.params.id}, function (err, raum){
+            if(err){
+                res.status(500).json({message: 'Der Raum existiert nicht!'})
+            }else{
+                let raumNummer = raum.raumNr
+                Veranstaltung.find({raum: raumNummer}, function(err, doc) {
+
+                     events = doc
+                    events.every(e => {
+
+                        start = e.start_datum
+                        if(start >= moment()){
+                          eventName.push(e.titel)
+                            kapa = e.teilnehmerzahl
+                        }
+                        return true;
+
+
+                    })
+                    console.log(kapa)
+                    console.log(eventName)
+                    console.log(req.body.kapazitaet)
+                    console.log((kapa > req.body.kapazitaet))
+                    console.log(events)
+                    console.log((start >= moment() ))
+
+                    if ((kapa < req.body.kapazitaet )&& (start >= moment() )) {
+                        res.status(400).json({message: 'Die neue Kapazität würde die Teilnehmerzahl folgender Veranstaltungen übersteigen:\n' + eventName})
+                    } else {
+                        console.log(kapa)
+                        Raum.findByIdAndUpdate(
+                            {_id: req.params.id},
+                            {
+                                $set: req.body
+                            },
+                            function (err, raum) {
+                                if (!raum)
+                                    return next(new Error('raum not found'));
+                                else {
+
+                                    res.status(200).json({message: 'Raum ' + raum.raumNr + ' wurde erfolgreich überschrieben'});
+                                }
+                            });
+                    }})}})}
+       else{ Raum.findByIdAndUpdate(
+            {_id: req.params.id},
+            {
+                $set: req.body
+            },
+            function (err, raum) {
+                if (!raum)
+                    return next(new Error('raum not found'));
+                else {
+
+                    res.status(200).json({message: 'Raum ' + raum.raumNr + ' wurde erfolgreich überschrieben'});
+                }
+            });
+    }
 });
 
 // verfügbarkeit prüfen
