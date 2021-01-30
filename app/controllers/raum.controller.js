@@ -61,10 +61,6 @@ raumController.post('/raum/add',function (req, res) {
     })
 })
 
-
-
-
-
 //delete
 raumController.delete('/raum/delete/:id', function (req, res, next) {
     let end;
@@ -81,7 +77,7 @@ raumController.delete('/raum/delete/:id', function (req, res, next) {
                     end = e.end_datum
                     return true;
                 })
-                if (doc.length > 0 && ((moment(end) >= currentDate) === true)) {
+                if (doc.length > 0 && ((moment(end) >= currentDate))) {
 
                         res.status(400).send({message: 'Dieser Raum kann nicht gelöscht werden, da eine Veranstaltung den Raum blockiert!'})
 
@@ -92,7 +88,6 @@ raumController.delete('/raum/delete/:id', function (req, res, next) {
 
                 })
             }})}})});
-
 
 // update
 raumController.put('/raum/edit/:id',function (req, res, next) {
@@ -120,6 +115,16 @@ raumController.post('/raum/verfuegbarkeit/:id', function (req, res) {
     let range2;
     let result2;
     result2 = false;
+    if (moment(req.body.start_datum) < moment()){
+        res.status(400).json({message:'Das Startdatum liegt in der Vergangenheit!'})
+    }
+    else if (moment(req.body.end_datum) < moment()){
+        res.status(400).json({message:'Das Enddatum liegt in der Vergangenheit!'})
+    }
+    else if (moment(req.body.start_datum) > moment(req.body.end_datum)){
+        res.status(400).json({message:'Das Enddatum liegt vor dem Startdatum!'})
+    }
+    else{
     Raum.findOne({_id: req.params.id}, function (err, raum){
         if(err){
             res.status(500).json({message: 'Der Raum existiert nicht!'})
@@ -151,9 +156,7 @@ raumController.post('/raum/verfuegbarkeit/:id', function (req, res) {
                 }
             });
         }
-    })
+    })}
 });
-
-
 module.exports = raumController;
 

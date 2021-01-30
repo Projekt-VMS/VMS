@@ -268,46 +268,94 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
 
 //update
     veranstaltungsController.put('/veranstaltung/edit/:id', function (req, res, next) {
-        Veranstaltung.findByIdAndUpdate(
-            {_id: req.params.id},
-            {
-                $set: req.body
-            },
-            function (err, event) {
-                if (err)
-                    res.status(401).json({message: 'Es hat nicht geklappt!'});
-                else {
-                    transport.sendMail({
-                        from: 'management@vms.de',
-                        to: event.veranstalter,
-                        subject: 'Änderung Ihrer Veranstaltung ' + event.titel,
-                        text: 'Sehr geehrter Veranstalter, \n\nIhre Veranstaltung ' + event.titel +  ' wurde geändert.' + ' Näherer Informatione finden Sie in der Detailansicht der Veranstaltung im System.'
-
-                           + '\n\nWir freuen uns auf Ihre nächste Buchung! ' +
-                            '\n\nMit freundlichen Grüßen ' +
-                            '\nDas VMS '
-                    })
-                    event.teilnehmer.every(e => {
-
-                        Teilnehmer.findById({_id: e}, 'email', function (err, usermail) {
-                            let tMail = usermail.email
-                            transport.sendMail({
-                                from: 'management@vms.de',
-                                to: tMail,
-                                subject: 'Änderung der Veranstaltung ' + event.titel,
-                                text:'Sehr geehrter Teilnehmer, \n\noben genannte Veranstaltung wurde geändert. Für nähere Informationen besuchen Sie bitte die Detailansicht der Veranstaltung im System.'
-                                    +'\n\n'+'\n\n Dies dient für Sie als Information.\n\n Mit freundlichen Grüßen\nDasVMS'
-                            })
-
-                        })
-                        return true
-                    })
-                    res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde erfolgreich überschrieben'});
+        if(req.body.teilnehmer_preis !== undefined){
+            Veranstaltung.findById({_id: req.params.id}, function(err,doc){
+                if (doc.angebotsstatus !== 'Angebot offen'){
+                    res.status(400).json({message: 'Der Preis für diese Angebot kann nicht mehr geändert werden'})
                 }
-            });
+                else{
+                    Veranstaltung.findByIdAndUpdate(
+                        {_id: req.params.id},
+                        {
+                            $set: req.body
+                        },
+                        function (err, event) {
+                            if (err)
+                                res.status(401).json({message: 'Es hat nicht geklappt!'});
+                            else {
+                                transport.sendMail({
+                                    from: 'management@vms.de',
+                                    to: event.veranstalter,
+                                    subject: 'Änderung Ihrer Veranstaltung ' + event.titel,
+                                    text: 'Sehr geehrter Veranstalter, \n\nIhre Veranstaltung ' + event.titel +  ' wurde geändert.' + ' Näherer Informatione finden Sie in der Detailansicht der Veranstaltung im System.'
+
+                                        + '\n\nWir freuen uns auf Ihre nächste Buchung! ' +
+                                        '\n\nMit freundlichen Grüßen ' +
+                                        '\nDas VMS '
+                                })
+                                event.teilnehmer.every(e => {
+
+                                    Teilnehmer.findById({_id: e}, 'email', function (err, usermail) {
+                                        let tMail = usermail.email
+                                        transport.sendMail({
+                                            from: 'management@vms.de',
+                                            to: tMail,
+                                            subject: 'Änderung der Veranstaltung ' + event.titel,
+                                            text:'Sehr geehrter Teilnehmer, \n\noben genannte Veranstaltung wurde geändert. Für nähere Informationen besuchen Sie bitte die Detailansicht der Veranstaltung im System.'
+                                                +'\n\n'+'\n\n Dies dient für Sie als Information.\n\n Mit freundlichen Grüßen\nDasVMS'
+                                        })
+
+                                    })
+                                    return true
+                                })
+                                res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde erfolgreich überschrieben'});
+                            }
+                        });
+                }
+            })
+        }
+        else {
+
+            Veranstaltung.findByIdAndUpdate(
+                {_id: req.params.id},
+                {
+                    $set: req.body
+                },
+                function (err, event) {
+                    if (err)
+                        res.status(401).json({message: 'Es hat nicht geklappt!'});
+                    else {
+                        transport.sendMail({
+                            from: 'management@vms.de',
+                            to: event.veranstalter,
+                            subject: 'Änderung Ihrer Veranstaltung ' + event.titel,
+                            text: 'Sehr geehrter Veranstalter, \n\nIhre Veranstaltung ' + event.titel + ' wurde geändert.' + ' Näherer Informatione finden Sie in der Detailansicht der Veranstaltung im System.'
+
+                                + '\n\nWir freuen uns auf Ihre nächste Buchung! ' +
+                                '\n\nMit freundlichen Grüßen ' +
+                                '\nDas VMS '
+                        })
+                        event.teilnehmer.every(e => {
+
+                            Teilnehmer.findById({_id: e}, 'email', function (err, usermail) {
+                                let tMail = usermail.email
+                                transport.sendMail({
+                                    from: 'management@vms.de',
+                                    to: tMail,
+                                    subject: 'Änderung der Veranstaltung ' + event.titel,
+                                    text: 'Sehr geehrter Teilnehmer, \n\noben genannte Veranstaltung wurde geändert. Für nähere Informationen besuchen Sie bitte die Detailansicht der Veranstaltung im System.'
+                                        + '\n\n' + '\n\n Dies dient für Sie als Information.\n\n Mit freundlichen Grüßen\nDasVMS'
+                                })
+
+                            })
+                            return true
+                        })
+                        res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde erfolgreich überschrieben'});
+                    }
+                });
 
 
-
+        }
     });
 
 //get Teilnehmerliste pro Veranstaltung
