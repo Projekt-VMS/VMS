@@ -1079,10 +1079,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 					alert(err.data.message);
 				}
 			);
-		}
-		function dateCompare(date){
-			return date < currentDate.toISOString();
-		}
+			
 
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
