@@ -12,12 +12,12 @@
 
 <div class="filter">
     <label>Status:</label>
-    <input type="checkbox" data-ng-model="state1" >Angebot offen
-    <input type="checkbox" data-ng-model="state2">Angebot akzeptiert
+    <span data-ng-hide="state2"><input type="checkbox" data-ng-model="state1" >Angebot offen</span>
+    <span data-ng-hide="state1"><input type="checkbox" data-ng-model="state2">Angebot akzeptiert</span>
 </div>
 
 <h6>Öffentliche Veranstaltungen:</h6>
-<table id="tableVA" data-ng-hide="(veranstaltungen | filter: emailVeranstalter :true).length === 0" style="margin-top: 1%">
+<table id="tableVA" data-ng-hide="(result1.length === 0 && state1) || (result2.length === 0 && state2) || result3.length === 0" style="margin-top: 1%">
     <tr>
         <th>Titel</th>
         <th>Raum</th>
@@ -29,7 +29,7 @@
         <th>Zusatzleistungen</th>
         <th>Stornieren</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot offen' && veranstaltung.sichtbarkeit === 'Öffentlich' && state1">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: 'Angebot offen'} | orderBy : 'titel' as result1" data-ng-if="state1">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -40,7 +40,7 @@
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot akzeptiert' && veranstaltung.sichtbarkeit === 'Öffentlich' && state2">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: 'Angebot akzeptiert'} | orderBy : 'titel' as result2" data-ng-if="state2">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -51,7 +51,7 @@
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'angebotsstatus'" data-ng-if="!state1 && !state2 && veranstaltung.angebotsstatus != 'Abrechnung erstellt' && veranstaltung.sichtbarkeit === 'Öffentlich'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Abrechnung erstellt'} | orderBy : 'angebotsstatus' as result3" data-ng-if="!state1 && !state2">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -64,8 +64,18 @@
     </tr>
 </table>
 
+<div id="noEvent" data-ng-if="result1.length === 0 && result3.length != 0 && state1" style="margin-top: 0">
+    <p>Du hast aktuell noch keine öffentlichen Veranstaltungen mit offenem Angebot. <br><br></p>
+</div>
+<div id="noEvent" data-ng-if="result2.length === 0 && result3.length != 0 && state2" style="margin-top: 0">
+    <p>Du hast aktuell noch keine öffentlichen Veranstaltungen mit akzeptiertem Angebot. <br><br></p>
+</div>
+<div id="noEvent" data-ng-if="result3.length === 0" style="margin-top: 0">
+    <p>Du hast aktuell noch keine öffentlichen Veranstaltungen. <br><br></p>
+</div>
+
 <h6>Private Veranstaltungen:</h6>
-<table id="tableVA" data-ng-hide="(veranstaltungen | filter: emailVeranstalter :true).length === 0" style="margin-top: 1%">
+<table id="tableVA" data-ng-hide="(result4.length === 0 && state1) || (result5.length === 0 && state2) || result6.length === 0" style="margin-top: 1%">
     <tr>
         <th>Titel</th>
         <th>Raum</th>
@@ -77,7 +87,7 @@
         <th>Zusatzleistungen</th>
         <th>Stornieren</th>
        </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot offen' && veranstaltung.sichtbarkeit === 'Privat' && state1">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | filter: {sichtbarkeit: 'Privat', angebotsstatus: 'Angebot offen'} | orderBy : 'titel' as result4" data-ng-if="state1">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -88,7 +98,7 @@
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Angebot akzeptiert' && veranstaltung.sichtbarkeit === 'Privat' && state2">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | filter: {sichtbarkeit: 'Privat', angebotsstatus: 'Angebot akzeptiert'} | orderBy : 'titel' as result5" data-ng-if="state2">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -99,7 +109,7 @@
         <td>{{veranstaltung.leistung}}</td>
         <td><button data-ng-click="storniereVeranstaltung(veranstaltung._id)"><i class="fa fa-fw fa-close"></i></button></td>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | orderBy : 'angebotsstatus'" data-ng-if="!state1 && !state2 && veranstaltung.angebotsstatus != 'Abrechnung erstellt' && veranstaltung.sichtbarkeit === 'Privat'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: emailVeranstalter :true | filter: {sichtbarkeit: 'Privat', angebotsstatus: '!Abrechnung erstellt'} | orderBy : 'angebotsstatus' as result6" data-ng-if="!state1 && !state2">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -112,11 +122,17 @@
     </tr>
 </table>
 
-<div id="priceText">
-    <small>* V-Preis = Veranstalterpreis, T-Preis = Teilnehmerpreis</small>
+<div id="noEvent" data-ng-if="result4.length === 0 && result6.length != 0 && state1" style="margin-top: 0">
+    <p>Du hast aktuell noch keine privaten Veranstaltungen mit offenem Angebot. <br><br></p>
+</div>
+<div id="noEvent" data-ng-if="result5.length === 0 && result6.length != 0 && state2" style="margin-top: 0">
+    <p>Du hast aktuell noch keine privaten Veranstaltungen mit akzeptiertem Angebot. <br><br></p>
+</div>
+<div id="noEvent" data-ng-if="result6.length === 0" style="margin-top: 0">
+    <p>Du hast aktuell noch keine privaten Veranstaltungen. <br><br></p>
 </div>
 
-<div id="noEvent" data-ng-if="(veranstaltungen | filter: emailVeranstalter :true).length === 0">
-    <p>Du hast aktuell noch keine eigenen Veranstaltungen. <br><br> <a href="#!/request-host"><button class="loginButton"><g>Anfrage erstellen</g></button></a></p>
+<div id="priceText">
+    <small>* V-Preis = Veranstalterpreis, T-Preis = Teilnehmerpreis</small>
 </div>
 

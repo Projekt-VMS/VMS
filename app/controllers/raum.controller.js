@@ -48,13 +48,20 @@ raumController.post('/raum/add',function (req, res) {
 //                    raum =  Raum.findOne(raumNummer: req.body.raumnummer)
 // raumInstance.raum = raum.id
 //     console.log(raumInstance);
+
     let raumInstance = new Raum(req.body);
     Raum.find({raumNr: req.body.raumNr}, function (err, doc) {
         let raum = doc
         console.log (raum.length)
         if (raum.length  > 0) {
             res.status(400).send({message: 'Dieser Raum existiert bereits.'})
-        } else {
+        } else if (req.body.kapazitaet < 5){
+            res.status(400).send({message:'Die Raumkapazität muss mindestens 5 betragen!'})
+        }
+        else if(req.body.raumpreis <= 0){
+            res.status(400).send({message:'Der Preis darf nicht negativ oder 0 sein!'})
+        }
+        else{
             raumInstance.save((err, doc) => { //saves room
                 if (!err) {
                     console.log("success!")
@@ -71,16 +78,31 @@ raumController.post('/raum/add',function (req, res) {
 
 //delete
 raumController.delete('/raum/delete/:id', function (req, res, next) {
+    let end;
+    let currentDate = moment();
+    Raum.findOne({_id: req.params.id}, function (err, raum){
+        if(err){
+            res.status(500).json({message: 'Der Raum existiert nicht!'})
+        }else{
+            let raumNummer = raum.raumNr
+            Veranstaltung.find({raum: raumNummer}, function(err, doc) {
 
-    Raum.findByIdAndRemove({_id: req.params.id},function(err, raum){
+                let events = doc
+                events.every(e => {
+                    end = e.end_datum
+                    return true;
+                })
+                if (doc.length > 0 && ((moment(end) >= currentDate) === true)) {
 
-        if (err)
-            return next (new Error('raum not found'));
-        else {
-            res.send('Raum ' + raum.raumNr + ' wurde gelöscht' );
-        }
-    });
-});
+                        res.status(400).send({message: 'Dieser Raum kann nicht gelöscht werden, da eine Veranstaltung den Raum blockiert!'})
+
+                }
+                else {
+                    Raum.findByIdAndRemove({_id: req.params.id}, function (err, raum){
+                    res.status(200).send({message: 'Raum ' + raum.raumNr + ' wurde gelöscht'});
+
+                })
+            }})}})});
 
 
 // update
@@ -116,7 +138,6 @@ raumController.post('/raum/verfuegbarkeit/:id', function (req, res) {
             let raumNummer = raum.raumNr;
             console.log('test' + raumNummer)
             Veranstaltung.find({raum: raumNummer}, function (err, veranstaltung){
-                console.log(veranstaltung)
                 if(err){
                     res.status(200).json({message: 'Der Raum ' + raumNummer + ' ist im gewünschten Zeitraum verfügbar.'});
                 }else{

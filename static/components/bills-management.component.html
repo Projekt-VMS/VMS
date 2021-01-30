@@ -15,7 +15,7 @@
 </div>
 
 <h6>Abrechnung noch nicht erstellt:</h6>
-<table style="margin-top: 0.5%" id="tableVA" data-ng-hide="veranstaltungen.length === 0">
+<table style="margin-top: 0.5%" id="tableVA" data-ng-hide="result1.length === 0">
     <tr>
         <th>Titel</th>
         <th>Raum</th>
@@ -28,7 +28,7 @@
         <th>Preis</th>
         <th>Abrechnen</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'" data-ng-if="((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.end_datum < currentDate.toISOString())">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel' as result1" data-ng-if="((veranstaltung.angebotsstatus === 'Angebot akzeptiert') || (veranstaltung.angebotsstatus === 'Intern')) && (veranstaltung.end_datum < currentDate.toISOString())">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -42,8 +42,12 @@
     </tr>
 </table>
 
+<div id="noEvent" data-ng-if="result1.length === 0" style="margin-top: 0">
+    <p>Du hast aktuell noch keine abzurechnenden Veranstaltungen. <br><br></p>
+</div>
+
 <h6>Abrechnung bereits erstellt:</h6>
-<table style="margin-top: 0.5%" id="tableVA" data-ng-hide="veranstaltungen.length === 0">
+<table style="margin-top: 0.5%" id="tableVA" data-ng-hide="result2.length === 0">
     <tr>
         <th>Titel</th>
         <th>Raum</th>
@@ -55,7 +59,7 @@
         <th>Zusatzleistungen</th>
         <th>Preis</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | orderBy : 'titel'" data-ng-if="veranstaltung.angebotsstatus === 'Abrechnung erstellt'">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: {angebotsstatus: 'Abrechnung erstellt'} | orderBy : 'titel' as result2">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
@@ -67,3 +71,7 @@
         <td>{{veranstaltung.veranstalter_preis}}€</td>
     </tr>
 </table>
+
+<div id="noEvent" data-ng-if="result2.length === 0" style="margin-top: 0">
+    <p>Du hast aktuell noch keine Veranstaltungen mit erstellter Abrechnung. <br><br></p>
+</div>
