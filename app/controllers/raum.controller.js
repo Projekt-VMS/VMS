@@ -25,9 +25,6 @@ raumController.get('/raum/show', function(req, res){
 
 raumController.get('/raum/showOne/:id', function (req, res) {
         Raum.findOne({_id: req.params.id})
-        //let raum = Raum["customer" + req.params.id];
-        //res.end( "Find a Customer:\n" + JSON.stringify(raum, null, 4));
-
         .catch(err => {
             console.log(err.toString());
             res.status(500).send(err.toString());
@@ -41,13 +38,6 @@ raumController.get('/raum/showOne/:id', function (req, res) {
 //create
 
 raumController.post('/raum/add',function (req, res) {
-
-//     console.log(req.body.kapazitaet)
-//     let raumInstance = new Raum();
-//     raumInstance.kapazitaet = req.body.kapazitaet
-//                    raum =  Raum.findOne(raumNummer: req.body.raumnummer)
-// raumInstance.raum = raum.id
-//     console.log(raumInstance);
 
     let raumInstance = new Raum(req.body);
     Raum.find({raumNr: req.body.raumNr}, function (err, doc) {
