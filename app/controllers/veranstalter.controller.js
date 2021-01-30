@@ -265,6 +265,13 @@ veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {
         )}}}
     });
 
+//logout
+veranstalterController.delete('/veranstalter/logout/:token', function (req, res) {
+    tokens = tokens.filter(token => token !== req.params.token)
+    res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
+    console.log(tokens);
+});
+
 //anfragen
 veranstalterController.post('/veranstalter/request/:id', function (req, res){
     let {titel, kapazitaet, start_datum, end_datum, sichtbarkeit, zusatzleistungen, teilnehmerListe} = req.body
@@ -423,11 +430,5 @@ veranstalterController.put('/veranstaltung/teilnehmerListe/edit/:id', function(r
         });
 })
 
-//logout
-veranstalterController.delete('/veranstalter/logout/:token', function (req, res) {
-    tokens = tokens.filter(token => token !== req.params.token)
-    res.status(200).json({message: 'Du bist erfolgreich abgemeldet'});
-    console.log(tokens);
-});
 
 module.exports = veranstalterController;
