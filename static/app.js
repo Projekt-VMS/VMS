@@ -642,6 +642,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			raumService.createRaum(raum).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/room-overview-management'
 				},
 				function(err){
 					alert(err.data.message);
@@ -892,6 +893,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			raumService.createRaum(raum).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/room-overview-admin'
 				},
 				function(err){
 					alert(err.data.message);
