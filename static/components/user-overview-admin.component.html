@@ -15,7 +15,7 @@
 </div>
 
 <h6>Management:</h6>
-<table id="table" style="margin-top: 1%">
+<table id="table" data-ng-hide="managements.length === 0" style="margin-top: 1%">
     <tr>
         <th>Name</th>
         <th>Vorname</th>
@@ -33,8 +33,12 @@
     </tr>
 </table>
 
+<div id="noEvent" data-ng-if="managements.length === 0" style="margin-top: 0">
+    <p>Aktuell existieren noch keine Management-User. <br><br> <a href="#!/user-create-admin"><button class="loginButton">Management-User erstellen</button></a></p>
+</div>
+
 <h6>Veranstalter:</h6>
-<table id="table" style="margin-top: 1%">
+<table id="table" data-ng-hide="veranstalters.length === 0" style="margin-top: 1%">
     <tr>
         <th>Name</th>
         <th>Vorname</th>
@@ -49,8 +53,12 @@
     </tr>
 </table>
 
+<div id="noEvent" data-ng-if="veranstalters.length === 0" style="margin-top: 0">
+    <p>Aktuell existieren noch keine Veranstalter.</p>
+</div>
+
 <h6>Teilnehmer:</h6>
-<table id="table" style="margin-top: 1%">
+<table id="table" data-ng-hide="teilnehmers.length === 0" style="margin-top: 1%">
     <tr>
         <th>Name</th>
         <th>Vorname</th>
@@ -64,3 +72,7 @@
         <td><a href="#!/user-modify-teilnehmer-admin/{{teilnehmer._id}}"><i class="fa fa-fw fa-pencil" [routerlink]="/user-modify-teilnehmer-admin"></i></a></td>
     </tr>
 </table>
+
+<div id="noEvent" data-ng-if="teilnehmers.length === 0" style="margin-top: 0">
+    <p>Aktuell existieren noch keine Teilnehmer.</p>
+</div>

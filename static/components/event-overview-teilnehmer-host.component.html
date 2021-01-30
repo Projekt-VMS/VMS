@@ -10,17 +10,24 @@
     <a href='#!/bills-host'><i class="fa fa-fw fa-dollar"></i> Abrechnung</a>
 </div>
 
-<h6>Aktuelle Teilnehmer der Veranstaltung {{veranstaltung.titel}}:</h6>
-<table id="tableVA" style="margin-top: 2%">
-    <tr>
-        <th>Name</th>
-        <th>Vorname</th>
-        <th>Email</th>
-    </tr>
-    <tr data-ng-repeat="teilnehmer in teilnehmers">
-        <td>{{teilnehmer.name}}</td>
-        <td>{{teilnehmer.vorname}}</td>
-        <td>{{teilnehmer.email}}</td>
-    </tr>
-</table>
-<button data-ng-click='downloadeListe()' class="pdfButton"><g>Teilnehmerliste als PDF generieren</g></button>
+<div data-ng-hide="veranstaltung.teilnehmer.length === 0">
+    <h6>Aktuelle Teilnehmer der Veranstaltung {{veranstaltung.titel}}:</h6>
+    <table id="tableVA" style="margin-top: 2%">
+        <tr>
+            <th>Name</th>
+            <th>Vorname</th>
+            <th>Email</th>
+        </tr>
+        <tr data-ng-repeat="teilnehmer in teilnehmers">
+            <td>{{teilnehmer.name}}</td>
+            <td>{{teilnehmer.vorname}}</td>
+            <td>{{teilnehmer.email}}</td>
+        </tr>
+    </table>
+    <button data-ng-click='downloadeListe()' class="pdfButton"><g>Teilnehmerliste als PDF generieren</g></button>
+</div>
+
+<div id="noEvent" data-ng-if="veranstaltung.teilnehmer.length === 0">
+    <p>Für diese Veranstaltung sind aktuell noch keine Teilnehmer angemeldet.</p>
+    <a href="#!/event-overview-host"><button class="loginButton">Zur Veranstaltungs-Übersicht</button></a>
+</div>

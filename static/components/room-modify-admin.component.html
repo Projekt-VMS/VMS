@@ -15,7 +15,7 @@
 </div>
 
 <div id="roomModify" data-ng-submit='updateRaum(neuerRaum)'>
-    <h2>Raum {{raum.raumNr}}<button class="deleteButton" id="trashIcon" data-ng-click="loescheRaum()"><i class="fa fa-fw fa-trash"></i></button></h2>
+    <h2>Raum {{raum.raumNr}}<a href="#!/room-overview-admin"><button class="deleteButton" id="trashIcon" data-ng-click="loescheRaum()"><i class="fa fa-fw fa-trash"></i></button></a></h2>
     <br>
     <div data-ng-submit='pruefeVerfuegbarkeit(datum)'>
         <h3>Verfügbarkeit prüfen</h3>
