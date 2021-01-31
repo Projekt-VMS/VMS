@@ -12,22 +12,22 @@
     <input type="text" id="searchField" placeholder="Suche in den Veranstaltungen" data-ng-model="search">
     <div data-ng-hide="attendence1 || attendence2 || attendence3 || attendence4">
     <label><d>Preis:</d></label>
-        <input type="checkbox" data-ng-model="price1">0-24€
-        <input type="checkbox" data-ng-model="price2">25-49€
-        <input type="checkbox" data-ng-model="price3">50-99€
-        <input type="checkbox" data-ng-model="price4">100+€
+        <span data-ng-hide="price2 || price3 || price4"><input type="checkbox" data-ng-model="price1">0-24€</span>
+        <span data-ng-hide="price1 || price3 || price4"><input type="checkbox" data-ng-model="price2">25-49€</span>
+        <span data-ng-hide="price1 || price2 || price4"><input type="checkbox" data-ng-model="price3">50-99€</span>
+        <span data-ng-hide="price1 || price2 || price3"><input type="checkbox" data-ng-model="price4">100+€</span>
     </div>
     <br>
     <div data-ng-hide="price1 || price2 || price3 || price4">
     <label><d>Teilnehmerzahl:</d></label>
-        <input type="checkbox" data-ng-model="attendence1">5-9
-        <input type="checkbox" data-ng-model="attendence2">10-19
-        <input type="checkbox" data-ng-model="attendence3">20-49
-        <input type="checkbox" data-ng-model="attendence4">50+
+        <span data-ng-hide="attendence2 || attendence3 || attendence4"><input type="checkbox" data-ng-model="attendence1">5-9</span>
+        <span data-ng-hide="attendence1 || attendence3 || attendence4"><input type="checkbox" data-ng-model="attendence2">10-19</span>
+        <span data-ng-hide="attendence1 || attendence2 || attendence4"><input type="checkbox" data-ng-model="attendence3">20-49</span>
+        <span data-ng-hide="attendence1 || attendence2 || attendence3"><input type="checkbox" data-ng-model="attendence4">50+</span>
     </div>
 </div>
 
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmer_preis', 25) | filter: greaterThanToday('start_datum') | filter : search | orderBy : 'teilnehmer_preis' as result1" data-ng-if="(price1) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmer_preis', 25) | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter : search | orderBy : 'teilnehmer_preis' as result1" data-ng-if="(price1)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -42,7 +42,7 @@
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmer_preis', 50) | filter: greaterThanValue('teilnehmer_preis', 25) | filter: greaterThanToday('start_datum') | filter : search | orderBy : 'teilnehmer_preis' as result2" data-ng-if="(price2) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmer_preis', 50) | filter: greaterThanValue('teilnehmer_preis', 25) | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter: search | orderBy : 'teilnehmer_preis' as result2" data-ng-if="(price2)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -57,7 +57,7 @@
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmer_preis', 100) | filter: greaterThanValue('teilnehmer_preis', 50) | filter: greaterThanToday('start_datum') | filter : search | orderBy : 'teilnehmer_preis' as result3" data-ng-if="(price3) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmer_preis', 100) | filter: greaterThanValue('teilnehmer_preis', 50) | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter: search | orderBy : 'teilnehmer_preis' as result3" data-ng-if="(price3)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -72,7 +72,7 @@
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: greaterThanValue('teilnehmer_preis', 100) | filter: greaterThanToday('start_datum') | filter : search | orderBy : 'teilnehmer_preis' as result4" data-ng-if="(price4) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: greaterThanValue('teilnehmer_preis', 100) | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter: search | orderBy : 'teilnehmer_preis' as result4" data-ng-if="(price4)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -87,7 +87,7 @@
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmerzahl', 10) | filter: greaterThanToday('start_datum') | filter : search | orderBy : 'teilnehmerzahl' as result5" data-ng-if="(attendence1) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmerzahl', 10) | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter: search | orderBy : 'teilnehmerzahl' as result5" data-ng-if="(attendence1)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -102,7 +102,7 @@
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmerzahl', 20) | filter: greaterThanValue('teilnehmerzahl', 10) | filter: greaterThanToday('start_datum') | filter : search | orderBy : 'teilnehmerzahl' as result6" data-ng-if="(attendence2) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmerzahl', 20) | filter: greaterThanValue('teilnehmerzahl', 10) | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter: search | orderBy : 'teilnehmerzahl' as result6" data-ng-if="(attendence2)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -117,7 +117,7 @@
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmerzahl', 50) | filter: greaterThanValue('teilnehmerzahl', 20) | filter: greaterThanToday('start_datum') | filter : search | orderBy : 'teilnehmerzahl' as result7" data-ng-if="(attendence3) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanValue('teilnehmerzahl', 50) | filter: greaterThanValue('teilnehmerzahl', 20) | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter: search | orderBy : 'teilnehmerzahl' as result7" data-ng-if="(attendence3)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -132,7 +132,7 @@
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: greaterThanValue('teilnehmerzahl', 50) | filter: greaterThanToday('start_datum') | filter : search | orderBy : 'teilnehmerzahl' as result8" data-ng-if="(attendence4) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: greaterThanValue('teilnehmerzahl', 50) | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter: search | orderBy : 'teilnehmerzahl' as result8" data-ng-if="(attendence4)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -147,7 +147,7 @@
     <li><button data-ng-click='teilnehmen(veranstaltung._id)' class="participateButton"><g>Teilnehmen</g></button></li>
     <br><br>
 </ul>
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: greaterThanToday('start_datum') | filter: search | orderBy : 'titel' as result9" data-ng-if="(!price1) && (!price2) && (!price3) && (!price4) && (!attendence1) && (!attendence2) && (!attendence3) && (!attendence4) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: greaterThanToday('start_datum') | filter: greaterThanArray('teilnehmerzahl', 'teilnehmer') | filter: search | orderBy : 'titel' as result9" data-ng-if="(!price1) && (!price2) && (!price3) && (!price4) && (!attendence1) && (!attendence2) && (!attendence3) && (!attendence4)">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
