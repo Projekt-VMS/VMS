@@ -1121,7 +1121,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			}
 		}
 
-
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
 		$scope.updateManagement = (neuerManagement) => updateManagement(neuerManagement)
 		$scope.loescheManagement = () => loescheManagement();
