@@ -70,6 +70,10 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
         errors.push({message: 'Fülle bitte alle Felder aus.'});
     }
 
+    if((teilnehmerzahl || teilnehmer_preis) <= 0 ){
+        errors.push({message: 'Negative Werte sind nicht erlaubt!'})
+    }
+
     let raum_preis;
     let veranstalter_preis =0;
     let preis;

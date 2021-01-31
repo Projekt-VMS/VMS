@@ -162,19 +162,78 @@ managementController.delete('/management/delete/:id', function (req, res, next) 
 //Update
 managementController.put('/management/edit/:id',function (req, res, next) {
 
-    Management.findByIdAndUpdate(
-        {_id: req.params.id},
-        {$set:req.body
-        },
-        function (err, management) {
-            if (err){
-                res.status(401).json({message: 'Es hat nicht geklappt!'});
+        if (req.body.password !== undefined) {
+            if (validatePassword(req.body.password) !== true){
+                res.status(400).send({message: 'Passwort muss mindestens 5 Zeichen lang sein, einen Großbuchstaben und eine Zahl enthalten.'})
             }
-            else {
-                res.status(200).json({message: 'User ' + management.email + ' wurde erfolgreich überschrieben'});
+            else if (req.body.password !== req.body.password2) {
+                res.status(400).send({ message: 'Passwörter stimmen nicht überein' });
             }
-        })
-});
+            else{
+                let password = req.body.password;
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(password, salt, (err, hash) => {
+                        if (err) throw err;
+                        req.body.password = hash;
+                        console.log(password)
+
+                        Management.findByIdAndUpdate(
+                            {_id: req.params.id},
+                            {
+                                $set: req.body
+                            },
+                            function (err, manager) {
+                                if (err) {
+                                    res.status(401).json({message: 'Es hat nicht geklappt!'});
+                                } else if (req.body.password !== undefined) {
+
+                                    let mMail = manager.email
+                                    transport.sendMail({
+                                        from: 'admin@vms.de',
+                                        to: mMail,
+                                        subject: 'Änderungen an Ihrem Profil',
+                                        text: 'Sehr geehrter Mitarbeiter, ' +
+                                            '\n\nihr Passwort wurde geändert. Das neue Passwort lautet:' + req.body.password2 +
+                                            '\n\nHiermit können Sie sich nun im System anmelden.' +
+                                            '\n\nMit freundlichen Grüßen' +
+                                            '\nDas VMS'
+                                    })
+                                    res.status(200).json({message: 'User ' + manager.email + ' wurde erfolgreich geändert'});
+                                }
+                            })
+                    })
+                })}
+        }
+        else if (validateEmail(req.body.email) === false && req.body.email !== undefined ){
+            res.status(400).send({message: 'Änderung fehlgeschlagen: Bitte geben Sie eine gültige Email Adresse ein.'})
+        }
+        else {Management.findByIdAndUpdate(
+            {_id: req.params.id},
+            {
+                $set: req.body
+            },
+            function (err, manager) {
+                if (err) {
+                    res.status(401).json({message: 'Es hat nicht geklappt!'});
+                } else {
+                    let mMail = manager.email
+                    transport.sendMail({
+                        from: 'admin@vms.de',
+                        to: mMail,
+                        subject: 'Änderungen an Ihrem Profil',
+                        text: 'Sehr geehrter Mitarbeiter, ' +
+                            '\n\nihr Profil wurde geändert. Diese Mail dient als Info für Sie. Bei fragen wenden Sie sich bitte an den Admin.'+
+                            '\n\n' +
+                            '\n\nMit freundlichen Grüßen' +
+                            '\nDas VMS'
+                    })
+
+                    res.status(200).json({message: 'User ' + manager.email + ' wurde erfolgreich geändert'});
+
+                }
+            }
+        )}
+    });
 
 //logout
 managementController.delete('/management/logout/:token', function (req, res) {
