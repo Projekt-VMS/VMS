@@ -148,7 +148,7 @@
     <br><br>
 </ul>
 <ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: {sichtbarkeit: 'Öffentlich', angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: greaterThanToday('start_datum') | filter: search | orderBy : 'titel' as result9" data-ng-if="(!price1) && (!price2) && (!price3) && (!price4) && (!attendence1) && (!attendence2) && (!attendence3) && (!attendence4) && (veranstaltung.teilnehmer.length < veranstaltung.teilnehmerzahl)">
-    <span id="utilization">{{veranstaltung.teilnehmer.length.toString()}} / {{veranstaltung.teilnehmerzahl.toString()}}</span>
+    <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
     <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
