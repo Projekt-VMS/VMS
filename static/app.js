@@ -447,6 +447,32 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+		$scope.greaterThanValue = function(prop, val){
+			return function(item){
+				if (item[prop] >= val) return true;
+			}
+		}
+		$scope.smallerThanValue = function(prop, val){
+			return function(item){
+				if (item[prop] < val) return true;
+			}
+		}
+		$scope.greaterThanToday = function(prop){
+			let currentDate = new Date();
+			return function(item){
+				if (item[prop] > currentDate.toISOString()) return true;
+			}
+		}
+		$scope.greaterThan = function(prop, val){
+			return function(item){
+				if (item[prop] >= item[val]) return true;
+			}
+		}
+		$scope.smallerThan = function(prop, val){
+			return function(item){
+				if (item[prop] < item[val]) return true;
+			}
+		}
 		/*function auslastung(veranstaltungID){
 			statistikService.veranstaltungAuslastung(veranstaltungID).then(
 				function(res){
@@ -798,6 +824,13 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+		$scope.smallerThanToday = function(prop){
+			let currentDate = new Date();
+			currentDate.setDate(currentDate.getDate()-1);
+			return function(item){
+				if (item[prop] < currentDate.toISOString()) return true;
+			}
+		}
 
 
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
@@ -1061,27 +1094,32 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
-		function downloadeListe(){
-			veranstaltungService.downloadListe(paramID).then(
-				function(res){
-					let binaryPdf = atob(res.data);
-					console.log(binaryPdf)
-					const len = binaryPdf.length;
-					const buffer = new ArrayBuffer(len);
-					const view = new Uint8Array(buffer);
-					for (let i = 0; i < len; i += 1) {
-						view[i] = binaryPdf.charCodeAt(i);
-					}
-					const blob = new Blob([view], { type: 'application/pdf' });
-					window.open(window.URL.createObjectURL(blob));
-				},
-				function(err){
-					alert(err.data.message);
-				}
-			);
+		function downloadeListe() {
+            veranstaltungService.downloadListe(paramID).then(
+                function (res) {
+                    let binaryPdf = atob(res.data);
+                    console.log(binaryPdf)
+                    const len = binaryPdf.length;
+                    const buffer = new ArrayBuffer(len);
+                    const view = new Uint8Array(buffer);
+                    for (let i = 0; i < len; i += 1) {
+                        view[i] = binaryPdf.charCodeAt(i);
+                    }
+                    const blob = new Blob([view], {type: 'application/pdf'});
+                    window.open(window.URL.createObjectURL(blob));
+                },
+                function (err) {
+                    alert(err.data.message);
+                }
+            );
+        }
+        $scope.smallerThanToday = function(prop){
+			let currentDate = new Date();
+			currentDate.setDate(currentDate.getDate()-1);
+			return function(item){
+				if (item[prop] < currentDate.toISOString()) return true;
+			}
 		}
-			
-
 
 		$scope.erstelleManagement = (management) => erstelleManagement(management);
 		$scope.updateManagement = (neuerManagement) => updateManagement(neuerManagement)

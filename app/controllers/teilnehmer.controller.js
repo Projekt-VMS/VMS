@@ -338,7 +338,7 @@ teilnehmerController.put('/teilnehmer/deregisterEvent/:id/:veranstaltung', funct
             console.log(newMomentObj.diff(currentDate, 'days'))
         }
         if (resignPossible === false) {
-            res.status(400).send({message:'Die Rücktrittsfrist ist abgelaufen. Wenn du nicht zur Veranstaltung erscheinst müssen wir dir leider trotzdem den vollen Preis berechenen.'});
+            res.status(400).send({message:'Die Rücktrittsfrist ist abgelaufen. Wenn du nicht zur Veranstaltung erscheinst müssen wir dir leider trotzdem den vollen Preis berechnen.'});
         } else {
             Veranstaltungen.findByIdAndUpdate({_id: req.params.veranstaltung}, 'teilnehmerzahl teilnehmer', function (err, event) {
                 Veranstaltungen.findByIdAndUpdate({_id: req.params.veranstaltung}, //pushes userID into Veranstaltung
