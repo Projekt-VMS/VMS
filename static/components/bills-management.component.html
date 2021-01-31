@@ -28,7 +28,7 @@
         <th>Preis</th>
         <th>Abrechnen</th>
     </tr>
-    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: {angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | orderBy : 'titel' as result1" data-ng-if="veranstaltung.end_datum < currentDate.toISOString()">
+    <tr data-ng-repeat="veranstaltung in veranstaltungen | filter: {angebotsstatus: '!Angebot offen'} | filter: {angebotsstatus: '!Abrechnung erstellt'} | filter: smallerThanToday('end_datum') | orderBy : 'titel' as result1">
         <td>{{veranstaltung.titel}}</td>
         <td>{{veranstaltung.raum}}</td>
         <td>{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</td>
