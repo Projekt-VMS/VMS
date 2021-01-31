@@ -473,6 +473,11 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				if (item[prop] < item[val]) return true;
 			}
 		}
+		$scope.greaterThanArray = function(prop, val){
+			return function(item){
+				if (item[prop] > item[val].length) return true;
+			}
+		}
 		/*function auslastung(veranstaltungID){
 			statistikService.veranstaltungAuslastung(veranstaltungID).then(
 				function(res){
