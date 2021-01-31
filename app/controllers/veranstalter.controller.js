@@ -167,27 +167,39 @@ veranstalterController.post('/veranstalter/login', (req, res) =>{
 
 //delete
 veranstalterController.delete('/veranstalter/delete/:id', function (req, res, next) {
-
-    Veranstalter.findByIdAndRemove({_id: req.params.id},function(err, id){
+    Veranstalter.findOne({_id: req.params.id}, function (err, veranstalter) {
         if (err) {
-            res.status(401).json({message: 'User konnte nicht gelöscht werden'});
-        }
-        else {
+            res.status(500).json({message: 'Der Veranstalter existiert nicht!'})
+        } else {
+            let vID = veranstalter.email
+            Veranstaltung.find({veranstalter: vID}, function (err, doc) {
+                let events = doc
+                if (events.length >0) {
+                    res.status(400).json({message: 'Da Sie bei uns bereits Veranstaltungen angefragt oder gebucht haben, können wir Ihr Profil nicht löschen!'})
+                } else {
+                    Veranstalter.findByIdAndRemove({_id: req.params.id}, function (err, id) {
+                        if (err) {
+                            res.status(401).json({message: 'User konnte nicht gelöscht werden'});
+                        } else {
 
-            transport.sendMail({
-                from: 'management@vms.de',
-                to: id.email,
-                subject: 'Löschung Ihres Profils',
-                text: 'Sehr geehrter Veranstalter, ' +
-                    '\n\nihr Profil wurde gelöscht. Diese Mail dient als Info für Sie. Bei fragen wenden Sie sich bitte an das VMS.'+
-                    '\n\n' +
-                    '\n\nMit freundlichen Grüßen' +
-                    '\nDas VMS'
+                            transport.sendMail({
+                                from: 'management@vms.de',
+                                to: id.email,
+                                subject: 'Löschung Ihres Profils',
+                                text: 'Sehr geehrter Veranstalter, ' +
+                                    '\n\nihr Profil wurde gelöscht. Diese Mail dient als Info für Sie. Bei fragen wenden Sie sich bitte an das VMS.' +
+                                    '\n\n' +
+                                    '\n\nMit freundlichen Grüßen' +
+                                    '\nDas VMS'
+                            })
+                            res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
+                        }
+                    })
+                }
             })
-            res.status(200).json({message: 'User ' + id.email + ' wurde gelöscht'});
         }
-    });
-});
+    })
+})
 
 //Update
 veranstalterController.put('/veranstalter/edit/:id',function (req, res, next) {

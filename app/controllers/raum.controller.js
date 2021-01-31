@@ -132,12 +132,6 @@ raumController.put('/raum/edit/:id',function (req, res, next) {
 
 
                     })
-                    console.log(kapa)
-                    console.log(eventName)
-                    console.log(req.body.kapazitaet)
-                    console.log((kapa > req.body.kapazitaet))
-                    console.log(events)
-                    console.log((start >= moment() ))
 
                     if ((kapa < req.body.kapazitaet )&& (start >= moment() )) {
                         res.status(400).json({message: 'Die neue Kapazität würde die Teilnehmerzahl folgender Veranstaltungen übersteigen:\n' + eventName})
