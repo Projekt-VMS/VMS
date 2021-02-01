@@ -183,7 +183,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                                     +'\nTeilnehmerzahl: ' + veranstaltungInstance.teilnehmerzahl
                                     +'\nRaum: ' + veranstaltungInstance.raum
                                     +'\nIhr Preis: ' + veranstaltungInstance.veranstalter_preis +'€'+
-                                    '\n\nBitte antworten Sie auf diese Mail, ob Sie das Angebot so annehmen möchten.\n\n Mit freundlichen Grüßen \nDas VMS'
+                                    '\n\nBitte antworten Sie auf diese Mail, ob Sie das Angebot so annehmen möchten.\n\nMit freundlichen Grüßen \nDas VMS'
                             })
 
                         } else { //error if event can't be safed

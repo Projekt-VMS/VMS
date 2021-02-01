@@ -127,7 +127,7 @@ teilnehmerController.post('/teilnehmer/registration/add', function (req, res) {
                                         to: newTeilnehmer.email,
                                         subject: 'Herzlich Willkommen bei VMS',
                                         text: 'Sehr geehrter Teilnehmer, \n\n' +
-                                            'herzlichen Dank für Ihre Registrierung beim VMS\n\nMit freundlichen Grüßen' +
+                                            'herzlichen Dank für Ihre Registrierung beim VMS.\n\nMit freundlichen Grüßen' +
                                             '\nDas VMS '
                                     })
                                     tokens.push(token);

@@ -40,16 +40,15 @@ raumController.get('/raum/showOne/:id', function (req, res) {
 raumController.post('/raum/add',function (req, res) {
 
     let raumInstance = new Raum(req.body);
-
     Raum.find({raumNr: req.body.raumNr}, function (err, doc) {
         let raum = doc
-        if(!req.body.raumNr||!req.body.kapazitaet||!req.body.raumpreis){
+        if(req.body.raumNr||!req.body.kapazitaet||!req.body.raumpreis){
             res.status(400).json({message:'Bitte füllen Sie alle Felder aus!'})
         }
         else if (raum.length  > 0) {
             res.status(400).json({message: 'Dieser Raum existiert bereits.'})
-        } else if (req.body.kapazitaet < 5){
-            res.status(400).json({message:'Die Raumkapazität muss mindestens 5 betragen!'})
+        } else if (req.body.kapazitaet < 5) {
+            res.status(400).json({message: 'Die Raumkapazität muss mindestens 5 betragen!'})
         }
         else if(req.body.raumpreis <= 0){
             res.status(400).json({message:'Der Preis darf nicht negativ oder 0 sein!'})

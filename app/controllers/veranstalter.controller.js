@@ -113,8 +113,8 @@ veranstalterController.post('/veranstalter/registration/add', function (req, res
                                     from: 'management@vms.de',
                                     to: newVeranstalter.email,
                                     subject: 'Herzlich Willkommen bei VMS',
-                                    text: 'Sehr geehrter Veranstalter, \n\n ' +
-                                        'herzlichen Dank für Ihre Registrierung beim VMS\n\nMit freundlichen Grüßen' +
+                                    text: 'Sehr geehrter Veranstalter,\n\n' +
+                                        'herzlichen Dank für Ihre Registrierung beim VMS.\n\nMit freundlichen Grüßen' +
                                         '\nDas VMS '
                                 })
                                 tokens.push(token);
@@ -286,7 +286,7 @@ veranstalterController.delete('/veranstalter/logout/:token', function (req, res)
 
 //anfragen
 veranstalterController.post('/veranstalter/request/:id', function (req, res){
-    let {titel, kapazitaet, start_datum, end_datum, sichtbarkeit, zusatzleistungen, teilnehmerListe} = req.body
+    let {titel, kapazitaet, start_datum, end_datum, sichtbarkeit, zusatzleistungen, teilnehmerListe, teilnehmerpeis} = req.body
     req.body.start_datum =  momentTz(start_datum).tz('Europe/Berlin')
     req.body.end_datum =  momentTz(end_datum).tz('Europe/Berlin')
     let errors = [];
@@ -330,6 +330,7 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
                 text: 'Es wurde eine neue Anfrage im VMS erstellt: \n Titel: ' + anfrageInstance.titel + '\n Maximal benötigte Kapazität: ' + anfrageInstance.kapazitaet
                 + '\n Zeitraum: ' + anfrageInstance.start_datum.format('DD-MM-YYYY') + ' bis '+ anfrageInstance.end_datum.format('DD-MM-YYYY') + '\n Sichtbarkeit' + anfrageInstance.sichtbarkeit
                 + '\n Zusatzleistungen: '+ anfrageInstance.leistung
+                + '\n Teilnehmerpreis: '+ anfrageInstance.teilnehmerpreis
                 + '\n Veranstalter: ' + veranstalterEmail
                 + '\n \n Bitte erstellen Sie im System ein entsprechende Angebot!'
                 + '\n \n Teilnehmerliste finden Sie im Anhang',
@@ -349,6 +350,7 @@ veranstalterController.post('/veranstalter/request/:id', function (req, res){
                     text: 'Es wurde eine neue Anfrage im VMS erstellt: \n\n Titel: ' + anfrageInstance.titel + '\n Maximal benötigte Kapazität: ' + anfrageInstance.kapazitaet
                         + '\n Zeitraum: ' + anfrageInstance.start_datum.format('DD-MM-YYYY') + ' bis '+ anfrageInstance.end_datum.format('DD-MM-YYYY') + '\n Sichtbarkeit: ' + anfrageInstance.sichtbarkeit
                         + '\n Zusatzleistungen: '+ anfrageInstance.leistung
+                        + '\n Teilnehmerpreis: '+ anfrageInstance.teilnehmerpreis
                         + '\n Veranstalter: ' + veranstalterEmail
                         + '\n \n Bitte erstellen Sie im System ein entsprechendes Angebot!'
                     })
