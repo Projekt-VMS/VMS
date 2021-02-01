@@ -531,6 +531,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			veranstalterService.request(tokenService.getID(), daten).then(
 				function(res){
 					alert(res.data.message);
+					location.href = '/#!/event-overview-host'
 				},
 				function(err){
 					err.data.errors.forEach(error => alert(error.message))
