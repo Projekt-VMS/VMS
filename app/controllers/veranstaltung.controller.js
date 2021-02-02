@@ -172,7 +172,7 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
                             console.log("success!")
                             res.status(200).json({message: 'Veranstaltung wurde erfolgreich erstellt!'}); //sends mail once event is saved
                             transport.sendMail({
-                                from: 'test@vms.de',
+                                from: 'management@vms.de',
                                 to: req.body.veranstalter,
                                 subject: 'Ihr Angebot ',
                                 text: 'Sehr geehrter Veranstalter, \n\nVielen Dank für Ihre Anfrage. Anbei erhalten sie ihr Angebot auf Basis Ihrer eingegebenen Daten: \n\n'
@@ -236,10 +236,10 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
                     to: doc.veranstalter,
                     subject: 'Absage Ihrer Veranstaltung ' + doc.titel,
                     text: 'Sehr geehrter Veranstalter, \nLeider müssen wir Ihre oben genannte Veranstaltung absagen. Der Grund dafür: ' +
-                        '\n \n      ' + grund +
-                        '\n \nBitte kontaktieren Sie uns per Mail, ob wir die Veranstaltungen, angepasst an den Absagegrund, wieder im System aufnehmen sollen.' +
-                        '\nWir freuen uns auf Ihre nächste Buchung! ' +
-                        '\nMit freundlichen Grüßen ' +
+                        '\n\n      ' + grund +
+                        '\n\nBitte kontaktieren Sie uns per Mail, ob wir die Veranstaltungen, angepasst an den Absagegrund, wieder im System aufnehmen sollen.' +
+                        '\nWir freuen uns auf Ihre nächste Buchung!' +
+                        '\nMit freundlichen Grüßen' +
                         '\nDas VMS '
                 })
                 doc.teilnehmer.every(e => {
@@ -250,9 +250,9 @@ veranstaltungsController.post('/veranstaltung/delete/message/:id', function (req
                             from: 'management@vms.de',
                             to: tMail,
                             subject: 'Absage der Veranstaltung ' + doc.titel,
-                            text: 'Sehr geehrter Teilnehmer, \nleider müssen wir oben genannte Veranstaltung absagen. Der Grund dafür: \n \n'
+                            text: 'Sehr geehrter Teilnehmer,\nleider müssen wir oben genannte Veranstaltung absagen. Der Grund dafür:\n\n'
                                + grund
-                                + '\n\nWir werden uns bemühen, die Veranstaltung im Rahmen unserer Möglichkeiten erneut anzubieten. Bitte informieren Sie sich in den nächsten Tagen auf unserer Seite, ob die Veranstaltung wieder eingestellt wurde. \n\nMit freundlichen Grüßen \nDas VMS'
+                                + '\n\nWir werden uns bemühen, die Veranstaltung im Rahmen unserer Möglichkeiten erneut anzubieten. Bitte informieren Sie sich in den nächsten Tagen auf unserer Seite, ob die Veranstaltung wieder eingestellt wurde.\n\nMit freundlichen Grüßen\nDas VMS'
 
                         })
 

@@ -42,7 +42,7 @@ raumController.post('/raum/add',function (req, res) {
     let raumInstance = new Raum(req.body);
     Raum.find({raumNr: req.body.raumNr}, function (err, doc) {
         let raum = doc
-        if(req.body.raumNr||!req.body.kapazitaet||!req.body.raumpreis){
+        if(!req.body.raumNr||!req.body.kapazitaet||!req.body.raumpreis){
             res.status(400).json({message:'Bitte füllen Sie alle Felder aus!'})
         }
         else if (raum.length  > 0) {

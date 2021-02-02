@@ -381,10 +381,10 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
                 from: 'management@vms.de',
                 to: event.veranstalter,
                 subject: 'Ihre Abrechnung zur Veranstaltung ' + event.titel,
-                text: 'Sehr geehrter Veranstalter, \nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung, da sie die Veranstaltung außerhalb der Stornofrist storniert haben. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456. \n \n Ausmachender Betrag: '
+                text: 'Sehr geehrter Veranstalter, \n\nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung, da sie die Veranstaltung außerhalb der Stornofrist storniert haben. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456.\n\n Ausmachender Betrag: '
                     + (event.veranstalter_preis * 40 / 100) + '€' +
-                    '\n Verwendungszweck: ' + event.id +
-                    '\n\n Wir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+                    '\nVerwendungszweck: ' + event.id +
+                    '\n\nWir freuen uns auf Ihre nächste Buchung!\nMit freundlichen Grüßen\nDas VMS '
             })
             stornoPossible = true
             res.status(400).json({message: 'Die Stornofrist ist abgelaufen, ihre Veranstaltung wird storniert! Ihnen werden 40% der Kosten in Rechnung gestellt!'})
@@ -416,9 +416,9 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
                     from: 'management@vms.de',
                     to: tMail,
                     subject: 'Absage der Veranstaltung ' + event.titel,
-                    text: 'Sehr geehrter Teilnehmer, \n\n der Veranstalter hat oben genannte Veranstaltung abgesagt.'
+                    text: 'Sehr geehrter Teilnehmer,\n\nder Veranstalter hat oben genannte Veranstaltung abgesagt.'
                         +
-                        '\n\nWir freuen uns auf Ihre nächste Buchung! \n Mit freundlichen Grüßen \n Das VMS '
+                        '\n\nWir freuen uns auf Ihre nächste Buchung!\n\nMit freundlichen Grüßen\nDas VMS '
                 })
 
             })
