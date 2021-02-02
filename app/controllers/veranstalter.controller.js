@@ -384,7 +384,7 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
                 text: 'Sehr geehrter Veranstalter, \n\nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung, da sie die Veranstaltung außerhalb der Stornofrist storniert haben. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456.\n\n Ausmachender Betrag: '
                     + (event.veranstalter_preis * 40 / 100) + '€' +
                     '\nVerwendungszweck: ' + event.id +
-                    '\n\nWir freuen uns auf Ihre nächste Buchung!\nMit freundlichen Grüßen\nDas VMS '
+                    '\n\nWir freuen uns auf Ihre nächste Buchung!\n\nMit freundlichen Grüßen\nDas VMS '
             })
             stornoPossible = true
             res.status(400).json({message: 'Die Stornofrist ist abgelaufen, ihre Veranstaltung wird storniert! Ihnen werden 40% der Kosten in Rechnung gestellt!'})
@@ -393,6 +393,13 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
                 if (err) {
                     res.status(400).json({message: 'Veranstaltung konnte nicht storniert werden!'})
                 } else {
+                    transport.sendMail({
+                        from: 'management@vms.de',
+                        to: event.veranstalter,
+                        subject: 'Ihre Stornierung zur Veranstaltung ' + event.titel,
+                        text: 'Sehr geehrter Veranstalter, \n\nSie haben Ihre Veranstaltung erfolgreich storniert.'
+                           + '\n\nWir freuen uns auf Ihre nächste Buchung!\nMit freundlichen Grüßen\nDas VMS '
+                    })
                     res.status(200).json({message: 'Veranstaltung ' + event.titel + ' wurde storniert'})
                 }
             })
@@ -406,7 +413,7 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
             },
             function (err, doc) {
                 if (!doc){
-                    return next(new Error('Event not found'))}})
+                    return (new Error('Event not found'))}})
 
         event.teilnehmer.every(e => {
 
@@ -423,7 +430,11 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
 
             })
             return true
+
+
         })
+
+
     })})
 
 //update teilnehmerliste
