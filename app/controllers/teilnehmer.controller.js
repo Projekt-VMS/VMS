@@ -260,6 +260,49 @@ teilnehmerController.put('/teilnehmer/edit/:id',function (req, res) {
     else if (validateEmail(req.body.email) === false && req.body.email !== undefined ){
         res.status(400).send({message: 'Änderung fehlgeschlagen: Bitte geben Sie eine gültige Email Adresse ein.'})
     }
+    else if (validateEmail(req.body.email) === true && req.body.email !== undefined){
+        Veranstalter.find({email: req.body.email}, function (err, veranstalter) {
+            let emailExists = veranstalter.length > 0;
+            if (emailExists === true) {
+                res.status(400).json({message: 'Die Email ist bereits als Veranstalter registriert. Ein Teilnehmer kann kein Veranstalter sein!'});
+            }
+            else{ Teilnehmer.find({email: req.body.email}, function (err, teilnehmer) {
+                let emailExists01 = teilnehmer.length > 0;
+                if (emailExists01 === true) {
+                    res.status(400).json({message: 'Die Email ist bereits vergeben.'});
+                }
+                else {Teilnehmer.findByIdAndUpdate(
+                    {_id: req.params.id},
+                    {
+                        $set: req.body
+                    },
+                    function (err, teilnehmer) {
+                        if (err) {
+                            res.status(401).json({message: 'Es hat nicht geklappt!'});
+                        } else {
+                            let tMail = teilnehmer.email
+                            transport.sendMail({
+                                from: 'management@vms.de',
+                                to: tMail,
+                                subject: 'Änderungen an Ihrem Profil',
+                                text: 'Sehr geehrter Teilnehmer, ' +
+                                    '\n\nihr Profil wurde geändert. Diese Mail dient als Info für Sie. Bei fragen wenden Sie sich bitte an das VMS.'+
+                                    '\n\n' +
+                                    '\n\nMit freundlichen Grüßen' +
+                                    '\nDas VMS'
+                            })
+
+                            res.status(200).json({message: 'User ' + teilnehmer.email + ' wurde erfolgreich geändert'});
+
+                        }
+                    }
+                )}
+
+        })}})}
+
+
+
+
     else {Teilnehmer.findByIdAndUpdate(
         {_id: req.params.id},
         {
