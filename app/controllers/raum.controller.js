@@ -96,7 +96,7 @@ raumController.delete('/raum/delete/:id', function (req, res, next) {
 raumController.put('/raum/edit/:id',function (req, res, next) {
    let kapa;
    let eventName = [];
-   let start;
+   let end;
    let events;
 
 
@@ -122,8 +122,8 @@ raumController.put('/raum/edit/:id',function (req, res, next) {
                      events = doc
                     events.every(e => {
 
-                        start = e.start_datum
-                        if(start >= moment()){
+                        end = e.end_datum
+                        if((end >= moment()) && (req.body.kapazitaet<e.teilnehmerzahl)){
                           eventName.push(e.titel)
                             kapa = e.teilnehmerzahl
                         }
@@ -132,7 +132,8 @@ raumController.put('/raum/edit/:id',function (req, res, next) {
 
                     })
 
-                    if ((kapa < req.body.kapazitaet )&& (start >= moment() )) {
+
+                    if (((req.body.kapazitaet < kapa))&& (moment(end) >= moment() )) {
                         res.status(400).json({message: 'Die neue Kapazität würde die Teilnehmerzahl folgender Veranstaltungen übersteigen:\n' + eventName})
                     } else {
                         console.log(kapa)

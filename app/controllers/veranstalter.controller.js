@@ -380,6 +380,7 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
             transport.sendMail({
                 from: 'management@vms.de',
                 to: event.veranstalter,
+                cc: 'management@vms.de',
                 subject: 'Ihre Abrechnung zur Veranstaltung ' + event.titel,
                 text: 'Sehr geehrter Veranstalter, \n\nanbei erhalten Sie Ihre Abrechnung zu oben genannter Veranstaltung, da sie die Veranstaltung außerhalb der Stornofrist storniert haben. Bitte überweisen Sie den Betrag spätestens 10 Tage nach erhalt dieser Abrechnung an unsere Bankverbindung: DE12333456665444433456.\n\n Ausmachender Betrag: '
                     + (event.veranstalter_preis * 40 / 100) + '€' +
@@ -396,6 +397,7 @@ veranstalterController.delete('/veranstalter/storno/:id', function (req, res) {
                     transport.sendMail({
                         from: 'management@vms.de',
                         to: event.veranstalter,
+                        cc: 'management@vms.de',
                         subject: 'Ihre Stornierung zur Veranstaltung ' + event.titel,
                         text: 'Sehr geehrter Veranstalter, \n\nSie haben Ihre Veranstaltung erfolgreich storniert.'
                            + '\n\nWir freuen uns auf Ihre nächste Buchung!\nMit freundlichen Grüßen\nDas VMS '
