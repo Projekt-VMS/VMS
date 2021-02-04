@@ -18,7 +18,6 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlcmJlc
 ### // Teilnehmer show one
 GET http://localhost:3000/teilnehmer/showOne/5fe9ce24fc71287e0f249cf1
 
-
 ### // Teilnehmer delete (could be changed to :id as well
 DELETE http://localhost:3000/teilnehmer/delete/5fdc8a634098564c24f7de70
 
@@ -48,9 +47,7 @@ Content-Type: application/json
 "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhlcmJlcnRAdG9rZW50ZXN0Mi5kZSIsInVzZXJJRCI6IjVmZTcxOTEwODQ5OTA3Njk2NjI2YThlMCIsImlhdCI6MTYwODk4MzQ1MywiZXhwIjoxNjA4OTg3MDUzfQ.szleymoDS1Kli1CyZtV_77m0XWzG-fvPNsl5iOEsW3g"
 }
 
-
 ### // teilnehmen
-
 PUT http://localhost:3000/teilnehmer/participate/5fe1daee71415c4d4e73c01c
 Content-Type: application/json
 
@@ -66,6 +63,6 @@ Content-Type: application/json
   "id": "5ff357a5a4cd92651c13ec2e"
 }
 
-### // // get all of the events one user signed up for
+### // get all of the events one user signed up for
 GET http://localhost:3000/teilnehmer/show/5ff59a71c6531d1344efbfa9
 Content-Type: application/json

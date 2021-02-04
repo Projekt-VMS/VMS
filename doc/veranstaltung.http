@@ -14,7 +14,6 @@ Content-Type: application/json
   "sichtbarkeit": true,
   "angebotsstatus": "intern",
   "veranstalter_preis": 3222
-
 }
 
 ### // Veranstaltung list all
@@ -33,10 +32,9 @@ Content-Type: application/json
 {
   "titel": "NeuerTitel",
   "teilnehmerzahl": "10"
-
 }
-###
-// get Teilnehmerliste pro Veranstaltung
+
+### // get Teilnehmerliste pro Veranstaltung
 GET http://localhost:3000/veranstaltung/showOne/list/5fecee5625f7b034db598063
 
 

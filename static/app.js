@@ -34,9 +34,7 @@ angular.module('app').directive('appFilereader', function($q) {
 
 					return deferred.promise;
 				}
-
 			});
-
 		}
 	};
 });
@@ -93,28 +91,22 @@ app.factory('registrierenService', ['$http', function ($http){
 		function getTeilnehmer(userID){
 			return $http.get('/teilnehmer/showOne/'+ userID)
 		}
-
 		function getTeilnehmers(){
 			return $http.get('/teilnehmer/show')
 		}
-
 		function participate(userID, veranstaltung){
 			return $http.put('/teilnehmer/participate/' + userID + '/' + veranstaltung)
 		}
-
 		function deregisterEvent(userID, veranstaltung){
 			return $http.put('/teilnehmer/deregisterEvent/' + userID + '/' + veranstaltung)
 		}
-
 		function editTeilnehmer(userID, user){
 			return	$http.put('/teilnehmer/edit/'+userID, user)
 		}
-
 		function deleteTeilnehmer(userID){
 			return $http.delete('/teilnehmer/delete/'+userID)
 		}
 		return {getTeilnehmer, getTeilnehmers, participate, deregisterEvent, editTeilnehmer, deleteTeilnehmer};
-
 	}])
 
 	.factory('veranstalterService', ['$http', function ($http){
@@ -169,77 +161,62 @@ app.factory('registrierenService', ['$http', function ($http){
 		function getVeranstaltungen(){
 			return $http.get('/veranstaltung/show')
 		}
-
 		function getVeranstaltung(veranstaltungID){
 			return $http.get('/veranstaltung/showOne/'+veranstaltungID)
 		}
-
 		function showTeilnehmer(veranstaltungID){
 			return $http.get('/veranstaltung/showOne/list/'+veranstaltungID)
 		}
-
 		function downloadListe(veranstaltungID){
 			return $http.post('/veranstaltung/download/'+veranstaltungID)
 		}
-
 		function editListe(veranstaltungID, teilnehmerListe){
 			return $http.put('/veranstaltung/teilnehmerListe/edit/'+veranstaltungID, teilnehmerListe)
 		}
-
 		function editVeranstaltung(veranstaltungID, veranstaltung){
 			return	$http.put('/veranstaltung/edit/'+veranstaltungID, veranstaltung)
 		}
-
 		function showTeilnehmerListe(veranstaltungID){
 			return $http.get('/veranstaltung/teilnehmerListe/show/'+veranstaltungID)
 		}
-
 		function accountVeranstaltung(veranstaltungID){
 			return $http.put('/veranstaltung/abrechnen/'+veranstaltungID)
 		}
-
 		function deleteVeranstaltung(veranstaltungID){
 			return $http.delete('/veranstaltung/delete/'+veranstaltungID)
 		}
-
 		function cancelVeranstaltung(veranstaltungID, daten){
 			return $http.post('/veranstaltung/delete/message/'+veranstaltungID, daten)
 		}
 		return {createVeranstaltung, getVeranstaltungen, getVeranstaltung, showTeilnehmer, downloadListe, editListe, showTeilnehmerListe, editVeranstaltung, accountVeranstaltung, deleteVeranstaltung, cancelVeranstaltung}
-    
 	}])
 
 	.factory('raumService', ['$http', function ($http){
 		function createRaum(raum){
 			return $http.post('/raum/add', raum)
 		}
-
 		function getRaeume(){
 			return $http.get('/raum/show')
 		}
-
 		function getRaum(raumID){
 			return $http.get('/raum/showOne/'+raumID)
 		}
-
 		function editRaum(raumID, raum){
 			return	$http.put('/raum/edit/'+raumID, raum)
 		}
-
 		function deleteRaum(raumID){
 			return $http.delete('/raum/delete/'+raumID)
 		}
-
 		function checkAvailability(raumID, datum){
 			return $http.post('/raum/verfuegbarkeit/'+raumID, datum)
 		}
 		return {createRaum, getRaeume, getRaum, editRaum, deleteRaum, checkAvailability}
 	}])
+
 	.factory('statistikService', ['$http', function($http){
 		function raumAuslastung(){
 			return $http.post('/statistik/raumauslastung')
 		}
-
 		function veranstaltungAuslastung(veranstaltungID){
 			return $http.post('/statistik/veranstaltungAuslastung/'+veranstaltungID)
 		}
@@ -250,7 +227,6 @@ app.factory('registrierenService', ['$http', function ($http){
 		function getToken(){
 			return localStorage.getItem('token_id');
 		}
-
 		function getID(){
 			return localStorage.getItem('user_id');
 		}
@@ -287,7 +263,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			localStorage.setItem('user_id', res.data.userID);
 			localStorage.setItem('token_id', res.data.token);
 			location.href = '/#!/event-overview-host'
-
 		},
 			function(err) {
 				console.log(err.data.message);
@@ -361,16 +336,28 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 
 	$scope.erstelleTeilnehmer = (teilnehmer) => erstelleTeilnehmer(teilnehmer);
 	$scope.erstelleVeranstalter = (veranstalter) => erstelleVeranstalter(veranstalter);
+
 	$scope.loggeTeilnehmer = (daten) => loggeTeilnehmer(daten);
 	$scope.loggeVeranstalter = (daten) => loggeVeranstalter(daten);
 	$scope.loggeManagement = (daten) => loggeManagement(daten);
 	$scope.loggeAdmin = (daten) => loggeAdmin(daten);
+
 	$scope.passwortAnfragen = (daten) => passwortAnfragen(daten);
 
 }])
 
 	.controller('teilnehmerController', ['$scope', '$routeParams','tokenService','authService', 'teilnehmerService','veranstaltungService','logoutService', 'statistikService',  function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstaltungService, logoutService, statistikService){
 		console.log('Teilnehmer Controller');
+
+		var paramID = $routeParams.id;
+
+		//filter
+		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmerID = res.data._id);
+
+		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
+
+		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+
 
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
@@ -382,17 +369,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			});
 		}, 50);
 
-    	var paramID = $routeParams.id;
-
-		//filter
-		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmerID = res.data._id);
-
-
-		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-
-		teilnehmerService.getTeilnehmer(tokenService.getID()).then(res => $scope.teilnehmer = res.data);
-
-
 		function teilnehmen(veranstaltung){
 			teilnehmerService.participate(tokenService.getID(), veranstaltung).then(
 				function(res){
@@ -403,6 +379,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function abmelden(veranstaltung){
 			teilnehmerService.deregisterEvent(tokenService.getID(), veranstaltung).then(
 				function(res){
@@ -413,6 +390,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function updateTeilnehmer(neuerTeilnehmer){
 			$scope.neuerTeilnehmer = {};
 			console.log(neuerTeilnehmer);
@@ -426,6 +404,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
     	function loescheTeilnehmer(){
 			teilnehmerService.deleteTeilnehmer(paramID).then(
 				function(res){
@@ -436,6 +415,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function loggeOut(){
 			logoutService.logoutTeilnehmer(tokenService.getToken()).then(
 				function(res){
@@ -447,47 +427,44 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		$scope.greaterThanValue = function(prop, val){
 			return function(item){
 				if (item[prop] >= val) return true;
 			}
 		}
+
 		$scope.smallerThanValue = function(prop, val){
 			return function(item){
 				if (item[prop] < val) return true;
 			}
 		}
+
 		$scope.greaterThanToday = function(prop){
 			let currentDate = new Date();
 			return function(item){
 				if (item[prop] > currentDate.toISOString()) return true;
 			}
 		}
+
 		$scope.greaterThan = function(prop, val){
 			return function(item){
 				if (item[prop] >= item[val]) return true;
 			}
 		}
+
 		$scope.smallerThan = function(prop, val){
 			return function(item){
 				if (item[prop] < item[val]) return true;
 			}
 		}
+
 		$scope.greaterThanArray = function(prop, val){
 			return function(item){
 				if (item[prop] > item[val].length) return true;
 			}
 		}
-		/*function auslastung(veranstaltungID){
-			statistikService.veranstaltungAuslastung(veranstaltungID).then(
-				function(res){
-					alert(res.data.message);
-				},
-				function(err){
-					alert(err.data.message);
-				}
-			);
-		}*/
+
 
 		$scope.teilnehmen = (veranstaltung) => teilnehmen(veranstaltung);
 		$scope.abmelden = (veranstaltung) => abmelden(veranstaltung);
@@ -495,12 +472,23 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
     	$scope.loescheTeilnehmer = () => loescheTeilnehmer();
 		$scope.loggeOut = () => loggeOut();
 		$scope.currentDate = new Date();
-		//$scope.auslastung = (veranstaltungID) => auslastung(veranstaltungID).then(res => $scope.anzeige = res);
 
 	}])
 
 	.controller('veranstalterController', ['$scope', '$routeParams', 'tokenService', 'authService', 'veranstalterService', 'veranstaltungService', 'logoutService', function ($scope, $routeParams, tokenService, authService, veranstalterService, veranstaltungService, logoutService){
 		console.log('Veranstalter Controller');
+
+		var paramID = $routeParams.id;
+
+		//filter
+		veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.emailVeranstalter = res.data.email);
+
+		veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.veranstalter = res.data);
+
+		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
+		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+		veranstaltungService.showTeilnehmer(paramID).then(res => $scope.teilnehmers = res.data.teilnehmer);
+
 
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
@@ -511,19 +499,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			});
 		}, 500);
-
-		var paramID = $routeParams.id;
-		$scope.currentDate = new Date();
-
-		//filter
-		veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.emailVeranstalter = res.data.email);
-
-		veranstalterService.getVeranstalter(tokenService.getID()).then(res => $scope.veranstalter = res.data);
-		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
-		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-
-		veranstaltungService.showTeilnehmer(paramID).then(res => $scope.teilnehmers = res.data.teilnehmer);
-
 
 		function anfragen(daten){
 			console.log(daten)
@@ -538,6 +513,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function downloadeListe(){
 			veranstaltungService.downloadListe(paramID).then(
 				function(res){
@@ -557,6 +533,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function updateListe(neueListe, veranstaltungID){
 			$scope.neueListe = {};
 			veranstaltungService.editListe(veranstaltungID, neueListe).then(
@@ -596,6 +573,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function loescheVeranstalter(){
 			veranstalterService.deleteVeranstalter(paramID).then(
 				function(res){
@@ -606,6 +584,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function storniereVeranstaltung(veranstaltung){
 			veranstalterService.stornoVeranstaltung(veranstaltung).then(
 				function(res){
@@ -616,6 +595,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function loggeOut(){
 			logoutService.logoutVeranstalter(tokenService.getToken()).then(
 				function(res){
@@ -628,19 +608,45 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			);
 		}
 
+
 		$scope.anfragen = (daten) => anfragen(daten);
-		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
-		$scope.loescheVeranstalter = () => loescheVeranstalter();
 		$scope.storniereVeranstaltung = (veranstaltung) => storniereVeranstaltung(veranstaltung);
-		$scope.loggeOut = () => loggeOut();
 		$scope.downloadeListe = () => downloadeListe();
 		$scope.updateListe = (neueListe, veranstaltungID) => updateListe(neueListe, veranstaltungID);
 		$scope.zeigeTeilnehmerListe = (veranstalterID) => zeigeTeilnehmerListe(veranstalterID);
+		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
+		$scope.loescheVeranstalter = () => loescheVeranstalter();
+		$scope.loggeOut = () => loggeOut();
+		$scope.currentDate = new Date();
 
 	}])
 
 	.controller('managementController', ['$scope','$routeParams', 'tokenService','authService', 'teilnehmerService', 'veranstalterService', 'managementService', 'veranstaltungService', 'raumService', 'logoutService', 'statistikService', function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstalterService, managementService, veranstaltungService, raumService, logoutService, statistikService){
 		console.log('Management Controller');
+
+		var paramID = $routeParams.id;
+
+		managementService.getManagement(tokenService.getID()).then(res => $scope.emailManagement = res.data.email);
+		managementService.getManagement(tokenService.getID()).then(res => $scope.management = res.data);
+
+		veranstalterService.getVeranstalter(paramID).then(res=> $scope.veranstalter = res.data);
+		veranstalterService.getVeranstalters().then(res=>$scope.veranstalters = res.data);
+
+		teilnehmerService.getTeilnehmer(paramID).then(res=> $scope.teilnehmer = res.data);
+		teilnehmerService.getTeilnehmers().then(res=>$scope.teilnehmers = res.data);
+
+		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+		veranstaltungService.showTeilnehmer(paramID).then(res => $scope.teilnehmerz = res.data.teilnehmer);
+		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
+		veranstaltungService.getVeranstaltungen().then(res => $scope.anzahlVeranstaltungen = res.data.length);
+
+		raumService.getRaeume().then(res=>$scope.raeume = res.data);
+		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
+		raumService.getRaeume().then(res => $scope.anzahlRaeume = res.data.length);
+
+		// Prozent wie viele Räume heute frei sind
+		statistikService.raumAuslastung().then(res => $scope.raumAuslastung = res.data);
+
 
 		setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
@@ -651,11 +657,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			});
 		}, 500);
-
-		var paramID = $routeParams.id;
-
-		managementService.getManagement(tokenService.getID()).then(res => $scope.emailManagement = res.data.email);
-		managementService.getManagement(tokenService.getID()).then(res => $scope.management = res.data);
 
 		function erstelleVeranstaltung(veranstaltung){
 			$scope.daten={};
@@ -669,6 +670,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function erstelleRaum(raum){
 			$scope.raum={};
 			raumService.createRaum(raum).then(
@@ -681,6 +683,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function updateRaum(neuerRaum){
 			$scope.neuerRaum = {};
 			console.log(neuerRaum);
@@ -693,6 +696,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function updateVeranstaltung(neueVeranstaltung){
 			console.log(neueVeranstaltung)
 			$scope.neueVeranstaltung={};
@@ -705,6 +709,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function abrechnenVeranstaltung(veranstaltung){
 			veranstaltungService.accountVeranstaltung(veranstaltung).then(
 				function(res){
@@ -715,6 +720,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function loescheVeranstaltung(){
 			veranstaltungService.deleteVeranstaltung(paramID).then(
 				function(res){
@@ -725,6 +731,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function loescheRaum(){
 			raumService.deleteRaum(paramID).then(
 				function(res){
@@ -735,6 +742,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function updateVeranstalter(neuerVeranstalter){
 			$scope.neuerVeranstalter = {};
 			veranstalterService.editVeranstalter(paramID ,neuerVeranstalter).then(
@@ -747,6 +755,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function loescheVeranstalter(){
 			veranstalterService.deleteVeranstalter(paramID).then(
 				function(res){
@@ -757,6 +766,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function updateTeilnehmer(neuerTeilnehmer){
 			$scope.neuerTeilnehmer = {};
 			teilnehmerService.editTeilnehmer(paramID ,neuerTeilnehmer).then(
@@ -769,6 +779,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function loescheTeilnehmer(){
 			teilnehmerService.deleteTeilnehmer(paramID).then(
 				function(res){
@@ -779,6 +790,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function pruefeVerfuegbarkeit(datum){
 			raumService.checkAvailability(paramID, datum).then(
 				function(res){
@@ -789,6 +801,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function loggeOut(){
 			logoutService.logoutManagement(tokenService.getToken()).then(
 				function(res){
@@ -800,6 +813,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function absagen(daten){
 			veranstaltungService.cancelVeranstaltung(paramID, daten).then(
 				function(res){
@@ -811,6 +825,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function downloadeListe(){
 			veranstaltungService.downloadListe(paramID).then(
 				function(res){
@@ -830,6 +845,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		$scope.smallerThanToday = function(prop){
 			let currentDate = new Date();
 			currentDate.setDate(currentDate.getDate()-1);
@@ -839,43 +855,28 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		}
 
 
-		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
-		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-		$scope.veranstaltungen = [];
 		$scope.param1 = paramID;
 
-		veranstaltungService.showTeilnehmer(paramID).then(res => $scope.teilnehmerz = res.data.teilnehmer);
-		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
+		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
 		$scope.abrechnenVeranstaltung = (veranstaltung) => abrechnenVeranstaltung(veranstaltung);
 		$scope.loescheVeranstaltung = () => loescheVeranstaltung();
+		$scope.absagen = (daten) => absagen(daten);
+		$scope.downloadeListe = () => downloadeListe();
+		$scope.veranstaltungen = [];
 
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
-		raumService.getRaeume().then(res=>$scope.raeume = res.data);
-		$scope.raeume = [];
-		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
 		$scope.pruefeVerfuegbarkeit = (datum) => pruefeVerfuegbarkeit(datum);
-
-		$scope.absagen = (daten) => absagen(daten);
-		$scope.downloadeListe = () => downloadeListe();
-
-		raumService.getRaeume().then(res => $scope.anzahlRaeume = res.data.length);
-		veranstaltungService.getVeranstaltungen().then(res => $scope.anzahlVeranstaltungen = res.data.length);
-		// Prozent wie viele Räume heute frei sind
-		statistikService.raumAuslastung().then(res => $scope.raumAuslastung = res.data);
+		$scope.raeume = [];
 
 		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
-		veranstalterService.getVeranstalter(paramID).then(res=> $scope.veranstalter = res.data);
-		veranstalterService.getVeranstalters().then(res=>$scope.veranstalters = res.data);
 		$scope.veranstalters = [];
 
 		$scope.updateTeilnehmer = (neuerTeilnehmer) => updateTeilnehmer(neuerTeilnehmer);
 		$scope.loescheTeilnehmer = () => loescheTeilnehmer();
-		teilnehmerService.getTeilnehmer(paramID).then(res=> $scope.teilnehmer = res.data);
-		teilnehmerService.getTeilnehmers().then(res=>$scope.teilnehmers = res.data);
 		$scope.teilnehmers = [];
 
 		$scope.loggeOut = () => loggeOut();
@@ -886,7 +887,31 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		.controller('adminController', ['$scope','$routeParams', 'tokenService', 'authService', 'teilnehmerService', 'veranstalterService', 'adminService', 'managementService', 'veranstaltungService', 'raumService', 'registrierenService','logoutService', 'statistikService', function($scope, $routeParams, tokenService, authService, teilnehmerService, veranstalterService, adminService, managementService, veranstaltungService, raumService, registrierenService, logoutService, statistikService){
 		console.log('Admin Controller');
 
-		setTimeout(function () {
+			var paramID = $routeParams.id;
+
+			adminService.getAdmin(tokenService.getID()).then(res => $scope.emailAdmin = res.data.email);
+			adminService.getAdmin(tokenService.getID()).then(res => $scope.admin = res.data);
+
+			managementService.getManagement(paramID).then(res=> $scope.management = res.data);
+			managementService.getManagements().then(res=>$scope.managements = res.data);
+
+			veranstalterService.getVeranstalter(paramID).then(res=> $scope.veranstalter = res.data);
+			veranstalterService.getVeranstalters().then(res=>$scope.veranstalters = res.data);
+
+			teilnehmerService.getTeilnehmer(paramID).then(res=> $scope.teilnehmer = res.data);
+			teilnehmerService.getTeilnehmers().then(res=>$scope.teilnehmers = res.data);
+
+			veranstaltungService.showTeilnehmer(paramID).then(res => $scope.teilnehmerz = res.data.teilnehmer);
+			veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
+			veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
+
+			raumService.getRaeume().then(res=>$scope.raeume = res.data);
+			raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
+
+			statistikService.raumAuslastung().then(res => $scope.raumAuslastung = res.data);
+
+
+			setTimeout(function () {
 			authService.checkToken(tokenService.getToken()).then(function (res){
 				let bool = res.data;
 				console.log(bool.boolean)
@@ -895,11 +920,6 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			});
 			}, 500);
-
-		var paramID = $routeParams.id;
-
-		adminService.getAdmin(tokenService.getID()).then(res => $scope.emailAdmin = res.data.email);
-		adminService.getAdmin(tokenService.getID()).then(res => $scope.admin = res.data);
 
 		function erstelleManagement(management){
 			$scope.management={};
@@ -1089,6 +1109,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 						alert(err.data.message);
 				});
 		}
+
 		function absagen(daten){
 			veranstaltungService.cancelVeranstaltung(paramID, daten).then(
 				function(res){
@@ -1100,6 +1121,7 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 				}
 			);
 		}
+
 		function downloadeListe() {
             veranstaltungService.downloadListe(paramID).then(
                 function (res) {
@@ -1118,8 +1140,9 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
                     alert(err.data.message);
                 }
             );
-        }
-        $scope.smallerThanToday = function(prop){
+		}
+
+		$scope.smallerThanToday = function(prop){
 			let currentDate = new Date();
 			currentDate.setDate(currentDate.getDate()-1);
 			return function(item){
@@ -1127,47 +1150,35 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 			}
 		}
 
-		$scope.erstelleManagement = (management) => erstelleManagement(management);
-		$scope.updateManagement = (neuerManagement) => updateManagement(neuerManagement)
-		$scope.loescheManagement = () => loescheManagement();
-		managementService.getManagement(paramID).then(res=> $scope.management = res.data);
-		managementService.getManagements().then(res=>$scope.managements = res.data);
-		$scope.managements = [];
+
+		$scope.param1 = paramID;
 
 		$scope.erstelleVeranstaltung = (veranstaltung) => erstelleVeranstaltung(veranstaltung);
-		veranstaltungService.showTeilnehmer(paramID).then(res => $scope.teilnehmerz = res.data.teilnehmer);
-		veranstaltungService.getVeranstaltungen().then(res=>$scope.veranstaltungen = res.data);
-		$scope.veranstaltungen = [];
-		$scope.param1 = paramID;
-		veranstaltungService.getVeranstaltung(paramID).then(res=> $scope.veranstaltung = res.data);
 		$scope.updateVeranstaltung = (neueVeranstaltung) => updateVeranstaltung(neueVeranstaltung);
 		$scope.abrechnenVeranstaltung = (veranstaltung) => abrechnenVeranstaltung(veranstaltung);
 		$scope.loescheVeranstaltung = () => loescheVeranstaltung();
+		$scope.absagen = (daten) => absagen(daten);
+		$scope.downloadeListe = () => downloadeListe();
+		$scope.veranstaltungen = [];
 
 		$scope.erstelleRaum = (raum) => erstelleRaum(raum);
-		raumService.getRaeume().then(res=>$scope.raeume = res.data);
-		$scope.raeume = [];
-		raumService.getRaum(paramID).then(res=>$scope.raum = res.data);
 		$scope.updateRaum = (neuerRaum) => updateRaum(neuerRaum);
 		$scope.loescheRaum = () => loescheRaum();
 		$scope.pruefeVerfuegbarkeit = (datum) => pruefeVerfuegbarkeit(datum);
+		$scope.raeume = [];
 
-		$scope.absagen = (daten) => absagen(daten);
-		$scope.downloadeListe = () => downloadeListe();
+		$scope.erstelleManagement = (management) => erstelleManagement(management);
+		$scope.updateManagement = (neuerManagement) => updateManagement(neuerManagement);
+		$scope.loescheManagement = () => loescheManagement();
+		$scope.managements = [];
 
 		$scope.updateVeranstalter = (neuerVeranstalter) => updateVeranstalter(neuerVeranstalter);
 		$scope.loescheVeranstalter = () => loescheVeranstalter();
-		veranstalterService.getVeranstalter(paramID).then(res=> $scope.veranstalter = res.data);
-		veranstalterService.getVeranstalters().then(res=>$scope.veranstalters = res.data);
 		$scope.veranstalters = [];
 
 		$scope.updateTeilnehmer = (neuerTeilnehmer) => updateTeilnehmer(neuerTeilnehmer);
 		$scope.loescheTeilnehmer = () => loescheTeilnehmer();
-		teilnehmerService.getTeilnehmer(paramID).then(res=> $scope.teilnehmer = res.data);
-		teilnehmerService.getTeilnehmers().then(res=>$scope.teilnehmers = res.data);
 		$scope.teilnehmers= [];
-
-		statistikService.raumAuslastung().then(res => $scope.raumAuslastung = res.data);
 
 		$scope.loggeOut = () => loggeOut();
 		$scope.currentDate = new Date();
@@ -1227,8 +1238,7 @@ app.config(function($routeProvider){
 		})
 		.when('/profile-participant', {
 			templateUrl: 'components/profile-participant.component.html',
-			controller: 'teilnehmerController',
-
+			controller: 'teilnehmerController'
 		})
 		.when('/event-overview-host', {
 			templateUrl: 'components/event-overview-host.component.html',
@@ -1341,4 +1351,4 @@ app.config(function($routeProvider){
 		.otherwise({
 			redirectTo: '/login'
 		});
-	});
+});
