@@ -322,6 +322,7 @@ g {
 	font-size: large;
 	border: 3px groove #29b2d9;
 }
+
 [class="requestText"] {
 	float: right;
 	text-align: left;
@@ -379,6 +380,7 @@ g {
 	padding: 0.5%;
 	text-align: left;
 }
+
 [class="modifyText"] {
 	margin-left: auto;
 	margin-right: auto;
@@ -386,6 +388,7 @@ g {
 	width: 40%;
 	color: gray;
 }
+
 .modifyText {
 	margin-left: auto;
 	margin-right: auto;
@@ -394,6 +397,7 @@ g {
 	color: gray;
 	font-size: 18px;
 }
+
 [class="introText"] {
 	margin-left: auto;
 	margin-right: auto;
@@ -520,7 +524,9 @@ li {
 	text-align: left;
 }
 
-thead { background: #ddd; }
+thead {
+	background: #ddd;
+}
 
 table#demo2.js-sort-0 tbody tr td:nth-child(1),
 table#demo2.js-sort-1 tbody tr td:nth-child(2),
@@ -544,12 +550,20 @@ table#demo2.js-sort-9 tbody tr td:nth-child(10) {
 	table-layout: fixed;
 	text-align: center;
 }
+
 #table td, #table th {
 	border: 1px solid #ddd;
 	padding: 14px;
 }
-#table tr:nth-child(even){background-color: #f2f2f2;}
-#table tr:hover {background-color: #ddd;}
+
+#table tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+#table tr:hover {
+	background-color: #ddd;
+}
+
 #table th {
 	padding-top: 14px;
 	padding-bottom: 14px;
@@ -558,6 +572,7 @@ table#demo2.js-sort-9 tbody tr td:nth-child(10) {
 	background-color: #29b2d9;
 	color: white;
 }
+
 #table td {
 	font-size: 18px;
 }
@@ -574,10 +589,12 @@ table#demo2.js-sort-9 tbody tr td:nth-child(10) {
 	text-overflow: ellipsis;
 	word-wrap: break-word;
 }
+
 #tableVA td, #tableVA th {
 	border: 1px solid #ddd;
 	padding: 14px;
 }
+
 #tableVA tr:nth-child(even){background-color: #f2f2f2;}
 #tableVA tr:hover {background-color: #ddd;}
 #tableVA th {
@@ -588,6 +605,7 @@ table#demo2.js-sort-9 tbody tr td:nth-child(10) {
 	background-color: #29b2d9;
 	color: white;
 }
+
 #tableVA td {
 	font-size: 18px;
 }
@@ -597,39 +615,48 @@ table#demo2.js-sort-9 tbody tr td:nth-child(10) {
 	margin-left: 43%;
 	width: 40%;
 }
+
 .flex-wrapper {
 	display: flex;
 	flex-flow: row nowrap;
 }
+
 .single-chart {
 	width: 33%;
 	justify-content: space-around ;
 }
+
 .circular-chart {
 	display: block;
 	margin: 10px auto;
 	max-width: 80%;
 	max-height: 250px;
 }
+
 .circle-bg {
 	fill: none;
 	stroke: #eee;
 	stroke-width: 3.8;
 }
+
 .circle {
 	fill: none;
 	stroke-width: 2.8;
 	stroke-linecap: round;
 	animation: progress 1s ease-out forwards;
 }
+
 @keyframes progress {
-	0% {
+	0%
+	{
 		stroke-dasharray: 0 100;
 	}
 }
+
 .circular-chart.orange .circle {
 	stroke: #29b2d9;
 }
+
 .percentage {
 	fill: #666;
 	font-family: sans-serif;

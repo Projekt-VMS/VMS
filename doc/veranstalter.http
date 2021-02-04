@@ -3,7 +3,6 @@
 POST http://localhost:3000/veranstalter/registration/add
 Content-Type: application/json
 
-
 {
   "name": "meier2",
   "vorname": "frank2",
@@ -40,7 +39,6 @@ Content-Type: application/json
 }
 
 ### // get
-
 GET http://localhost:3000/veranstalter/get/5fdf842e0a5c7a3039b8810c
 
 ### // log in
