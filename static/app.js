@@ -443,7 +443,14 @@ app.controller('loginController', ['$scope', 'registrierenService', 'loginServic
 		$scope.greaterThanToday = function(prop){
 			let currentDate = new Date();
 			return function(item){
-				if (item[prop] > currentDate.toISOString()) return true;
+				if (item[prop] >= currentDate.toISOString()) return true;
+			}
+		}
+
+		$scope.smallerThanToday = function(prop){
+			let currentDate = new Date();
+			return function(item){
+				if (item[prop] < currentDate.toISOString()) return true;
 			}
 		}
 
