@@ -8,6 +8,7 @@ const Moment = require('moment');
 var momentTz = require('moment-timezone');
 const MomentRange = require('moment-range');
 const Teilnehmer = require("../models/Teilnehmer");
+const Management = require("../models/Management");
 const moment = MomentRange.extendMoment(Moment);
 moment().utc();
 moment.locale('us',{week:{dow : 1}})
@@ -68,6 +69,10 @@ veranstaltungsController.post('/veranstaltung/add',function (req, res) {
     let errors = [];
     if (!titel || !veranstalter || !raum || !start_datum || !end_datum || !teilnehmerzahl || !teilnehmer_preis || !sichtbarkeit || !angebotsstatus ) {
         errors.push({message: 'Fülle bitte alle Felder aus.'});
+    }
+
+    if(veranstalter !== 'intern@vms.de' && angebotsstatus === 'Intern'){
+        errors.push({message: 'Für interne Veranstaltungen verwenden Sie bitte den Veranstalter <<inter@vms.de>>'})
     }
 
     if((teilnehmerzahl || teilnehmer_preis) <= 0 ){
