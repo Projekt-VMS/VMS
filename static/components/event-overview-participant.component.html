@@ -8,7 +8,13 @@
     <a href='#!/event-overview-participant'><e><i class="fa fa-fw fa-calendar"></i> Meine Veranstaltungen</e></a>
 </div>
 
-<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter : teilnehmerID :true | orderBy : 'titel'">
+<div class="filter">
+    <label>Status:</label>
+    <span data-ng-hide="state2"><input type="checkbox" data-ng-model="state1">Bevorstehende Veranstaltungen</span>
+    <span data-ng-hide="state1"><input type="checkbox" data-ng-model="state2">Vergangene Veranstaltungen</span>
+</div>
+
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: teilnehmerID :true | filter: greaterThanToday('end_datum') | orderBy : 'titel' as result1" data-ng-if="state1">
     <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
     <li><h2>{{veranstaltung.titel}}</h2></li>
     <hr>
@@ -26,6 +32,48 @@
     <br><br>
 </ul>
 
-<div id="noEvent" data-ng-if="(veranstaltungen | filter: teilnehmerID :true).length === 0">
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: teilnehmerID :true | filter: smallerThanToday('end_datum') | orderBy : 'titel' as result2" data-ng-if="state2">
+    <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
+    <li><h2>{{veranstaltung.titel}}</h2></li>
+    <hr>
+    <li>Veranstalter: <span id="searchText">{{veranstaltung.veranstalter}}</span></li>
+    <hr>
+    <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
+    <hr>
+    <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
+    <hr>
+    <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
+    <hr>
+    <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
+    <hr>
+    <li><button data-ng-click='abmelden(veranstaltung._id)' class="participateButton"><g>Abmelden</g></button></li>
+    <br><br>
+</ul>
+
+<ul id="eventList" data-ng-repeat="veranstaltung in veranstaltungen | filter: teilnehmerID :true | orderBy : 'titel' as result3" data-ng-if="!state1 && !state2">
+    <span id="utilization">{{veranstaltung.teilnehmer.length}} / {{veranstaltung.teilnehmerzahl}}</span>
+    <li><h2>{{veranstaltung.titel}}</h2></li>
+    <hr>
+    <li>Veranstalter: <span id="searchText">{{veranstaltung.veranstalter}}</span></li>
+    <hr>
+    <li>Raum-Nr.: <span id="searchText">{{veranstaltung.raum}}</span></li>
+    <hr>
+    <li>Von: <span id="searchText">{{veranstaltung.start_datum | date : "dd.MM.y" : "+0100"}}</span></li>
+    <hr>
+    <li>Bis: <span id="searchText">{{veranstaltung.end_datum | date : "dd.MM.y" : "+0100"}}</span></li>
+    <hr>
+    <li>Preis: <span id="searchText">{{veranstaltung.teilnehmer_preis}}€</span></li>
+    <hr>
+    <li><button data-ng-click='abmelden(veranstaltung._id)' class="participateButton"><g>Abmelden</g></button></li>
+    <br><br>
+</ul>
+
+<div id="noEvent" data-ng-if="result1.length === 0 && result3.length != 0 && state1">
+    <p>Du hast aktuell keine bevorstehenden Veranstaltungen. <br><br> <a href="#!/event-search-participant"><button class="loginButton">Angebot ansehen</button></a></p>
+</div>
+<div id="noEvent" data-ng-if="result2.length === 0 && result3.length != 0 && state2">
+    <p>Du hast aktuell noch keine vergangenen Veranstaltungen. <br><br> <a href="#!/event-search-participant"><button class="loginButton">Angebot ansehen</button></a></p>
+</div>
+<div id="noEvent" data-ng-if="result3.length === 0">
     <p>Du bist aktuell noch zu keiner Veranstaltung angemeldet. <br><br> <a href="#!/event-search-participant"><button class="loginButton">Angebot ansehen</button></a></p>
 </div>
